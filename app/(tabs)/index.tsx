@@ -1,112 +1,67 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Image } from 'expo-image';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-// import courseIcon from '../../assets/icons/course.png';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import BackButton from '../components/button/BackButton';
+import CourseCard from '../components/carts/CourseCard';
+import CourseIncludes from '../components/carts/CourseIncludes';
+import MoreCourseCard from '../components/carts/MoreCourseCard';
+import HeaderImagePlayer from '../components/images/HeaderImagePlayer';
+import EnrollButton from '../components/button/EnrollButton';
+
 export default function HomeScreen() {
   const [activeTab, setActiveTab] = useState('coursecontent');
+  const includesData = [
+    { icon: 'videocam-outline', text: '2 hr 32 min video' },
+    { icon: 'download-outline', text: 'Downloadable resources' },
+    { icon: 'infinite-outline', text: 'Lifetime access' },
+    { icon: 'phone-portrait-outline', text: 'Access on mobile and TV' },
+    { icon: 'ribbon-outline', text: 'Certificate of completion' },
+  ];
 
   return (
+
     <View style={styles.container}>
-
       <ScrollView>
-        {/* Back Button */}
-        <TouchableOpacity
-          style={styles.backBtn}
-          onPress={() => console.log('Back Button is Pressed')}
-        >
-          <Ionicons name="arrow-back-sharp" size={24} color="white" />
-        </TouchableOpacity>
-
+        <BackButton
+          onPress={console.log('Button Pressed------123--')
+          }
+          color="white"
+          style={{
+            position: 'absolute',
+            top: 50,
+            left: 20,
+            zIndex: 999,
+            elevation: 10
+          }}
+        />
 
         {/* Header Image */}
         <View style={styles.header}>
-          <Image
-            // source={require('./assets/images/course.png')}
-            // source={require('../../assets/images/course.png')} --true
-            source={{ uri: 'https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2FSubhashit-prabodh-NP-Hindi%2009-12-2025.jpg&w=1920&q=100' }}
-            style={styles.headerImage}
+          <HeaderImagePlayer
+            imageUrl="https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2FSubhashit-prabodh-NP-Hindi%2009-12-2025.jpg&w=1920&q=100"
+            onPress={() => {
+              console.log('Play button clicked');
+            }}
           />
-          <TouchableOpacity style={styles.playButton}>
-            <MaterialCommunityIcons name="play-circle-outline" size={24} color="white" />
-          </TouchableOpacity>
         </View>
 
         {/* Course Info */}
-        <View style={styles.card}>
-          <Text style={styles.title}>सुभाषित प्रबोध - (Hindi)</Text>
-          <Text style={styles.subtitle}>
-            संस्कृत सुभाषितों का अद्वितीय संग्रह
-          </Text>
-
-          <View style={styles.ratingRow}>
-            <Text>⭐ 4.5 (2 reviews)</Text>
-            <Ionicons name="person" size={16} color="#555" style={{ marginLeft: 8 }} />
-            <Text style={{ margin: 3 }}>20</Text>
-          </View>
-
-          <View style={styles.ratingRow}>
-            <Text style={styles.price}>₹551</Text>
-            <Text style={styles.oldPrice}>₹850</Text>
-            <Text style={styles.discount}>35% off </Text>
-          </View>
-
-          {/* Coupon Section */}
-          <View style={styles.couponContainer}>
-            <Text style={styles.couponText}>Apply Coupon</Text>
-
-            <TouchableOpacity style={styles.applyBtn}>
-              <Text style={styles.applyText}>Apply</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Top Row: Cart + Wishlist */}
-          <View style={styles.topRow}>
-            <TouchableOpacity style={styles.cartBtnLarge}>
-              <Text style={styles.btnText}>Add to Cart</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.wishlistBtn}>
-              <Ionicons name="heart-outline" size={22} color="#ff4d4d" />
-            </TouchableOpacity>
-          </View>
-
-          {/* Bottom Row: Buy Now */}
-          <TouchableOpacity style={styles.buyBtnFull}>
-            <Text style={styles.btnText}>Buy Now</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.includes}>
-          <Text style={styles.sectionTitle}>This course includes:</Text>
-
-          <View style={styles.includeItem}>
-            <Ionicons name="videocam-outline" size={18} color="#fff" />
-            <Text style={styles.includeText}>2 hr 32 min video</Text>
-          </View>
-
-          <View style={styles.includeItem}>
-            <Ionicons name="download-outline" size={18} color="#fff" />
-            <Text style={styles.includeText}>Downloadable resources</Text>
-          </View>
-
-          <View style={styles.includeItem}>
-            <Ionicons name="infinite-outline" size={18} color="#fff" />
-            <Text style={styles.includeText}>Lifetime access</Text>
-          </View>
-
-          <View style={styles.includeItem}>
-            <Ionicons name="phone-portrait-outline" size={18} color="#fff" />
-            <Text style={styles.includeText}>Access on mobile and TV</Text>
-          </View>
-
-          <View style={styles.includeItem}>
-            <Ionicons name="ribbon-outline" size={18} color="#fff" />
-            <Text style={styles.includeText}>Certificate of completion</Text>
-          </View>
-        </View>
+        <CourseCard
+          title="सुभाषित प्रबोध - (Hindi)"
+          subtitle="संस्कृत सुभाषितों का अद्वितीय संग्रह"
+          rating={4.5}
+          reviews={2}
+          students={20}
+          price={551}
+          oldPrice={850}
+          discount={35}
+          onApply={() => console.log('Apply Coupon')}
+          onAddToCart={() => console.log('Add to Cart')}
+          onWishlist={() => console.log('Wishlist')}
+          onBuyNow={() => console.log('Buy Now')}
+        />
+        {/* Course Includes */}
+        <CourseIncludes items={includesData} />
 
         {/* Course Content */}
         <View style={styles.tabWrapper}>
@@ -264,57 +219,29 @@ export default function HomeScreen() {
 
           </View>)}
 
+        {/* More Course */}
         <View style={styles.mccontainer}>
+          <Text style={styles.heading}>More Courses</Text>
 
-          <Text style={styles.price}>More Courses</Text>
-
-
-          <View style={styles.mccard}>
-            <Image
-              source={{
-                uri: "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2Fhero%202%20(1)%2009-12-2025.jpg&w=1920&q=100",
-              }}
-              style={styles.mcimage}
-            />
-
-            <View style={styles.mccontent}>
-              <Text numberOfLines={1} style={styles.mctitle}>
-                Learn Sanskrit Language
-              </Text>
-
-              <View style={styles.metaRow}>
-                <Ionicons name="school-outline" size={16} color="#222" />
-                <Text style={styles.metaText}> 4581</Text>
-
-                <Ionicons
-                  name="time-outline"
-                  size={16}
-                  color="#222"
-                  style={{ marginLeft: 15 }}
-                />
-                <Text style={styles.metaText}> 24 Hours</Text>
-              </View>
-
-              <View style={styles.priceRow}>
-                <Text style={styles.price}>₹700</Text>
-                <Text style={styles.oldPrice}>₹2100</Text>
-              </View>
-            </View>
-          </View>
+          <MoreCourseCard
+            title="Learn Sanskrit Language"
+            students={4581}
+            duration="24 Hours"
+            price={700}
+            oldPrice={2100}
+            image="https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2Fhero%202%20(1)%2009-12-2025.jpg&w=1920&q=100"
+            onPress={() => console.log('Course Clicked')}
+          />
         </View>
 
       </ScrollView>
 
       {/* Bottom Enroll Button */}
-      <View style={styles.buttonContainer}>
-        <Text style={styles.buttonText}>
-          Enroll Course - ₹551 <Text style={styles.oldPrice850}>₹850</Text>
-        </Text>
-
-        <TouchableOpacity style={styles.Btn}>
-          <MaterialIcons name="navigate-next" size={20} color="#F9851C" />
-        </TouchableOpacity>
-      </View>
+      <EnrollButton
+        price={551}
+        oldPrice={850}
+        onPress={() => console.log('Enroll Clicked')}
+      />
 
     </View>
   );
@@ -325,47 +252,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f5f5f5'
   },
-  backBtn: {
-    position: 'absolute',
-    top: 50,
-    left: 15,
-    zIndex: 10,
-    padding: 10,
-    borderRadius: 20
-  },
   header: {
     position: 'relative'
-  },
-
-  headerImage: {
-    width: '100%',
-    height: 250
-  },
-
-  playButton: {
-    position: 'absolute',
-    top: 200,
-    right: 35,
-    alignSelf: 'flex-end',
-    backgroundColor: '#0a7c6b',
-    padding: 18,
-    borderRadius: 40,
-    zIndex: 20,
-    elevation: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 5 },
-  },
-
-  card: {
-    backgroundColor: '#fff',
-    marginHorizontal: 15,
-    marginTop: -21,
-    borderRadius: 10,
-    padding: 15,
-    elevation: 5,
-    zIndex: 5
   },
 
   title: {
@@ -377,12 +265,6 @@ const styles = StyleSheet.create({
     color: '#666',
     marginVertical: 5,
     fontSize: 16,
-  },
-
-  ratingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    // marginVertical: 5
   },
 
   price: {
@@ -403,78 +285,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginHorizontal: 5
   },
-
-  couponContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#f1f1f1',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    // marginVertical: 10,
-  },
-
-  couponText: {
-    fontSize: 14,
-    color: '#333',
-  },
-
-  applyBtn: {
-    backgroundColor: 'rgba(249, 133, 28, 0.2)',
-    paddingVertical: 6,
-    paddingHorizontal: 20,
-    borderRadius: 6,
-  },
-
-  applyText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  topRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-
-  cartBtnLarge: {
-    flex: 0.8,
-    backgroundColor: '#002B3B',
-    paddingVertical: 8,   // 👈 reduced from 12
-    borderRadius: 8,
-    alignItems: 'center',
-    marginRight: 8,
-  },
-
-  wishlistBtn: {
-    flex: 0.2,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    paddingVertical: 6,   // 👈 reduced
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-  },
-
-  buyBtnFull: {
-    marginTop: 8,
-    backgroundColor: '#ff7a00',
-    paddingVertical: 8,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-
-  btnText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 14,
-  },
   includes: {
     backgroundColor: '#002B3B',
     padding: 15,
@@ -482,17 +292,6 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 15,
     borderRadius: 10,
-  },
-
-  includeItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-
-  includeText: {
-    color: '#fff',
-    marginLeft: 8,
   },
 
   tabContainer: {
@@ -509,28 +308,22 @@ const styles = StyleSheet.create({
   },
 
   activeTab: {
-    backgroundColor: '#EDEDED',  // 👈 light pill
+    backgroundColor: '#EDEDED',  
   },
 
   tabText: {
-    color: '#fff',               // 👈 inactive text white
+    color: '#fff',               
     fontSize: 16,
     fontWeight: '600',
   },
 
   tabWrapper: {
-    backgroundColor: '#063B44',  // 👈 dark teal
+    backgroundColor: '#063B44', 
     paddingVertical: 10,
   },
 
   activeTabText: {
-    color: '#F9851C',            // 👈 orange active text
-  },
-
-  sectionTitle: {
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#fff',
+    color: '#F9851C',          
   },
 
   content: {
@@ -608,8 +401,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: '600',
   },
-
-  // ⭐ Rating
+  
   ratingContainer: {
     margin: 15,
     backgroundColor: '#F5F6F8',
@@ -681,21 +473,6 @@ const styles = StyleSheet.create({
     color: '#555',
   },
 
-  lesson: {
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 8,
-    marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-
-  bottomBtn: {
-    backgroundColor: '#ff7a00',
-    padding: 15,
-    alignItems: 'center'
-  },
-
   enrollButton: {
     backgroundColor: "#FF7A00",
     borderRadius: 40,
@@ -707,51 +484,15 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 
-  enrollText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "600",
-  },
-
-  strike: {
-    textDecorationLine: "line-through",
-    opacity: 0.8,
-  },
-
-  arrowCircle: {
-    backgroundColor: "#fff",
-    height: 40,
-    width: 40,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
   image: {
     width: 80,
     height: 80,
     borderRadius: 10,
   },
-
-  cardContent: {
-    flex: 1,
-    marginLeft: 12,
-  },
-
   row: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 8,
-  },
-
-  meta: {
-    fontSize: 14,
-    color: "#333",
-  },
-
-  priceRow: {
-    flexDirection: "row",
-    alignItems: "center",
   },
 
   mccontainer: {
@@ -759,67 +500,4 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     padding: 20,
   },
-  mccard: {
-    flexDirection: "row",
-    backgroundColor: "#EDEDED",
-    borderRadius: 25,
-    padding: 15,
-
-    // subtle glow/border feel
-    borderWidth: 1,
-    borderColor: "#D9D9FF",
-
-    shadowColor: "#AAB0FF",
-    shadowOpacity: 0.4,
-    shadowRadius: 10,
-    elevation: 4,
-  },
-  mcimage: {
-    width: 90,
-    height: 90,
-    borderRadius: 10,
-    resizeMode: "cover",
-  },
-  mccontent: {
-    flex: 1,
-    marginLeft: 12,
-    justifyContent: "center",
-  },
-  mctitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#000",
-    marginBottom: 6,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#F9851C',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 25,
-    marginVertical: 10,
-    marginHorizontal: 20,
-  },
-
-  buttonText: {
-    fontSize: 14,
-    color: 'white',
-  },
-
-  oldPrice850: {
-    textDecorationLine: 'line-through',
-    opacity: 0.8,
-  },
-
-  Btn: {
-    backgroundColor: 'white',
-    width: 36,
-    height: 36,
-    borderRadius: 18, // half of width/height = perfect circle
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
 });
