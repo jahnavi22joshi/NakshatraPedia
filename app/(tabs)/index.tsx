@@ -2,11 +2,11 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BackButton from '../components/button/BackButton';
+import EnrollButton from '../components/button/EnrollButton';
 import CourseCard from '../components/carts/CourseCard';
 import CourseIncludes from '../components/carts/CourseIncludes';
 import MoreCourseCard from '../components/carts/MoreCourseCard';
 import HeaderImagePlayer from '../components/images/HeaderImagePlayer';
-import EnrollButton from '../components/button/EnrollButton';
 
 export default function HomeScreen() {
   const [activeTab, setActiveTab] = useState('coursecontent');
@@ -17,6 +17,45 @@ export default function HomeScreen() {
     { icon: 'phone-portrait-outline', text: 'Access on mobile and TV' },
     { icon: 'ribbon-outline', text: 'Certificate of completion' },
   ];
+
+  const lessons = [
+    {
+      id: 1,
+      title: 'प्रस्तावना',
+      duration: '01 Lecture | 01 Mins',
+      subLessons: [
+        { title: 'Introduction', time: '01:44' },
+        // { title: 'Overview', time: '02:10' },
+        // { title: 'Meaning', time: '03:05' },
+      ],
+    },
+    {
+      id: 2,
+      title: 'सुभाषितम्',
+      duration: '05 Lecture | 06 Mins',
+      subLessons: [
+        { title: 'स्वादुकाव्यरसोन्मिश्रं वाक्यार्थमुपभुञ्जते।...', time: '01:04' },
+        { title: 'धर्मो यशो नयो दाक्ष्यं मनोहारि सुभाषितम्।...', time: '01:09' },
+        { title: 'सुभाषितमयं द्रव्यं सङ्ग्रही न भवेन्नरः।...', time: '01:04' },
+        { title: 'बोद्धारो मत्सरग्रस्ताः प्रभवः स्मय दूषिताः।...', time: '01:27' },
+        { title: 'द्राक्षा म्लानमुखी जाता शर्करा चाश्मताङ्गता।...', time: '01:16' },
+      ],
+    },
+    {
+      id: 3,
+      title: 'श्रीनाथजी दर्शनम्',
+      duration: '04 Mins',
+      subLessons: ['Morning Darshan', 'Rajbhog', 'Shayan'],
+    },
+  ];
+
+
+
+  const [expandedId, setExpandedId] = useState(null);
+
+  const toggleDropdown = (id) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
 
   return (
 
@@ -105,31 +144,78 @@ export default function HomeScreen() {
             }}>
               Course Content
             </Text>
-            {[1, 2, 3, 4, 5].map((item) => (
-              <View key={item} style={styles.lessonRow}>
 
-                {/* Left Circle Number */}
-                <View style={styles.circle}>
-                  <Text style={styles.circleText}>
-                    {item.toString().padStart(2, '0')}
-                  </Text>
-                </View>
+            <Text style={{
+              fontSize: 12,
+              fontWeight: '600',
+              color: '#111',
+              // top:5,
+              // bottom:5,
+              marginVertical: 5
+            }}>
+              28 sections | 124 lectures | 1 hr 32 min
+            </Text>
+            {lessons.map((item, index) => (
+              <View key={item.id}>
+                {/* Main Row */}
+                <TouchableOpacity
+                  style={styles.lessonRow}
+                  onPress={() => toggleDropdown(item.id)}
+                >
+                  {/* Left Circle */}
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>
+                      {(index + 1).toString().padStart(2, '0')}
+                    </Text>
+                  </View>
 
-                {/* Middle Content */}
-                <View style={styles.lessonInfo}>
-                  <Text style={styles.lessonTitle}>
-                    मङ्गलाचरणम् - Mangala...
-                  </Text>
-                  <Text style={styles.duration}>02 Mins</Text>
-                </View>
+                  {/* Middle Content */}
+                  <View style={styles.lessonInfo}>
+                    <Text style={styles.lessonTitle}>{item.title}</Text>
+                    <Text style={styles.duration}>{item.duration}</Text>
+                  </View>
 
-                {/* Right Play Button */}
-                <View style={styles.playBtn}>
-                  <Ionicons name="play" size={16} color="#fff" />
-                </View>
+                  {/* Right Down Arrow */}
+                  <View style={styles.playBtn}>
+                    <Ionicons
+                      name={
+                        expandedId === item.id
+                          ? 'chevron-up'
+                          : 'chevron-down'
+                      }
+                      size={18}
+                      color="#fff"
+                    />
+                  </View>
+                </TouchableOpacity>
 
+                {/* Dropdown List */}
+                {expandedId === item.id && (
+                  <View style={styles.dropdownBox}>
+                    {item.subLessons.map((sub, i) => (
+                      <TouchableOpacity key={i} style={styles.subLessonRow}>
+
+                        {/* Left Icon */}
+                        <Ionicons
+                          name="desktop-outline"
+                          size={20}
+                          color="#555"
+                          style={{ marginRight: 12 }}
+                        />
+
+                        {/* Title */}
+                        <Text style={styles.subLessonTitle}> {typeof sub === 'string' ? sub : sub.title}</Text>
+
+                        {/* Duration */}
+                        <Text style={styles.subLessonDuration}> {typeof sub === 'string' ? sub : sub.time}</Text>
+
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
               </View>
             ))}
+
           </View>
         )}
 
@@ -137,29 +223,100 @@ export default function HomeScreen() {
           <View style={styles.sectionContainer}>
             <Text style={styles.heading}>Requirements</Text>
 
-            <Text style={styles.descText}>
-              • Basic understanding of Sanskrit{"\n"}
-              • Interest in learning Subhashits{"\n"}
-              • मोबाइल या लैपटॉप की सुविधा
-            </Text>
-
-            <TouchableOpacity>
-              <Text style={styles.viewMore}>View More</Text>
-            </TouchableOpacity>
+            <View style={{ marginTop: 10, }}>
+              <View style={styles.pointRow}>
+                <Ionicons name="checkmark-circle-outline" size={18} color="#002B3B" />
+                <Text style={{
+                  fontSize: 14,
+                  color: '#555',
+                  lineHeight: 20,
+                  marginHorizontal: 5
+                }}>पूर्व ज्ञान की आवश्यकता नहीं है</Text>
+              </View>
+            </View>
           </View>)}
 
         {activeTab === 'description' && (
           <View style={styles.sectionContainer}>
             <Text style={styles.heading}>Description</Text>
 
-            <Text style={styles.descText}>
-              This course provides a unique collection of Sanskrit Subhashits
-              with Hindi explanation. It helps learners understand the deep
-              meaning of ancient wisdom in a simple and practical way.
-            </Text>
+            <Text style={{
+              fontSize: 14,
+              color: '#555',
+              lineHeight: 20,
+            }}>सुभाषित प्रबोध - यह एक ऐसा संग्रह है जिसमें सुभाषितों (सुविचारों) का ध्यान-पूर्वक चयन किया गया है।</Text>
 
-            <TouchableOpacity>
-              <Text style={styles.viewMore}>View More</Text>
+            <Text style={{
+              fontSize: 14,
+              color: '#555',
+              lineHeight: 20,
+              marginVertical: 5
+            }}>प्रत्येक सुभाषित को निम्न प्रकार से प्रस्तुत किया गया है :</Text>
+
+            <Text style={{
+              fontSize: 14,
+              color: '#555',
+              lineHeight: 20,
+            }}>- स्पष्ट उच्चारण</Text>
+
+            <Text style={{
+              fontSize: 14,
+              color: '#555',
+              lineHeight: 20,
+              marginVertical: 5
+            }}>और इसमें व्याकरणिक विश्लेषण भी है जैसे :</Text>
+
+            <Text style={{
+              fontSize: 14,
+              color: '#555',
+              lineHeight: 20,
+            }}>- सरल पदच्छेद</Text>
+
+            <Text style={{
+              fontSize: 14,
+              color: '#555',
+              lineHeight: 20,
+              marginVertical: 5
+            }}>- अनुवाद</Text>
+
+            <Text style={{
+              fontSize: 14,
+              color: '#555',
+              lineHeight: 20,
+            }}>- अन्वय - अर्थात् सुभाषित का गद्य रूप समझाया गया है।</Text>
+
+            <Text style={{
+              fontSize: 14,
+              color: '#555',
+              lineHeight: 20,
+              marginVertical: 5
+            }}>यह संग्रह संस्कृत भाषा सीखने वालों को संस्कृत शब्दावली (vocabulary) बढ़ाने में भी सहायता करेगा।</Text>
+
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                alignSelf: 'center',
+                marginTop: 12,
+              }}
+            >
+              <Text
+                style={{
+                  color: '#202244',
+                  fontSize: 15,
+                  fontWeight: '600',
+                }}
+              >
+                View More
+              </Text>
+
+              <Ionicons
+                name="chevron-down"
+                size={18}
+                color="#202244"
+                style={{ marginLeft: 4, marginTop: 2 }}
+              />
             </TouchableOpacity>
           </View>)}
 
@@ -167,8 +324,13 @@ export default function HomeScreen() {
           <View style={styles.ratingContainer}>
 
             {/* Top Rating */}
-            <Text style={styles.ratingValue}>4.5</Text>
-            <Text style={styles.reviewText}>2 Reviews</Text>
+            <View style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+              <Text style={styles.ratingValue}>4.5</Text>
+              <Text style={styles.reviewText}>2 Reviews</Text>
+            </View>
 
             <View style={{ flexDirection: 'row', marginVertical: 5 }}>
               {[1, 2, 3, 4, 5].map((i) => (
@@ -181,14 +343,37 @@ export default function HomeScreen() {
               ))}
             </View>
 
-            <Text style={styles.heading}>Course Rating</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#1F2A44',
+              marginVertical: 8
+            }}>Course Rating</Text>
 
             {/* Review 1 */}
-            <View style={styles.reviewBox}>
-              <Text style={styles.userName}>Dhairya Joshi</Text>
-              <Text style={styles.reviewMsg}>
-                "Really this collection is gems of wisdom..."
-              </Text>
+            <View style={styles.reviewRow}>
+              <View style={styles.avatar}>
+                <Text>DJ</Text>
+              </View>
+
+              <View style={{ flex: 1 }}>
+                <Text style={styles.userName}>Dhairya Joshi</Text>
+                <Text style={styles.reviewMsg}>
+                  "Really this collection is gems of wisdom..."
+                </Text>
+
+                <View style={styles.metaRow}>
+                  <Ionicons name="heart" size={16} color="red" />
+                  <Text style={styles.metaText}>21</Text>
+
+                  <Text style={styles.metaText}>January 21, 2025</Text>
+                </View>
+              </View>
+
+              <View style={styles.ratingBadge}>
+                <Ionicons name="star" size={14} color="#F9851C" />
+                <Text style={{ marginLeft: 4 }}>5.0</Text>
+              </View>
             </View>
 
             {/* Review 2 */}
@@ -308,22 +493,22 @@ const styles = StyleSheet.create({
   },
 
   activeTab: {
-    backgroundColor: '#EDEDED',  
+    backgroundColor: '#EDEDED',
   },
 
   tabText: {
-    color: '#fff',               
+    color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },
 
   tabWrapper: {
-    backgroundColor: '#063B44', 
+    backgroundColor: '#063B44',
     paddingVertical: 10,
   },
 
   activeTabText: {
-    color: '#F9851C',          
+    color: '#F9851C',
   },
 
   content: {
@@ -401,7 +586,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: '600',
   },
-  
+
   ratingContainer: {
     margin: 15,
     backgroundColor: '#F5F6F8',
@@ -415,8 +600,16 @@ const styles = StyleSheet.create({
     color: '#1F2A44',
   },
 
+  pointRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 10,
+  },
+
+
   reviewText: {
     color: '#777',
+    marginHorizontal: 40
   },
 
   reviewBox: {
@@ -437,7 +630,7 @@ const styles = StyleSheet.create({
   reviewRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 15,
+    marginTop: 4,
   },
 
   avatar: {
@@ -499,5 +692,29 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
     padding: 20,
+  },
+  dropdownBox: {
+    paddingLeft: 58,
+    paddingVertical: 8,
+  },
+
+  subLessonRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f1f1f1',
+  },
+
+  subLessonTitle: {
+    flex: 1,
+    fontSize: 14,
+    color: '#111',
+    fontWeight: '500',
+  },
+
+  subLessonDuration: {
+    fontSize: 12,
+    color: '#666',
   },
 });
