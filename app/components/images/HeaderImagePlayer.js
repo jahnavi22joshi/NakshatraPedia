@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 const HeaderImagePlayer = ({ imageUrl, onPress }) => {
   return (
@@ -9,14 +8,6 @@ const HeaderImagePlayer = ({ imageUrl, onPress }) => {
         source={{ uri: imageUrl }}
         style={styles.headerImage}
       />
-
-      <TouchableOpacity style={styles.playButton} onPress={onPress}>
-        <MaterialCommunityIcons
-          name="play-circle-outline"
-          size={40}
-          color="white"
-        />
-      </TouchableOpacity>
     </View>
   );
 };
@@ -37,6 +28,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: [{ translateX: -20 }, { translateY: -20 }],
+    transform: [{ translateX: 80 }, { translateY: 50 }],
   },
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const CourseIncludes = ({ items }) => {
@@ -9,7 +9,7 @@ const CourseIncludes = ({ items }) => {
 
       {items.map((item, index) => (
         <View key={index} style={styles.includeItem}>
-          <Ionicons name={item.icon} size={18} color="#fff" />
+          <Ionicons name={item.icon} size={14} color="#fff" />
           <Text style={styles.includeText}>{item.text}</Text>
         </View>
       ))}
@@ -22,17 +22,16 @@ export default CourseIncludes;
 const styles = StyleSheet.create({
   includes: {
     backgroundColor: '#002B3B',
-    padding: 15,
-    marginHorizontal: 15,
-    marginTop: 15,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
     marginBottom: 15,
-    borderRadius: 10,
   },
 
   sectionTitle: {
-    fontWeight: 'bold',
     marginBottom: 10,
     color: '#fff',
+    fontFamily: 'PoppinsMedium',
+    fontSize: 16
   },
 
   includeItem: {
@@ -44,5 +43,7 @@ const styles = StyleSheet.create({
   includeText: {
     color: '#fff',
     marginLeft: 8,
+    fontFamily: 'PoppinsMedium',
+    fontSize: 12
   },
 });
