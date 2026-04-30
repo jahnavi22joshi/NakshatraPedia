@@ -25,45 +25,46 @@ export default EnrollButton;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#F9851C',
+        backgroundColor: "rgba(249, 133, 28, 0.78)", 
+        // backgroundColor: "#F9851C",
         borderRadius: 40,
         paddingVertical: 16,
         paddingHorizontal: 20,
         marginHorizontal: 16,
         marginVertical: 10,
 
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
 
-        // shadow for depth
-        shadowColor: '#000',
-        shadowOpacity: 0.25,
+        // shadow
+        shadowColor: "#000",
+        shadowOpacity: 0.18,
         shadowOffset: { width: 0, height: 6 },
         shadowRadius: 10,
         elevation: 8,
     },
-    // 🔽 Make text smaller
+
     text: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: '700',
+        color: "#fff",
+        fontSize: 14,
+        fontFamily: 'JostSemiBold'
     },
 
     oldPrice: {
-        textDecorationLine: 'line-through',
+        textDecorationLine: "line-through",
         opacity: 0.9,
         fontSize: 12,
+        fontFamily: 'JostSemiBold'
     },
 
-    // 🔽 Make white circle smaller
     iconCircle: {
-        position: 'absolute',
+        position: "absolute",
         right: 10,
         width: 44,
         height: 44,
         borderRadius: 22,
-        backgroundColor: '#EDEDED',
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: "rgba(255,255,255,0.85)", // transparent white
+        justifyContent: "center",
+        alignItems: "center",
     },
 });

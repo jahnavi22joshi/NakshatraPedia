@@ -63,7 +63,7 @@ const CourseCard = ({
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.wishlistBtn} onPress={onWishlist}>
-          <Ionicons name="heart" size={22} color={'#002B3B'}/>
+          <Ionicons name="heart" size={22} color={'#002B3B'} />
         </TouchableOpacity>
       </View>
 
@@ -107,22 +107,24 @@ const styles = StyleSheet.create({
   },
 
   price: {
-    fontSize: 20,
+    fontSize: 25,
     marginVertical: 5,
     fontFamily: 'PoppinsMedium',
   },
 
   oldPrice: {
-    top: 2,
+    top: 3,
     marginStart: 4,
     color: '#888',
     textDecorationLine: 'line-through',
-    fontFamily: 'PoppinsMedium',
+    fontFamily: 'PoppinsRegular',
+    fontSize: 14,
   },
 
   discount: {
+    top: 3,
     fontSize: 16,
-    marginHorizontal: 4,
+    marginHorizontal: 5,
     fontFamily: 'PoppinsMedium',
   },
 

@@ -42,65 +42,79 @@ export default MoreCourseCard;
 const styles = StyleSheet.create({
     mccard: {
         flexDirection: "row",
-        backgroundColor: "#FFFFFF", // cleaner card look
-        borderRadius: 18,
-        padding: 12,
-        marginBottom: 14,
+        alignItems: "center",
+        backgroundColor: "#FFFFFF",
+        borderRadius: 22,
 
-        borderWidth: 1,
-        borderColor: "#002B3B", // your accent color
+        marginBottom: 80,
 
-        // elevation (Android)
+        paddingVertical: 14,
+        paddingHorizontal: 16,
+        marginVertical: 10,
+
+        borderWidth: 0, // no border color
+
+        // proper visible shadow
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.12,
+        shadowRadius: 8,
         elevation: 5,
     },
 
     mcimage: {
-        width: 80, // 🔽 slightly smaller
-        height: 80,
-        borderRadius: 10,
+        width: 92,
+        height: 62,
+        borderRadius: 8,
+        resizeMode: "cover",
     },
 
     mccontent: {
         flex: 1,
-        marginLeft: 10,
+        marginLeft: 14,
         justifyContent: "center",
     },
 
     mctitle: {
-        fontSize: 15, // 🔽 slightly tighter
-        fontWeight: "700",
-        color: "#000",
-        marginBottom: 4,
+        fontSize: 15,
+        color: "#111",
+        fontFamily: "PlayfairBold",
+        marginBottom: 6,
     },
 
     metaRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 2, // 🔽 reduced spacing
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 6,
     },
 
     metaText: {
         marginLeft: 4,
-        marginRight: 8,
+        marginRight: 10,
         fontSize: 12,
-        color: '#555',
+        color: "#111",
+        fontFamily: "PoppinsRegular",
     },
 
     priceRow: {
         flexDirection: "row",
         alignItems: "center",
-        marginTop: 4, // 🔽 reduced spacing
     },
 
     price: {
-        fontSize: 16, // 🔽 smaller but cleaner
-        fontWeight: 'bold',
+        fontSize: 16,
+        color: "#111",
+        fontFamily: "PoppinsSemiBold",
         marginRight: 6,
     },
 
     oldPrice: {
-        fontSize: 12,
-        color: '#888',
-        textDecorationLine: 'line-through',
+        fontSize: 11,
+        color: "#666",
+        textDecorationLine: "line-through",
+        fontFamily: "PoppinsRegular",
     },
 });

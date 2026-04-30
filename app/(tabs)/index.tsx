@@ -47,8 +47,6 @@ export default function HomeScreen() {
     },
   ];
 
-
-
   const [expandedId, setExpandedId] = useState(null);
 
   const toggleDropdown = (id) => {
@@ -58,47 +56,30 @@ export default function HomeScreen() {
   return (
 
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView >
         <BackButton
           onPress={console.log('Button Pressed------123--')
           }
           color="white"
-          style={{
-            position: 'absolute',
-            top: 50,
-            left: 20,
-            zIndex: 999,
-            elevation: 10
-          }}
+          style={styles.backbutton}
         />
 
         {/* Header + Floating Button + Card */}
-        <View style={{ position: 'relative' }}>
+        <View style={styles.headerimage}>
 
           {/* Header Image */}
-          <View style={styles.header}>
+          <View style={styles.headerimage}>
             <Image
               source={{
                 uri: "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2FSubhashit-prabodh-NP-Hindi%2009-12-2025.jpg&w=1920&q=100"
               }}
-              style={{
-                width: '100%',
-                height: 200,
-              }}
+              style={styles.headerimagesize}
             />
           </View>
 
           {/* Floating Button */}
           <TouchableOpacity
-            style={{
-              position: 'absolute',
-              right: 30,
-              bottom: -15,
-              width: 63,
-              height: 63,
-              zIndex: 999,
-              elevation: 10,
-            }}
+            style={styles.playbutton}
             onPress={() => console.log('Floating Button Pressed')}
           >
             <Image
@@ -108,11 +89,7 @@ export default function HomeScreen() {
               //     : require("../assets/icons/chevron-down.png")
               // }
               source={require('../assets/icons/play.png')}
-              style={{
-                width: 63,
-                height: 63,
-                resizeMode: "contain",
-              }}
+              style={styles.playbuttonimage}
             />
           </TouchableOpacity>
 
@@ -137,69 +114,22 @@ export default function HomeScreen() {
         </View>
 
         {/* Kit Card */}
-        <TouchableOpacity style={{
-          flexDirection: "row",
-          backgroundColor: "#fff",
-          borderRadius: 22,
-          paddingVertical: 17,
-          paddingHorizontal: 15,
-          marginHorizontal: 16,
-          marginVertical: 15,
-          alignItems: "center",
-
-          // Shadow for iOS
-          shadowColor: "#000",
-          shadowOpacity: 0.08,
-          shadowOffset: { width: 0, height: 4 },
-          shadowRadius: 8,
-
-          // Shadow for Android
-          elevation: 4,
-        }} activeOpacity={0.9}>
+        <TouchableOpacity style={styles.kitcard} activeOpacity={0.9}>
           {/* Left Image */}
           <Image
             source={{
               uri: "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2FSubhashit-prabodh-NP-Hindi%2009-12-2025.jpg&w=1920&q=100",
             }}
-            style={{
-              width: 99,
-              height: 56,
-              resizeMode: "cover",
-            }}
+            style={styles.kitcartimage}
           />
 
           {/* Right Content */}
-          <View style={{
-            flex: 1,
-            marginLeft: 9,
-            justifyContent: "space-between",
-          }}>
-            <Text style={{
-              fontSize: 14,
-              fontWeight: "500",
-              color: "#1D1D3C",
-              marginBottom: 15,
-              fontFamily: 'HalantMedium'
-            }}>Ultimate Sanskrit Learning Kit</Text>
+          <View style={styles.kittextcont}>
+            <Text style={styles.kittext}>Ultimate Sanskrit Learning Kit</Text>
 
-            <View style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}>
-              <Text style={{
-                fontSize: 14,
-                color: "#0E3A52",
-                marginRight: 9,
-                fontFamily: 'PoppinsMedium',
-
-              }}>₹899</Text>
-              <Text style={{
-                fontSize: 14,
-                color: "#444",
-                textDecorationLine: "line-through",
-                fontFamily: 'PoppinsMedium',
-
-              }}>₹3650</Text>
+            <View style={styles.kipriceview}>
+              <Text style={styles.kitprice}>₹899</Text>
+              <Text style={styles.kitdiscprice}>₹3650</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -242,20 +172,11 @@ export default function HomeScreen() {
 
         {activeTab === 'coursecontent' && (
           <View style={styles.content}>
-            <Text style={{
-              fontSize: 24,
-              color: '#111',
-              fontFamily: 'PlayfairSemiBold'
-            }}>
+            <Text style={styles.cctext}>
               Course Content
             </Text>
 
-            <Text style={{
-              fontSize: 12,
-              fontFamily: 'InterMedium',
-              color: '#111',
-              marginVertical: 5
-            }}>
+            <Text style={styles.cccontent}>
               28 sections | 124 lectures | 1 hr 32 min
             </Text>
             {lessons.map((item, index) => (
@@ -324,13 +245,7 @@ export default function HomeScreen() {
             <View style={{ marginTop: 10, }}>
               <View style={styles.pointRow}>
                 <Ionicons name="checkmark-circle-outline" size={18} color="#002B3B" />
-                <Text style={{
-                  fontSize: 16,
-                  color: '#555',
-                  lineHeight: 20,
-                  marginHorizontal: 5,
-                  fontFamily: 'PoppinsRegular'
-                }}>पूर्व ज्ञान की आवश्यकता नहीं है</Text>
+                <Text style={styles.requirementstext}>पूर्व ज्ञान की आवश्यकता नहीं है</Text>
               </View>
             </View>
           </View>)}
@@ -339,81 +254,27 @@ export default function HomeScreen() {
           <View style={styles.sectionContainer}>
             <Text style={styles.heading}>Description</Text>
 
-            <Text style={{
-              fontSize: 14,
-              color: '#555',
-              lineHeight: 20,
-              fontFamily: 'PoppinsRegular'
-            }}>सुभाषित प्रबोध - यह एक ऐसा संग्रह है जिसमें सुभाषितों (सुविचारों) का ध्यान-पूर्वक चयन किया गया है।</Text>
+            <Text style={styles.desctext}>सुभाषित प्रबोध - यह एक ऐसा संग्रह है जिसमें सुभाषितों (सुविचारों) का ध्यान-पूर्वक चयन किया गया है।</Text>
 
-            <Text style={{
-              fontSize: 14,
-              color: '#555',
-              lineHeight: 20,
-              marginVertical: 5,
-              fontFamily: 'PoppinsRegular'
-            }}>प्रत्येक सुभाषित को निम्न प्रकार से प्रस्तुत किया गया है :</Text>
+            <Text style={styles.desctext}>प्रत्येक सुभाषित को निम्न प्रकार से प्रस्तुत किया गया है :</Text>
 
-            <Text style={{
-              fontSize: 14,
-              color: '#555',
-              lineHeight: 20,
-              fontFamily: 'PoppinsRegular'
-            }}>- स्पष्ट उच्चारण</Text>
+            <Text style={styles.desctext}>- स्पष्ट उच्चारण</Text>
 
-            <Text style={{
-              fontSize: 14,
-              color: '#555',
-              lineHeight: 20,
-              marginVertical: 5,
-              fontFamily: 'PoppinsRegular'
-            }}>और इसमें व्याकरणिक विश्लेषण भी है जैसे :</Text>
+            <Text style={styles.desctext}>और इसमें व्याकरणिक विश्लेषण भी है जैसे :</Text>
 
-            <Text style={{
-              fontSize: 14,
-              color: '#555',
-              lineHeight: 20,
-              fontFamily: 'PoppinsRegular'
-            }}>- सरल पदच्छेद</Text>
+            <Text style={styles.desctext}>- सरल पदच्छेद</Text>
 
-            <Text style={{
-              fontSize: 14,
-              color: '#555',
-              lineHeight: 20,
-              marginVertical: 5,
-              fontFamily: 'PoppinsRegular'
-            }}>- अनुवाद</Text>
+            <Text style={styles.desctext}>- अनुवाद</Text>
 
-            <Text style={{
-              fontSize: 14,
-              color: '#555',
-              lineHeight: 20,
-            }}>- अन्वय - अर्थात् सुभाषित का गद्य रूप समझाया गया है।</Text>
+            <Text style={styles.desctext}>- अन्वय - अर्थात् सुभाषित का गद्य रूप समझाया गया है।</Text>
 
-            <Text style={{
-              fontSize: 14,
-              color: '#555',
-              lineHeight: 20,
-              marginVertical: 5,
-              fontFamily: 'PoppinsRegular'
-            }}>यह संग्रह संस्कृत भाषा सीखने वालों को संस्कृत शब्दावली (vocabulary) बढ़ाने में भी सहायता करेगा।</Text>
+            <Text style={styles.desctext}>यह संग्रह संस्कृत भाषा सीखने वालों को संस्कृत शब्दावली (vocabulary) बढ़ाने में भी सहायता करेगा।</Text>
 
             <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                alignSelf: 'center',
-                marginTop: 12,
-              }}
+              style={styles.viewmorecon}
             >
               <Text
-                style={{
-                  color: '#202244',
-                  fontSize: 15,
-                  fontFamily: 'PoppinsRegular',
-                  fontWeight: '600',
-                }}
+                style={styles.viewmoretext}
               >
                 View More
               </Text>
@@ -436,7 +297,7 @@ export default function HomeScreen() {
               alignItems: 'center',
             }}>
               <Text style={styles.ratingValue}>4.5</Text>
-              <Text style={[styles.reviewText, { marginTop: 15, marginStart: 50 }]}>2 Reviews</Text>
+              <Text style={styles.reviewText}>2 Reviews</Text>
             </View>
 
             <View style={{ flexDirection: 'row', marginVertical: 5 }}>
@@ -450,13 +311,7 @@ export default function HomeScreen() {
               ))}
             </View>
 
-            <Text style={{
-              fontSize: 20,
-              color: '#1F2A44',
-              marginVertical: 8,
-              fontFamily: 'PlayfairSemiBold'
-
-            }}>Course Rating</Text>
+            <Text style={styles.crtext}>Course Rating</Text>
 
             {/* Review 1 */}
             <View style={styles.reviewRow}>
@@ -479,37 +334,44 @@ export default function HomeScreen() {
               </View>
 
               <View style={styles.ratingBadge}>
-                <Ionicons name="star" size={14} color="#F9851C" />
+                <Ionicons name="star" size={14} color="#F9851C" style={{ top: 2 }} />
                 <Text style={{ marginLeft: 4 }}>5.0</Text>
               </View>
             </View>
 
             {/* Review 2 */}
-            <View style={styles.reviewRow}>
-              <View style={styles.avatar}>
-                <Text>DT</Text>
-              </View>
-
-              <View style={{ flex: 1 }}>
-                <Text style={styles.userName}>Divya T</Text>
-                <Text style={styles.reviewMsg}>
-                  "Very nicely explained."
-                </Text>
-
-                <View style={styles.metaRow}>
-                  <Ionicons name="heart" size={16} color="red" />
-                  <Text style={styles.metaText}>211</Text>
-
-                  <Text style={styles.metaText}>November 10, 2025</Text>
+            <View
+              style={styles.reviewspace}
+            >
+              <View style={styles.reviewRow}>
+                <View style={styles.avatar}>
+                  <Text>DT</Text>
                 </View>
-              </View>
 
-              <View style={styles.ratingBadge}>
-                <Ionicons name="star" size={14} color="#F9851C" />
-                <Text style={{ marginLeft: 4 }}>5.0</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.userName}>Divya T</Text>
+                  <Text style={styles.reviewMsg}>
+                    "Very nicely explained."
+                  </Text>
+
+                  <View style={styles.metaRow}>
+                    <Ionicons name="heart" size={16} color="red" />
+                    <Text style={styles.metaText}>211</Text>
+
+                    <Text style={styles.metaText}>November 10, 2025</Text>
+                  </View>
+                </View>
+
+                <View style={styles.ratingBadge}>
+                  <Ionicons name="star" size={14} color="#F9851C" style={{ top: 2 }} />
+                  <Text style={{ marginLeft: 4 }}>5.0</Text>
+                </View>
               </View>
             </View>
 
+            <View
+              style={styles.reviewspace}
+            ></View>
           </View>)}
 
         {/* More Course */}
@@ -526,16 +388,16 @@ export default function HomeScreen() {
             onPress={() => console.log('Course Clicked')}
           />
         </View>
-
       </ScrollView>
 
       {/* Bottom Enroll Button */}
-      <EnrollButton
-        price={551}
-        oldPrice={850}
-        onPress={() => console.log('Enroll Clicked')}
-      />
-
+      <View style={styles.enrollbtn }>
+        <EnrollButton
+          price={551}
+          oldPrice={850}
+          onPress={() => console.log('Enroll Clicked')}
+        />
+      </View>
     </View>
   );
 }
@@ -545,10 +407,146 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f5f5f5'
   },
-  header: {
+  backbutton: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    zIndex: 999,
+    elevation: 10
+  },
+  headerimage: {
     position: 'relative'
   },
+  headerimagesize: {
+    width: '100%',
+    height: 200,
+  },
 
+  playbutton: {
+    position: 'absolute',
+    right: 30,
+    bottom: -15,
+    width: 63,
+    height: 63,
+    zIndex: 999,
+    elevation: 10,
+  },
+  playbuttonimage: {
+    width: 63,
+    height: 63,
+    resizeMode: "contain",
+  },
+  kitcard: {
+    flexDirection: "row",
+    backgroundColor: "#fff",
+    borderRadius: 22,
+    paddingVertical: 17,
+    paddingHorizontal: 15,
+    marginHorizontal: 16,
+    marginVertical: 15,
+    alignItems: "center",
+
+    // Shadow for iOS
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
+
+    // Shadow for Android
+    elevation: 4,
+  },
+  kitcartimage: {
+    width: 99,
+    height: 56,
+    resizeMode: "cover",
+  },
+  kittextcont: {
+    flex: 1,
+    marginLeft: 9,
+    justifyContent: "space-between",
+  },
+  kittext: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#1D1D3C",
+    marginBottom: 15,
+    fontFamily: 'HalantMedium'
+  },
+  kipriceview: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  kitprice: {
+    fontSize: 14,
+    color: "#0E3A52",
+    marginRight: 9,
+    fontFamily: 'PoppinsMedium',
+  },
+  kitdiscprice: {
+    fontSize: 14,
+    color: "#444",
+    textDecorationLine: "line-through",
+    fontFamily: 'PoppinsMedium',
+  },
+  cctext: {
+    fontSize: 24,
+    color: '#111',
+    fontFamily: 'PlayfairSemiBold'
+  },
+  cccontent: {
+    fontSize: 12,
+    fontFamily: 'InterMedium',
+    color: '#111',
+    marginVertical: 5
+  },
+  requirementstext: {
+    fontSize: 16,
+    color: '#555',
+    lineHeight: 20,
+    marginHorizontal: 5,
+    fontFamily: 'PoppinsRegular'
+  },
+  desctext: {
+    fontSize: 14,
+    color: '#555',
+    lineHeight: 20,
+    fontFamily: 'PoppinsRegular'
+  },
+  viewmorecon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: 12,
+  },
+  viewmoretext: {
+    color: '#202244',
+    fontSize: 15,
+    fontFamily: 'PoppinsRegular',
+    fontWeight: '600',
+  },
+  crtext: {
+    fontSize: 20,
+    color: '#1F2A44',
+    marginVertical: 8,
+    fontFamily: 'PlayfairSemiBold'
+  },
+  reviewspace: {
+    borderTopWidth: 1,
+    borderTopColor: '#E5E7EB', // light gray line
+    marginTop: 16,
+    paddingTop: 16,
+  },
+  enrollbtn: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 16,
+    paddingBottom: 10,
+    backgroundColor: 'transparent',
+    zIndex: 999,
+  },
   title: {
     fontSize: 20,
     fontWeight: 'bold'
@@ -624,6 +622,8 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 15,
     paddingTop: 10,
+    backgroundColor: '#FFFFFF',
+
   },
 
   lessonRow: {
@@ -631,7 +631,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee', // 👈 divider
+    borderBottomColor: '#eee',
   },
 
   circle: {
@@ -677,13 +677,15 @@ const styles = StyleSheet.create({
   },
 
   sectionContainer: {
-    margin: 15,
+    paddingHorizontal: 15,
+    paddingTop: 10,
+    backgroundColor: '#FFFFFF',
   },
 
   heading: {
     fontSize: 24,
     color: '#1F2A44',
-    marginBottom: 10,
+    // marginBottom: 10,
     fontFamily: 'PlayfairSemiBold'
   },
 
@@ -700,10 +702,9 @@ const styles = StyleSheet.create({
   },
 
   ratingContainer: {
-    marginHorizontal: 15,
-    backgroundColor: '#F5F6F8',
-    padding: 15,
-    borderRadius: 12,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 15,
+    paddingTop: 10,
   },
 
   ratingValue: {
@@ -718,9 +719,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-
   reviewText: {
-    color: '#777',
+    marginTop: 10,
+    marginStart: 50,
+    fontFamily: 'PlayfairBold',
+    fontSize: 18,
     marginHorizontal: 40
   },
 
@@ -758,11 +761,13 @@ const styles = StyleSheet.create({
   ratingBadge: {
     flexDirection: 'row',
     // alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#4A7BD0',
+    borderWidth: 2.5,
+    borderColor: '#4D81E5',
+    backgroundColor: '#E8F1FF',
     borderRadius: 20,
     paddingHorizontal: 8,
     paddingVertical: 3,
+    height: 30
   },
 
   metaRow: {
@@ -801,9 +806,9 @@ const styles = StyleSheet.create({
   },
 
   mccontainer: {
-    flex: 1,
     backgroundColor: "#ffffff",
-    padding: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
   dropdownBox: {
     paddingLeft: 58,
