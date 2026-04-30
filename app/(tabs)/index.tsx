@@ -1,12 +1,13 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BackButton from '../components/button/BackButton';
 import EnrollButton from '../components/button/EnrollButton';
 import CourseCard from '../components/carts/CourseCard';
 import CourseIncludes from '../components/carts/CourseIncludes';
+import KitCard from '../components/carts/KitCard';
 import MoreCourseCard from '../components/carts/MoreCourseCard';
-
+import CourseTabs from '../components/tab/CourseTabsSection';
+import useAppFonts from "../config/useAppFonts";
 
 export default function HomeScreen() {
   const [activeTab, setActiveTab] = useState('coursecontent');
@@ -53,33 +54,37 @@ export default function HomeScreen() {
     setExpandedId(expandedId === id ? null : id);
   };
 
+  const [fontsLoaded] = useAppFonts();
+
+  if (!fontsLoaded) return null;
+
   return (
 
     <View style={styles.container}>
       <ScrollView >
         <BackButton
-          onPress={console.log('Button Pressed------123--')
+          onPress={() => console.log('Button Pressed------123--')
           }
           color="white"
-          style={styles.backbutton}
+          style={styles.backButton}
         />
 
         {/* Header + Floating Button + Card */}
-        <View style={styles.headerimage}>
+        <View style={styles.headerImage}>
 
           {/* Header Image */}
-          <View style={styles.headerimage}>
+          <View style={styles.headerImage}>
             <Image
               source={{
                 uri: "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2FSubhashit-prabodh-NP-Hindi%2009-12-2025.jpg&w=1920&q=100"
               }}
-              style={styles.headerimagesize}
+              style={styles.headerImageSize}
             />
           </View>
 
           {/* Floating Button */}
           <TouchableOpacity
-            style={styles.playbutton}
+            style={styles.playButton}
             onPress={() => console.log('Floating Button Pressed')}
           >
             <Image
@@ -89,7 +94,7 @@ export default function HomeScreen() {
               //     : require("../assets/icons/chevron-down.png")
               // }
               source={require('../assets/icons/play.png')}
-              style={styles.playbuttonimage}
+              style={styles.playButtonImage}
             />
           </TouchableOpacity>
 
@@ -114,265 +119,27 @@ export default function HomeScreen() {
         </View>
 
         {/* Kit Card */}
-        <TouchableOpacity style={styles.kitcard} activeOpacity={0.9}>
-          {/* Left Image */}
-          <Image
-            source={{
-              uri: "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2FSubhashit-prabodh-NP-Hindi%2009-12-2025.jpg&w=1920&q=100",
-            }}
-            style={styles.kitcartimage}
-          />
-
-          {/* Right Content */}
-          <View style={styles.kittextcont}>
-            <Text style={styles.kittext}>Ultimate Sanskrit Learning Kit</Text>
-
-            <View style={styles.kipriceview}>
-              <Text style={styles.kitprice}>₹899</Text>
-              <Text style={styles.kitdiscprice}>₹3650</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
+        <KitCard
+          styles={styles}
+          title="Ultimate Sanskrit Learning Kit"
+          image="https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2FSubhashit-prabodh-NP-Hindi%2009-12-2025.jpg&w=1920&q=100"
+          price="₹899"
+          discountPrice="₹3650"
+          onPress={() => console.log("Clicked")}
+        />
 
         {/* Course Includes */}
         <CourseIncludes items={includesData} />
 
         {/* Course Content */}
-        <View style={styles.tabWrapper}>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.tabContainer}
-          >
-            {['Course Content', 'Requirements', 'Description', 'Rating'].map((tab, index) => {
-              const key = tab.toLowerCase().replace(' ', '');
-
-              return (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => setActiveTab(key)}
-                  style={[
-                    styles.tab,
-                    activeTab === key && styles.activeTab
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.tabText,
-                      activeTab === key && styles.activeTabText
-                    ]}
-                  >
-                    {tab}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        </View>
-
-        {activeTab === 'coursecontent' && (
-          <View style={styles.content}>
-            <Text style={styles.cctext}>
-              Course Content
-            </Text>
-
-            <Text style={styles.cccontent}>
-              28 sections | 124 lectures | 1 hr 32 min
-            </Text>
-            {lessons.map((item, index) => (
-              <View key={item.id}>
-                {/* Main Row */}
-                <TouchableOpacity
-                  style={styles.lessonRow}
-                  onPress={() => toggleDropdown(item.id)}
-                >
-                  {/* Left Circle */}
-                  <View style={styles.circle}>
-                    <Text style={styles.circleText}>
-                      {(index + 1).toString().padStart(2, '0')}
-                    </Text>
-                  </View>
-
-                  {/* Middle Content */}
-                  <View style={styles.lessonInfo}>
-                    <Text style={styles.lessonTitle}>{item.title}</Text>
-                    <Text style={styles.duration}>{item.duration}</Text>
-                  </View>
-
-                  {/* Right Down Arrow */}
-                  <Image
-                    source={require('../assets/icons/course-play.png')}
-                    width={18}
-                    height={18}
-                  />
-                </TouchableOpacity>
-
-
-                {/* Dropdown List */}
-                {expandedId === item.id && (
-                  <View style={styles.dropdownBox}>
-                    {item.subLessons.map((sub, i) => (
-                      <TouchableOpacity key={i} style={styles.subLessonRow}>
-
-                        {/* Left Icon */}
-                        <Ionicons
-                          name="desktop-outline"
-                          size={20}
-                          color="#555"
-                          style={{ marginRight: 12 }}
-                        />
-
-                        {/* Title */}
-                        <Text style={styles.subLessonTitle}> {typeof sub === 'string' ? sub : sub.title}</Text>
-
-                        {/* Duration */}
-                        <Text style={styles.subLessonDuration}> {typeof sub === 'string' ? sub : sub.time}</Text>
-
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                )}
-              </View>
-            ))}
-
-          </View>
-        )}
-
-        {activeTab === 'requirements' && (
-          <View style={styles.sectionContainer}>
-            <Text style={styles.heading}>Requirements</Text>
-
-            <View style={{ marginTop: 10, }}>
-              <View style={styles.pointRow}>
-                <Ionicons name="checkmark-circle-outline" size={18} color="#002B3B" />
-                <Text style={styles.requirementstext}>पूर्व ज्ञान की आवश्यकता नहीं है</Text>
-              </View>
-            </View>
-          </View>)}
-
-        {activeTab === 'description' && (
-          <View style={styles.sectionContainer}>
-            <Text style={styles.heading}>Description</Text>
-
-            <Text style={styles.desctext}>सुभाषित प्रबोध - यह एक ऐसा संग्रह है जिसमें सुभाषितों (सुविचारों) का ध्यान-पूर्वक चयन किया गया है।</Text>
-
-            <Text style={styles.desctext}>प्रत्येक सुभाषित को निम्न प्रकार से प्रस्तुत किया गया है :</Text>
-
-            <Text style={styles.desctext}>- स्पष्ट उच्चारण</Text>
-
-            <Text style={styles.desctext}>और इसमें व्याकरणिक विश्लेषण भी है जैसे :</Text>
-
-            <Text style={styles.desctext}>- सरल पदच्छेद</Text>
-
-            <Text style={styles.desctext}>- अनुवाद</Text>
-
-            <Text style={styles.desctext}>- अन्वय - अर्थात् सुभाषित का गद्य रूप समझाया गया है।</Text>
-
-            <Text style={styles.desctext}>यह संग्रह संस्कृत भाषा सीखने वालों को संस्कृत शब्दावली (vocabulary) बढ़ाने में भी सहायता करेगा।</Text>
-
-            <TouchableOpacity
-              style={styles.viewmorecon}
-            >
-              <Text
-                style={styles.viewmoretext}
-              >
-                View More
-              </Text>
-
-              <Ionicons
-                name="chevron-down"
-                size={18}
-                color="#202244"
-                style={{ marginLeft: 4, marginTop: 2 }}
-              />
-            </TouchableOpacity>
-          </View>)}
-
-        {activeTab === 'rating' && (
-          <View style={styles.ratingContainer}>
-
-            {/* Top Rating */}
-            <View style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-              <Text style={styles.ratingValue}>4.5</Text>
-              <Text style={styles.reviewText}>2 Reviews</Text>
-            </View>
-
-            <View style={{ flexDirection: 'row', marginVertical: 5 }}>
-              {[1, 2, 3, 4, 5].map((i) => (
-                <Ionicons
-                  key={i}
-                  name={i <= 4 ? "star" : "star-half"}
-                  size={18}
-                  color="#F9851C"
-                />
-              ))}
-            </View>
-
-            <Text style={styles.crtext}>Course Rating</Text>
-
-            {/* Review 1 */}
-            <View style={styles.reviewRow}>
-              <View style={styles.avatar}>
-                <Text>DJ</Text>
-              </View>
-
-              <View style={{ flex: 1 }}>
-                <Text style={styles.userName}>Dhairya Joshi</Text>
-                <Text style={styles.reviewMsg}>
-                  "Really this collection is gems of wisdom..."
-                </Text>
-
-                <View style={styles.metaRow}>
-                  <Ionicons name="heart" size={16} color="red" />
-                  <Text style={styles.metaText}>21</Text>
-
-                  <Text style={styles.metaText}>January 21, 2025</Text>
-                </View>
-              </View>
-
-              <View style={styles.ratingBadge}>
-                <Ionicons name="star" size={14} color="#F9851C" style={{ top: 2 }} />
-                <Text style={{ marginLeft: 4 }}>5.0</Text>
-              </View>
-            </View>
-
-            {/* Review 2 */}
-            <View
-              style={styles.reviewspace}
-            >
-              <View style={styles.reviewRow}>
-                <View style={styles.avatar}>
-                  <Text>DT</Text>
-                </View>
-
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.userName}>Divya T</Text>
-                  <Text style={styles.reviewMsg}>
-                    "Very nicely explained."
-                  </Text>
-
-                  <View style={styles.metaRow}>
-                    <Ionicons name="heart" size={16} color="red" />
-                    <Text style={styles.metaText}>211</Text>
-
-                    <Text style={styles.metaText}>November 10, 2025</Text>
-                  </View>
-                </View>
-
-                <View style={styles.ratingBadge}>
-                  <Ionicons name="star" size={14} color="#F9851C" style={{ top: 2 }} />
-                  <Text style={{ marginLeft: 4 }}>5.0</Text>
-                </View>
-              </View>
-            </View>
-
-            <View
-              style={styles.reviewspace}
-            ></View>
-          </View>)}
+        <CourseTabs
+          styles={styles}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          lessons={lessons}
+          expandedId={expandedId}
+          toggleDropdown={toggleDropdown}
+        />
 
         {/* More Course */}
         <View style={styles.mccontainer}>
@@ -391,7 +158,7 @@ export default function HomeScreen() {
       </ScrollView>
 
       {/* Bottom Enroll Button */}
-      <View style={styles.enrollbtn }>
+      <View style={styles.enrollBtn}>
         <EnrollButton
           price={551}
           oldPrice={850}
@@ -405,45 +172,45 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5'
+    backgroundColor: '#FFFFFF'
   },
-  backbutton: {
+  backButton: {
     position: 'absolute',
     top: 50,
     left: 20,
     zIndex: 999,
     elevation: 10
   },
-  headerimage: {
+  headerImage: {
     position: 'relative'
   },
-  headerimagesize: {
+  headerImageSize: {
     width: '100%',
     height: 200,
   },
 
-  playbutton: {
+  playButton: {
     position: 'absolute',
     right: 30,
-    bottom: -15,
+    bottom: -14,
     width: 63,
     height: 63,
     zIndex: 999,
     elevation: 10,
   },
-  playbuttonimage: {
+  playButtonImage: {
     width: 63,
     height: 63,
     resizeMode: "contain",
   },
-  kitcard: {
+  kitMainCard: {
     flexDirection: "row",
     backgroundColor: "#fff",
-    borderRadius: 22,
-    paddingVertical: 17,
-    paddingHorizontal: 15,
+    borderRadius: 10,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
     marginHorizontal: 16,
-    marginVertical: 15,
+    marginVertical: 14,
     alignItems: "center",
 
     // Shadow for iOS
@@ -455,97 +222,110 @@ const styles = StyleSheet.create({
     // Shadow for Android
     elevation: 4,
   },
-  kitcartimage: {
+  kitCartImage: {
     width: 99,
     height: 56,
     resizeMode: "cover",
   },
-  kittextcont: {
-    flex: 1,
-    marginLeft: 9,
-    justifyContent: "space-between",
+  kitTextContainer: {
+    marginLeft: 8,
   },
-  kittext: {
+  kitText: {
+    fontFamily: 'HalantMedium',
     fontSize: 14,
-    fontWeight: "500",
-    color: "#1D1D3C",
-    marginBottom: 15,
-    fontFamily: 'HalantMedium'
+    marginBottom: 12,
   },
-  kipriceview: {
+  kitPriceContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
-  kitprice: {
+  kitPrice: {
+    fontFamily: 'PoppinsRegular',
     fontSize: 14,
     color: "#0E3A52",
-    marginRight: 9,
-    fontFamily: 'PoppinsMedium',
+    marginRight: 8,
   },
-  kitdiscprice: {
+  kitDiscount: {
     fontSize: 14,
     color: "#444",
     textDecorationLine: "line-through",
-    fontFamily: 'PoppinsMedium',
+    fontFamily: 'PoppinsRegular',
   },
-  cctext: {
+  courseContentText: {
     fontSize: 24,
     color: '#111',
-    fontFamily: 'PlayfairSemiBold'
+    fontFamily: 'PlayfairSemiBold',
+    marginTop: 10,
+    marginHorizontal: 16
   },
-  cccontent: {
+  courseContentInfoText: {
     fontSize: 12,
     fontFamily: 'InterMedium',
     color: '#111',
-    marginVertical: 5
+    marginTop: 4,
+    marginHorizontal: 16
   },
-  requirementstext: {
-    fontSize: 16,
-    color: '#555',
-    lineHeight: 20,
-    marginHorizontal: 5,
+
+  sessionRowInfoText: {
+    fontSize: 14,
+    fontFamily: 'JostSemiBold',
+    color: '#111',
+    marginTop: 4,
+  },
+  sessionRowInfoNumberText: {
+    fontSize: 12,
+    fontFamily: 'JostSemiBold',
+    color: '#111',
+    marginTop: 4,
+  },
+  requirementsText: {
+    fontSize: 14,
+    marginHorizontal: 10,
     fontFamily: 'PoppinsRegular'
   },
-  desctext: {
+  descText: {
     fontSize: 14,
     color: '#555',
     lineHeight: 20,
-    fontFamily: 'PoppinsRegular'
+    fontFamily: 'PoppinsRegular',
+    marginVertical: 6
   },
-  viewmorecon: {
+  viewMoreContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
     marginTop: 12,
   },
-  viewmoretext: {
+  viewMoreText: {
     color: '#202244',
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: 'PoppinsRegular',
     fontWeight: '600',
   },
-  crtext: {
+  downIcon: {
+    marginLeft: 4, marginTop: 2
+  },
+  topRatingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  rateIcon: { flexDirection: 'row', marginVertical: 4 },
+  courseRatingText: {
     fontSize: 20,
     color: '#1F2A44',
     marginVertical: 8,
-    fontFamily: 'PlayfairSemiBold'
+    fontFamily: 'PlayfairSemiBold',
+    marginBottom: 14
   },
-  reviewspace: {
+  reviewSpace: {
     borderTopWidth: 1,
-    borderTopColor: '#E5E7EB', // light gray line
+    borderTopColor: '#E5E7EB',
     marginTop: 16,
     paddingTop: 16,
   },
-  enrollbtn: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingHorizontal: 16,
-    paddingBottom: 10,
-    backgroundColor: 'transparent',
-    zIndex: 999,
+  enrollBtn: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
   },
   title: {
     fontSize: 20,
@@ -554,14 +334,14 @@ const styles = StyleSheet.create({
 
   subtitle: {
     color: '#666',
-    marginVertical: 5,
+    marginVertical: 4,
     fontSize: 16,
   },
 
   price: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginVertical: 5
+    marginVertical: 4
   },
 
   oldPrice: {
@@ -574,14 +354,14 @@ const styles = StyleSheet.create({
   discount: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginHorizontal: 5
+    marginHorizontal: 4
   },
   includes: {
     backgroundColor: '#002B3B',
-    padding: 15,
-    marginHorizontal: 15,
-    marginTop: 15,
-    marginBottom: 15,
+    padding: 14,
+    marginHorizontal: 14,
+    marginTop: 14,
+    marginBottom: 14,
     borderRadius: 10,
   },
 
@@ -594,7 +374,7 @@ const styles = StyleSheet.create({
   tab: {
     paddingVertical: 10,
     paddingHorizontal: 18,
-    borderRadius: 20,
+    borderRadius: 10,
     marginRight: 10,
   },
 
@@ -604,25 +384,33 @@ const styles = StyleSheet.create({
 
   tabText: {
     color: '#fff',
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: 'JostSemiBold'
   },
 
   tabWrapper: {
-    backgroundColor: '#063B44',
+    backgroundColor: '#002B3B',
     paddingVertical: 10,
   },
 
   activeTabText: {
     color: '#F9851C',
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: 'JostSemiBold'
   },
 
   content: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     paddingTop: 10,
     backgroundColor: '#FFFFFF',
+    marginVertical: 16,
+    marginHorizontal: 16,
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.12,
+    shadowRadius: 6,
+    elevation: 5,
 
   },
 
@@ -684,17 +472,9 @@ const styles = StyleSheet.create({
 
   heading: {
     fontSize: 24,
-    color: '#1F2A44',
     // marginBottom: 10,
     fontFamily: 'PlayfairSemiBold'
   },
-
-  descText: {
-    fontSize: 14,
-    color: '#555',
-    lineHeight: 20,
-  },
-
   viewMore: {
     color: '#0a7c6b',
     marginTop: 10,
@@ -703,14 +483,14 @@ const styles = StyleSheet.create({
 
   ratingContainer: {
     backgroundColor: '#FFFFFF',
-    paddingHorizontal: 15,
+    paddingHorizontal: 14,
     paddingTop: 10,
   },
 
   ratingValue: {
     fontSize: 36,
-    color: '#1F2A44',
-    fontFamily: 'PlayfairSemiBold'
+    fontFamily: 'PlayfairSemiBold',
+    marginStart: 18,
   },
 
   pointRow: {
@@ -733,14 +513,13 @@ const styles = StyleSheet.create({
 
   userName: {
     fontSize: 16,
-    color: '#1F2A44',
-    fontFamily: 'Jost_600SemiBold'
+    fontFamily: 'Jost_600SemiBold',
+    fontWeight: 'bold'
   },
 
   reviewMsg: {
-    color: '#555',
     marginTop: 4,
-    fontFamily: 'Jost_600SemiBold'
+    fontFamily: 'Halant_500Medium'
   },
 
   reviewRow: {
@@ -776,11 +555,11 @@ const styles = StyleSheet.create({
     marginTop: 26,
   },
 
-  metaText: {
-    marginLeft: 5,
+  rateCount: {
+    marginLeft: 4,
     marginRight: 10,
     fontSize: 12,
-    color: '#555',
+    fontWeight: 'bold'
   },
 
   enrollButton: {
@@ -834,4 +613,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666',
   },
+  partitanLine: {
+    height: 1,
+    backgroundColor: '#E0E0E0',
+    marginVertical: 12,
+  }
 });

@@ -1,8 +1,30 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
-const CourseCard = ({
+interface CourseCardProps {
+  title: string;
+  subtitle: string;
+  rating: number | string;
+  reviews: number | string;
+  students: number | string;
+  price: number | string;
+  oldPrice: number | string;
+  discount: number | string;
+  onApply: () => void;
+  onAddToCart: () => void;
+  onWishlist: () => void;
+  onBuyNow: () => void;
+}
+
+const CourseCard: React.FC<CourseCardProps> = ({
   title,
   subtitle,
   rating,
@@ -16,59 +38,95 @@ const CourseCard = ({
   onWishlist,
   onBuyNow,
 }) => {
-  const [couponCode, setCouponCode] = useState("");
+  const [couponCode, setCouponCode] = useState<string>('');
 
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{title}</Text>
 
-      <Text style={styles.subtitle}>
-        {subtitle}
-      </Text>
+      <Text style={styles.subtitle}>{subtitle}</Text>
 
       <View style={styles.ratingRow}>
-        <Text styles={{ fontFamily: 'InterMedium', fontSize: 12 }}>{rating} ⭐⭐⭐⭐⭐ ({reviews} reviews)</Text>
-        <Ionicons name="person" size={16} color="#555" style={{ marginLeft: 8 }} />
-        <Text style={{ margin: 3, fontFamily: 'InterMedium', }}>{students}</Text>
+        <Text style={styles.ratingText}>
+          {rating}{' '}
+          <Ionicons name="star" size={14} color="#F9851C" />
+          <Ionicons name="star" size={14} color="#F9851C" />
+          <Ionicons name="star" size={14} color="#F9851C" />
+          <Ionicons name="star" size={14} color="#F9851C" />
+          <Ionicons name="star" size={14} color="#F9851C" /> ({reviews} reviews)
+        </Text>
+
+        <Ionicons
+          name="person"
+          size={16}
+          style={{ marginLeft: 6 }}
+        />
+
+        <Text style={styles.studentText}>{students}</Text>
       </View>
 
-      <View style={styles.ratingRow}>
+      <View style={styles.updateTextContainer}>
+        <MaterialIcons name="update" size={16} color="black" />
+
+        <Text style={styles.studentText}>Last updated 12 January 2026</Text>
+
+
+      </View>
+
+
+      <View style={styles.priceRow}>
         <Text style={styles.price}>₹{price}</Text>
         <Text style={styles.oldPrice}>₹{oldPrice}</Text>
-        <Text style={styles.discount}>{discount}% off </Text>
+        <Text style={styles.discount}>{discount}% off</Text>
       </View>
 
       {/* Coupon Section */}
       <View style={styles.couponContainer}>
         <TextInput
           style={styles.couponText}
-          placeholder="Apply Coupon"
+          placeholder="Enter Coupon"
           placeholderTextColor="#999"
           value={couponCode}
           onChangeText={setCouponCode}
         />
 
-        <TouchableOpacity style={[
-          styles.applyBtn,
-          couponCode.trim() !== "" && { backgroundColor: "orange" },
-        ]} onPress={onApply}>
+        <TouchableOpacity
+          style={[
+            styles.applyBtn,
+            couponCode.trim() !== '' && { backgroundColor: 'orange' },
+          ]}
+          onPress={onApply}
+        >
           <Text style={styles.applyText}>Apply</Text>
         </TouchableOpacity>
       </View>
 
       {/* Top Row */}
       <View style={styles.topRow}>
-        <TouchableOpacity style={styles.cartBtnLarge} onPress={onAddToCart}>
+        <TouchableOpacity
+          style={styles.cartBtnLarge}
+          onPress={onAddToCart}
+        >
           <Text style={styles.btnText}>Add to Cart</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.wishlistBtn} onPress={onWishlist}>
-          <Ionicons name="heart" size={22} color={'#002B3B'} />
+        <TouchableOpacity
+          style={styles.wishlistBtn}
+          onPress={onWishlist}
+        >
+          <Ionicons
+            name="heart"
+            size={22}
+            color="#002B3B"
+          />
         </TouchableOpacity>
       </View>
 
       {/* Bottom Row */}
-      <TouchableOpacity style={styles.buyBtnFull} onPress={onBuyNow}>
+      <TouchableOpacity
+        style={styles.buyBtnFull}
+        onPress={onBuyNow}
+      >
         <Text style={styles.btnText}>Buy Now</Text>
       </TouchableOpacity>
     </View>
@@ -85,25 +143,46 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     elevation: 5,
-    zIndex: 5
+    zIndex: 5,
   },
 
   title: {
-    fontSize: 20,
+    fontSize: 26,
     fontFamily: 'InterMedium',
-    fontWeight: 'bold'
+    marginBottom: 4
   },
 
   subtitle: {
-    color: '#666',
-    marginVertical: 5,
+    marginVertical: 2,
     fontFamily: 'InterMedium',
     fontSize: 16,
+
   },
 
   ratingRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 2,
+  },
+
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  ratingText: {
+    fontFamily: 'InterMedium',
+    fontSize: 12,
+  },
+
+  studentText: {
+    marginVertical: 2,
+    marginHorizontal: 2,
+    fontFamily: 'InterMedium',
+    fontSize: 12,
+  },
+  updateTextContainer: {
+    flexDirection: 'row', alignItems: 'center', marginVertical: 2,
   },
 
   price: {
@@ -142,6 +221,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
     fontFamily: 'PoppinsMedium',
+    flex: 1,
   },
 
   applyBtn: {
@@ -149,7 +229,6 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 20,
     borderRadius: 6,
-
   },
 
   applyText: {

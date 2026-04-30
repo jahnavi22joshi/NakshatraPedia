@@ -1,8 +1,21 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {
+  TouchableOpacity,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-const BackButton = ({
+interface BackButtonProps {
+  onPress: () => void;
+  size?: number;
+  color?: string;
+  style?: StyleProp<ViewStyle>;
+  iconName?: React.ComponentProps<typeof Ionicons>['name'];
+}
+
+const BackButton: React.FC<BackButtonProps> = ({
   onPress,
   size = 24,
   color = '#fff',
@@ -13,7 +26,7 @@ const BackButton = ({
     <TouchableOpacity
       style={[styles.button, style]}
       onPress={onPress}
-      // activeOpacity={0.7}
+      activeOpacity={0.7}
     >
       <Ionicons name={iconName} size={size} color={color} />
     </TouchableOpacity>

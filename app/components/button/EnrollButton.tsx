@@ -1,8 +1,8 @@
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const EnrollButton = ({ price = 551, oldPrice = 850, onPress }) => {
+const EnrollButton = ({ price = 551, oldPrice = 850, onPress = () => {} }) => {
     return (
         <TouchableOpacity style={styles.container} activeOpacity={0.9} onPress={onPress}>
 

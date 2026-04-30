@@ -1,15 +1,28 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-const CourseIncludes = ({ items }) => {
+interface IncludeItem {
+  icon: React.ComponentProps<typeof Ionicons>['name'];
+  text: string;
+}
+
+interface CourseIncludesProps {
+  items: IncludeItem[];
+}
+
+const CourseIncludes: React.FC<CourseIncludesProps> = ({ items }) => {
   return (
     <View style={styles.includes}>
       <Text style={styles.sectionTitle}>This course includes:</Text>
 
       {items.map((item, index) => (
         <View key={index} style={styles.includeItem}>
-          <Ionicons name={item.icon} size={14} color="#fff" />
+          <Ionicons
+            name={item.icon}
+            size={14}
+            color="#fff"
+          />
           <Text style={styles.includeText}>{item.text}</Text>
         </View>
       ))}
@@ -28,22 +41,22 @@ const styles = StyleSheet.create({
   },
 
   sectionTitle: {
-    marginBottom: 10,
+    marginBottom: 6,
     color: '#fff',
     fontFamily: 'PoppinsMedium',
-    fontSize: 16
+    fontSize: 16,
   },
 
   includeItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 4,
   },
 
   includeText: {
     color: '#fff',
     marginLeft: 8,
     fontFamily: 'PoppinsMedium',
-    fontSize: 12
+    fontSize: 12,
   },
 });

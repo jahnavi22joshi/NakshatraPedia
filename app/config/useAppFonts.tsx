@@ -19,15 +19,17 @@ import {
   PlayfairDisplay_700Bold,
 } from "@expo-google-fonts/playfair-display";
 
-import{
+// Halant
+import {
   Halant_500Medium,
 } from "@expo-google-fonts/halant";
 
+// Jost
 import {
   Jost_600SemiBold,
 } from "@expo-google-fonts/jost";
 
-export default function useAppFonts() {
+const useAppFonts = (): [boolean, Error | null] => {
   return useFonts({
     // Inter
     InterRegular: Inter_400Regular,
@@ -36,14 +38,18 @@ export default function useAppFonts() {
 
     // Poppins
     PoppinsRegular: Poppins_400Regular,
-    PoppinsMedium: Poppins_900Medium,
+    PoppinsMedium: Poppins_500Medium,
 
     // Playfair
     PlayfairSemiBold: PlayfairDisplay_600SemiBold,
     PlayfairBold: PlayfairDisplay_700Bold,
 
+    // Halant
     HalantMedium: Halant_500Medium,
 
-    JostSemiBold: Jost_600SemiBold
+    // Jost
+    JostSemiBold: Jost_600SemiBold,
   });
-}
+};
+
+export default useAppFonts;
