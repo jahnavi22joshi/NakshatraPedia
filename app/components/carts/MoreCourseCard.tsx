@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
 
   moreCourseTitle: {
-    fontSize: 15,
+    fontSize: 14,
     color: '#111',
     fontFamily: 'PlayfairBold',
     marginBottom: 2,
