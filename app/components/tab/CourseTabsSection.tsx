@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import CustomButton from '../button/CustomButton';
 
 type SubLesson =
     | string
@@ -55,23 +56,19 @@ const CourseTabs: React.FC<Props> = ({
                             const key = tab.toLowerCase().replace(' ', '');
 
                             return (
-                                <TouchableOpacity
+                                <CustomButton
                                     key={index}
+                                    title={tab}
                                     onPress={() => setActiveTab(key)}
                                     style={[
                                         styles.tab,
                                         activeTab === key && styles.activeTab,
                                     ]}
-                                >
-                                    <Text
-                                        style={[
-                                            styles.tabText,
-                                            activeTab === key && styles.activeTabText,
-                                        ]}
-                                    >
-                                        {tab}
-                                    </Text>
-                                </TouchableOpacity>
+                                    textStyle={[
+                                        styles.tabText,
+                                        activeTab === key && styles.activeTabText,
+                                    ]}
+                                />
                             );
                         }
                     )}
@@ -93,11 +90,7 @@ const CourseTabs: React.FC<Props> = ({
 
                     <View style={styles.content}>
                         <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                            }}
+                            style={styles.sectionTitle}
                         >
                             <Text style={styles.sessionRowInfoText}>
                                 Section 01 - Introduction - प्रस्तावना
@@ -132,7 +125,7 @@ const CourseTabs: React.FC<Props> = ({
 
                                     <Image
                                         source={require('../../assets/icons/course-play.png')}
-                                        style={{ width: 18, height: 18 }}
+                                        style={styles.playIconImage}
                                     />
                                 </TouchableOpacity>
 
@@ -172,11 +165,7 @@ const CourseTabs: React.FC<Props> = ({
                     </View>
 
                     <View
-                        style={{
-                            height: 1,
-                            backgroundColor: '#E0E0E0',
-                            marginVertical: 12,
-                        }}
+                        style={styles.divider}
                     />
                 </>
             )}
@@ -190,7 +179,7 @@ const CourseTabs: React.FC<Props> = ({
                         <View style={styles.pointRow}>
                             <Image
                                 source={require('../../assets/icons/req-icon.png')}
-                                style={{ width: 18, height: 18 }}
+                                style={styles.reqIcon}
                             />
 
                             <Text style={styles.requirementsText}>
@@ -199,11 +188,7 @@ const CourseTabs: React.FC<Props> = ({
                         </View>
 
                         <View
-                            style={{
-                                height: 1,
-                                backgroundColor: '#E0E0E0',
-                                marginVertical: 12,
-                            }}
+                            style={styles.divider}
                         />
                     </View>
                 </View>

@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
   },
 
   desc: {
-    fontSize: 11,
+    fontSize: 12,
     color: "#7B7B8D",
     marginTop: 4,
     lineHeight: 16,

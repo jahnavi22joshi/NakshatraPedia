@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
   includes: {
     backgroundColor: '#002B3B',
     paddingHorizontal: 20,
-    paddingVertical: 15,
-    marginBottom: 15,
+    paddingVertical: 14,
+    marginBottom: 14,
   },
 
   sectionTitle: {

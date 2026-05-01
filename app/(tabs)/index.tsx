@@ -61,7 +61,7 @@ export default function HomeScreen() {
   return (
 
     <View style={styles.container}>
-      <ScrollView >
+      <ScrollView>
         <BackButton
           onPress={() => console.log('Button Pressed------123--')
           }
@@ -142,7 +142,7 @@ export default function HomeScreen() {
         />
 
         {/* More Course */}
-        <View style={styles.mccontainer}>
+        <View style={styles.moreCourseContainer}>
           <Text style={styles.heading}>More Courses</Text>
 
           <MoreCourseCard
@@ -158,7 +158,7 @@ export default function HomeScreen() {
       </ScrollView>
 
       {/* Bottom Enroll Button */}
-      <View style={styles.enrollBtn}>
+      <View style={styles.enrollButton}>
         <EnrollButton
           price={551}
           oldPrice={850}
@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
 
   tabText: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: 'JostSemiBold'
   },
 
@@ -411,7 +411,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.12,
     shadowRadius: 6,
     elevation: 5,
+  },
 
+  sectionTitle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 
   lessonRow: {
@@ -440,8 +445,17 @@ const styles = StyleSheet.create({
   lessonInfo: {
     flex: 1,
     marginLeft: 12,
-    marginTop: -10
   },
+
+  playIconImage: { width: 18, height: 18, marginRight: 10 },
+
+  divider: {
+    height: 1,
+    backgroundColor: '#E0E0E0',
+    marginVertical: 12,
+  },
+
+  reqIcon:{ width: 18, height: 18 },
 
   lessonTitle: {
     fontSize: 18,
@@ -465,14 +479,13 @@ const styles = StyleSheet.create({
   },
 
   sectionContainer: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 14,
     paddingTop: 10,
     backgroundColor: '#FFFFFF',
   },
 
   heading: {
     fontSize: 24,
-    // marginBottom: 10,
     fontFamily: 'PlayfairSemiBold'
   },
   viewMore: {
@@ -562,17 +575,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
 
-  enrollButton: {
-    backgroundColor: "#FF7A00",
-    borderRadius: 40,
-    paddingVertical: 18,
-    paddingHorizontal: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    elevation: 5,
-  },
-
   image: {
     width: 80,
     height: 80,
@@ -584,7 +586,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
 
-  mccontainer: {
+  moreCourseContainer: {
     backgroundColor: "#ffffff",
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -617,5 +619,13 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#E0E0E0',
     marginVertical: 12,
+  },
+  enrollButton: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(255,255,255,0.85)',
+    paddingVertical: 8,
   }
 });

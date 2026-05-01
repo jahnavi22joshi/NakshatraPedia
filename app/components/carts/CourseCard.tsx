@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import CustomButton from '../button/CustomButton';
 
 interface CourseCardProps {
   title: string;
@@ -44,16 +45,16 @@ const CourseCard: React.FC<CourseCardProps> = ({
     <View style={styles.card}>
       <Text style={styles.title}>{title}</Text>
 
-      <Text style={styles.subtitle}>{subtitle}</Text>
+      <Text style={styles.subTitle}>{subtitle}</Text>
 
       <View style={styles.ratingRow}>
         <Text style={styles.ratingText}>
           {rating}{' '}
-          <Ionicons name="star" size={14} color="#F9851C" />
-          <Ionicons name="star" size={14} color="#F9851C" />
-          <Ionicons name="star" size={14} color="#F9851C" />
-          <Ionicons name="star" size={14} color="#F9851C" />
-          <Ionicons name="star" size={14} color="#F9851C" /> ({reviews} reviews)
+          <Ionicons name="star" size={14} color="#FCCB40" />
+          <Ionicons name="star" size={14} color="#FCCB40" />
+          <Ionicons name="star" size={14} color="#FCCB40" />
+          <Ionicons name="star" size={14} color="#FCCB40" />
+          <Ionicons name="star" size={14} color="#FCCB40" /> ({reviews} reviews)
         </Text>
 
         <Ionicons
@@ -67,10 +68,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
       <View style={styles.updateTextContainer}>
         <MaterialIcons name="update" size={16} color="black" />
-
         <Text style={styles.studentText}>Last updated 12 January 2026</Text>
-
-
       </View>
 
 
@@ -103,12 +101,12 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
       {/* Top Row */}
       <View style={styles.topRow}>
-        <TouchableOpacity
-          style={styles.cartBtnLarge}
+        <CustomButton
+          title="Add to Cart"
+          variant="blue"
           onPress={onAddToCart}
-        >
-          <Text style={styles.btnText}>Add to Cart</Text>
-        </TouchableOpacity>
+          style={styles.customButton}
+        />
 
         <TouchableOpacity
           style={styles.wishlistBtn}
@@ -116,19 +114,19 @@ const CourseCard: React.FC<CourseCardProps> = ({
         >
           <Ionicons
             name="heart"
-            size={22}
+            size={26}
             color="#002B3B"
           />
         </TouchableOpacity>
       </View>
 
       {/* Bottom Row */}
-      <TouchableOpacity
-        style={styles.buyBtnFull}
+      <CustomButton
+        title="Buy Now"
+        variant="orange"
         onPress={onBuyNow}
-      >
-        <Text style={styles.btnText}>Buy Now</Text>
-      </TouchableOpacity>
+        style={{ marginTop: 8 }}
+      />
     </View>
   );
 };
@@ -152,7 +150,7 @@ const styles = StyleSheet.create({
     marginBottom: 4
   },
 
-  subtitle: {
+  subTitle: {
     marginVertical: 2,
     fontFamily: 'InterMedium',
     fontSize: 16,
@@ -186,7 +184,7 @@ const styles = StyleSheet.create({
   },
 
   price: {
-    fontSize: 25,
+    fontSize: 24,
     marginVertical: 5,
     fontFamily: 'PoppinsMedium',
   },
@@ -243,8 +241,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
+  customButton: { flex: 0.8, marginRight: 8 },
+
   cartBtnLarge: {
-    flex: 0.8,
+    flex: 0.7,
     backgroundColor: '#002B3B',
     paddingVertical: 8,
     borderRadius: 8,
@@ -253,10 +253,11 @@ const styles = StyleSheet.create({
   },
 
   wishlistBtn: {
-    flex: 0.2,
+    flex: 0.4,
     borderWidth: 1,
     borderColor: '#ddd',
-    paddingVertical: 6,
+    paddingVertical: 8,
+    
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',

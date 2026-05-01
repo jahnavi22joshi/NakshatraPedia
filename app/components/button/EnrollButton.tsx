@@ -25,13 +25,12 @@ export default EnrollButton;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "rgba(249, 133, 28, 0.78)", 
-        // backgroundColor: "#F9851C",
+        backgroundColor: "#F9851C",
         borderRadius: 40,
         paddingVertical: 16,
         paddingHorizontal: 20,
         marginHorizontal: 16,
-        marginVertical: 10,
+        marginVertical: 6,
 
         justifyContent: "center",
         alignItems: "center",
@@ -63,7 +62,7 @@ const styles = StyleSheet.create({
         width: 44,
         height: 44,
         borderRadius: 22,
-        backgroundColor: "rgba(255,255,255,0.85)", // transparent white
+        backgroundColor: "rgba(255,255,255,0.85)",
         justifyContent: "center",
         alignItems: "center",
     },

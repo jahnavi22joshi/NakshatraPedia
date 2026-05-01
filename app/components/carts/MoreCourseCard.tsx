@@ -29,19 +29,19 @@ const MoreCourseCard: React.FC<MoreCourseCardProps> = ({
 }) => {
   return (
     <TouchableOpacity
-      style={styles.mccard}
+      style={styles.moreCourseCard}
       onPress={onPress}
       activeOpacity={0.8}
     >
       <Image
         source={{ uri: image }}
-        style={styles.mcimage}
+        style={styles.moreCourseImage}
       />
 
-      <View style={styles.mccontent}>
+      <View style={styles.moreCourseContent}>
         <Text
           numberOfLines={1}
-          style={styles.mctitle}
+          style={styles.moreCourseTitle}
         >
           {title}
         </Text>
@@ -56,9 +56,8 @@ const MoreCourseCard: React.FC<MoreCourseCardProps> = ({
 
           <Ionicons
             name="time-outline"
-            size={14}
+            size={13}
             color="#333"
-            style={{ marginLeft: 10 }}
           />
           <Text style={styles.metaText}>{duration}</Text>
         </View>
@@ -75,7 +74,7 @@ const MoreCourseCard: React.FC<MoreCourseCardProps> = ({
 export default MoreCourseCard;
 
 const styles = StyleSheet.create({
-  mccard: {
+  moreCourseCard: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
@@ -95,30 +94,29 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 
-  mcimage: {
+  moreCourseImage: {
     width: 92,
     height: 62,
     borderRadius: 8,
     resizeMode: 'cover',
   },
 
-  mccontent: {
+  moreCourseContent: {
     flex: 1,
     marginLeft: 14,
     justifyContent: 'center',
   },
 
-  mctitle: {
+  moreCourseTitle: {
     fontSize: 15,
     color: '#111',
     fontFamily: 'PlayfairBold',
-    marginBottom: 6,
+    marginBottom: 2,
   },
 
   metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 6,
   },
 
   metaText: {
@@ -142,9 +140,10 @@ const styles = StyleSheet.create({
   },
 
   oldPrice: {
-    fontSize: 11,
+    fontSize: 10,
     color: '#666',
     textDecorationLine: 'line-through',
     fontFamily: 'PoppinsRegular',
+    marginTop: 6
   },
 });

@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
   },
 
   metaText: {
-    fontSize: 11,
+    fontSize: 12,
     color: "#555",
     marginLeft: 4,
     fontWeight: "600",
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
   },
 
   rating: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: "700",
     color: "#F7931E",
     marginLeft: 4,
