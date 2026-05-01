@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import {
   Image,
@@ -8,55 +9,69 @@ import {
   Text,
   View,
 } from "react-native";
-import { Ionicons, Feather } from "@expo/vector-icons";
+import useAppFonts from "../config/useAppFonts";
 
 export default function ListCourses1() {
   const courses = [
     {
       id: 1,
-      title: "Subhaashita Prabodha",
-      desc: "Learn timeless Sanskrit wisdom through classic verses.",
-      students: "21",
-      duration: "2H",
+      title: "पाणिनीय शिक्षा - Hindi",
+      desc: "महर्षि पाणिनि का शिक्षा ग्रन्थ - सटीक संस्कृत भाषा और वैदिक उच्चारण के लिए मूलभूत मार्गदर्शिका",
+      createdBy: "Nakshatrapedia",
+      duration: "13 hr 19 min",
+      lecture: "48 Lectures",
+      level: "All Levels",
       rating: "4.5",
-      price: "₹499",
+      oldPrice: "₹1000",
+      price: "₹500",
       image:
         "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2Fcourse%2FPaniniya-siksha-course-image-hindi-01%2015-01-2026.jpg&w=1920&q=100",
     },
     {
       id: 2,
-      title: "Learn Sanskrit Basics",
-      desc: "Master grammar, pronunciation and daily vocabulary.",
-      students: "15",
-      duration: "3H",
-      rating: "4.7",
-      price: "₹399",
+      title: "सुभाषित प्रबोध - (Hindi)",
+      desc: "संस्कृत सुभाषितों का अद्वितीय संग्रह",
+      createdBy: "Nakshatrapedia",
+      duration: "2 hr 32 min",
+      lecture: "124 Lectures",
+      level: "All Levels",
+      oldPrice: "₹850",
+      price: "₹551",
       image:
-        "https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=800",
+        "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2FSubhashit-prabodh-NP-Hindi%2009-12-2025.jpg&w=1920&q=100"
     },
     {
-      id: 3,
-      title: "Bhagavad Gita Wisdom",
-      desc: "Explore practical teachings of the Bhagavad Gita.",
-      students: "30",
-      duration: "5H",
-      rating: "4.9",
-      price: "₹699",
+      id: 1,
+      title: "पाणिनीय शिक्षा - Hindi",
+      desc: "महर्षि पाणिनि का शिक्षा ग्रन्थ - सटीक संस्कृत भाषा और वैदिक उच्चारण के लिए मूलभूत मार्गदर्शिका",
+      createdBy: "Nakshatrapedia",
+      duration: "13 hr 19 min",
+      lecture: "48 Lectures",
+      level: "All Levels",
+      rating: "4.5",
+      oldPrice: "₹1000",
+      price: "₹500",
       image:
-        "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800",
+        "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2Fcourse%2FPaniniya-siksha-course-image-hindi-01%2015-01-2026.jpg&w=1920&q=100",
     },
     {
-      id: 4,
-      title: "Vedic Philosophy",
-      desc: "Understand ancient Vedic thought and life values.",
-      students: "18",
-      duration: "4H",
-      rating: "4.6",
-      price: "₹599",
+      id: 2,
+      title: "सुभाषित प्रबोध - (Hindi)",
+      desc: "संस्कृत सुभाषितों का अद्वितीय संग्रह",
+      createdBy: "Nakshatrapedia",
+      duration: "2 hr 32 min",
+      lecture: "124 Lectures",
+      level: "All Levels",
+      oldPrice: "₹850",
+      price: "₹551",
       image:
-        "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?w=800",
+        "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2FSubhashit-prabodh-NP-Hindi%2009-12-2025.jpg&w=1920&q=100"
     },
   ];
+
+  const [fontsLoaded] = useAppFonts();
+
+  if (!fontsLoaded) return null;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -85,9 +100,10 @@ export default function ListCourses1() {
 
           {courses.map((item) => (
             <View key={item.id} style={styles.card}>
-              <Image source={{ uri: item.image }} style={styles.courseImg} />
 
               <View style={styles.info}>
+                <Image source={{ uri: item.image }} style={styles.courseImg} />
+
                 <Text numberOfLines={1} style={styles.courseTitle}>
                   {item.title}
                 </Text>
@@ -96,23 +112,41 @@ export default function ListCourses1() {
                   {item.desc}
                 </Text>
 
+
+                <Text numberOfLines={1} style={styles.createdBy}>
+                  {item.createdBy}
+                </Text>
+
                 {/* Student + Duration */}
                 <View style={styles.metaRow}>
-                  <View style={styles.metaItem}>
+                  {/* <View style={styles.metaItem}>
                     <Ionicons
                       name="people-outline"
                       size={14}
                       color="#777"
                     />
                     <Text style={styles.metaText}>
-                      {item.students}
+                      {item.duration}
+                    </Text>
+                  </View> */}
+
+                  <View style={styles.metaItem}>
+                    {/* <Feather name="clock" size={13} color="#777" /> */}
+                    <Text style={styles.metaText}>
+                      {item.duration}
                     </Text>
                   </View>
 
                   <View style={styles.metaItem}>
-                    <Feather name="clock" size={13} color="#777" />
+                    {/* <Feather name="clock" size={13} color="#777" /> */}
                     <Text style={styles.metaText}>
-                      {item.duration}
+                      {item.lecture}
+                    </Text>
+                  </View>
+
+                  <View style={styles.metaItem}>
+                    <Text style={styles.metaText}>
+                      {item.level}
                     </Text>
                   </View>
                 </View>
@@ -120,15 +154,17 @@ export default function ListCourses1() {
                 {/* Rating + Price */}
                 <View style={styles.bottomRow}>
                   <View style={styles.ratingWrap}>
-                    <Ionicons
-                      name="star"
-                      size={14}
-                      color="#F7931E"
-                    />
+                    <Ionicons name="star" size={14} color="#fbbf24" style={{ marginRight: 3 }} />
+                    <Ionicons name="star" size={14} color="#fbbf24" style={{ marginRight: 3 }} />
+                    <Ionicons name="star" size={14} color="#fbbf24" style={{ marginRight: 3 }} />
+                    <Ionicons name="star" size={14} color="#fbbf24" style={{ marginRight: 3 }} />
+                    <Ionicons name="star" size={14} color="grey" style={{ marginRight: 6 }} />
                     <Text style={styles.rating}>
-                      {item.rating}
+                      {/* {item.rating} */}
                     </Text>
                   </View>
+
+                  <Text style={styles.oldPrice}>{item.oldPrice}</Text>
 
                   <Text style={styles.price}>{item.price}</Text>
                 </View>
@@ -144,8 +180,8 @@ export default function ListCourses1() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F6F7FB",
-    top:30
+    backgroundColor: "#FFFFFF",
+    top: 30,
   },
 
   header: {
@@ -179,7 +215,9 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    padding: 15,
+    padding: 14,
+    backgroundColor: 'white',
+    marginBottom: 10
   },
 
   heading: {
@@ -196,38 +234,45 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     backgroundColor: "#fff",
-    borderRadius: 18,
+    borderRadius: 6,
     padding: 10,
     marginBottom: 14,
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
+    elevation: 2,
+    shadowRadius: 2,
   },
 
   courseImg: {
-    width: 110,
+    width: '100%',
     height: 128,
-    borderRadius: 14,
+    borderRadius: 6,
   },
 
   info: {
     flex: 1,
-    marginLeft: 12,
     justifyContent: "space-between",
   },
 
   courseTitle: {
-    fontSize: 16,
-    fontWeight: "700",
+    fontSize: 20,
     color: "#1F1F3D",
+    fontFamily: 'InterMedium',
+    fontWeight: 'bold',
+    marginTop: 8
   },
 
   desc: {
-    fontSize: 12,
+    fontSize: 14,
     color: "#777",
-    lineHeight: 17,
-    marginTop: 3,
+    lineHeight: 16,
+    marginTop: 4,
+    fontFamily: 'InterMedium',
+  },
+
+  createdBy: {
+    fontSize: 14,
+    color: "#777",
+    lineHeight: 16,
+    marginTop: 4,
   },
 
   metaRow: {
@@ -262,6 +307,7 @@ const styles = StyleSheet.create({
   ratingWrap: {
     flexDirection: "row",
     alignItems: "center",
+    margin: 1
   },
 
   rating: {
@@ -271,6 +317,13 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
 
+  oldPrice: {
+    fontSize: 14,
+    color: "#1F1F3D",
+    marginStart: 130,
+    textDecorationLine: 'line-through',
+    marginTop: 4
+  },
   price: {
     fontSize: 18,
     fontWeight: "700",

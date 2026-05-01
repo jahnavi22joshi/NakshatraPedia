@@ -1,3 +1,4 @@
+import { Feather, Ionicons } from "@expo/vector-icons";
 import React from "react";
 import {
   Image,
@@ -8,57 +9,64 @@ import {
   Text,
   View,
 } from "react-native";
-import { Ionicons, Feather } from "@expo/vector-icons";
 
 export default function CourseList() {
   const courses = [
     {
       id: 1,
-      title: "Subhaashita Prabodha",
-      desc: "Learn timeless Sanskrit wisdom and moral verses.",
-      hours: "2H",
-      lectures: "12",
-      level: "Beginner",
+      title: "पाणिनीय शिक्षा - Hindi",
+      desc: "महर्षि पाणिनि का शिक्षा ग्रन्थ - सटीक संस्कृत भाषा और वैदिक उच्चारण के लिए मूलभूत मार्गदर्शिका",
+      createdBy: "Nakshatrapedia",
+      duration: "13 H",
+      lecture: "48 Lectures",
+      level: "All Levels",
       rating: "4.5",
-      price: "₹499",
+      oldPrice: "₹1000",
+      price: "₹500",
       image:
-        "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2FPaniniya-siksha-course-image-hindi-01%2015-01-2026.jpg&w=1920&q=100",
+        "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2Fcourse%2FPaniniya-siksha-course-image-hindi-01%2015-01-2026.jpg&w=1920&q=100",
     },
     {
       id: 2,
-      title: "Learn Sanskrit Basics",
-      desc: "Master pronunciation, grammar and simple words.",
-      hours: "3H",
-      lectures: "18",
-      level: "Beginner",
-      rating: "4.7",
-      price: "₹399",
+      title: "सुभाषित प्रबोध - (Hindi)",
+      desc: "संस्कृत सुभाषितों का अद्वितीय संग्रह",
+      createdBy: "Nakshatrapedia",
+      duration: "2 H",
+      lecture: "124 Lectures",
+      level: "All Levels",
+      rating: "4",
+      oldPrice: "₹850",
+      price: "₹551",
       image:
-        "https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=800",
+        "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2FSubhashit-prabodh-NP-Hindi%2009-12-2025.jpg&w=1920&q=100"
     },
     {
-      id: 3,
-      title: "Bhagavad Gita Wisdom",
-      desc: "Deep insights from Bhagavad Gita teachings.",
-      hours: "5H",
-      lectures: "24",
-      level: "Intermediate",
-      rating: "4.9",
-      price: "₹699",
+      id: 1,
+      title: "पाणिनीय शिक्षा - Hindi",
+      desc: "महर्षि पाणिनि का शिक्षा ग्रन्थ - सटीक संस्कृत भाषा और वैदिक उच्चारण के लिए मूलभूत मार्गदर्शिका",
+      createdBy: "Nakshatrapedia",
+      duration: "13 H",
+      lecture: "48 Lectures",
+      level: "All Levels",
+      rating: "4.5",
+      oldPrice: "₹1000",
+      price: "₹500",
       image:
-        "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800",
+        "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2Fcourse%2FPaniniya-siksha-course-image-hindi-01%2015-01-2026.jpg&w=1920&q=100",
     },
     {
-      id: 4,
-      title: "Vedic Philosophy",
-      desc: "Understand Vedic concepts and life principles.",
-      hours: "4H",
-      lectures: "16",
-      level: "Advanced",
-      rating: "4.6",
-      price: "₹599",
+      id: 2,
+      title: "सुभाषित प्रबोध - (Hindi)",
+      desc: "संस्कृत सुभाषितों का अद्वितीय संग्रह",
+      createdBy: "Nakshatrapedia",
+      duration: "2 H",
+      lecture: "124 Lectures",
+      level: "All Levels",
+      rating: "4",
+      oldPrice: "₹850",
+      price: "₹551",
       image:
-        "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?w=800",
+        "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2FSubhashit-prabodh-NP-Hindi%2009-12-2025.jpg&w=1920&q=100"
     },
   ];
 
@@ -105,7 +113,7 @@ export default function CourseList() {
                   <View style={styles.infoRow}>
                     <View style={styles.infoItem}>
                       <Feather name="clock" size={13} color="#777" />
-                      <Text style={styles.infoText}>{item.hours}</Text>
+                      <Text style={styles.infoText}>{item.duration}</Text>
                     </View>
 
                     <View style={styles.infoItem}>
@@ -115,7 +123,7 @@ export default function CourseList() {
                         color="#777"
                       />
                       <Text style={styles.infoText}>
-                        {item.lectures} Lec
+                        {item.lecture}
                       </Text>
                     </View>
 
@@ -128,15 +136,14 @@ export default function CourseList() {
                   {/* Bottom Row */}
                   <View style={styles.bottomRow}>
                     <View style={styles.ratingWrap}>
-                      <Ionicons
-                        name="star"
-                        size={14}
-                        color="#F7931E"
-                      />
+                      <Ionicons name="star" size={14} color="#fbbf24" />
                       <Text style={styles.rating}>{item.rating}</Text>
                     </View>
 
-                    <Text style={styles.price}>{item.price}</Text>
+                    <View style={styles.priceWrap}>
+                      <Text style={styles.oldPrice}>{item.oldPrice}</Text>
+                      <Text style={styles.price}>{item.price}</Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -152,7 +159,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F6F7FB",
-    top:30
+    top: 30
   },
 
   header: {
@@ -186,6 +193,7 @@ const styles = StyleSheet.create({
 
   content: {
     padding: 14,
+    marginBottom: 20
   },
 
   heading: {
@@ -203,14 +211,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
+    rowGap: 4,
   },
 
   card: {
     width: "48%",
     backgroundColor: "#fff",
-    borderRadius: 18,
+    borderRadius: 8,
     overflow: "hidden",
-    marginBottom: 14,
+    marginBottom: 4,
     elevation: 4,
     shadowColor: "#000",
     shadowOpacity: 0.08,
@@ -251,7 +260,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F3F4F8",
     paddingHorizontal: 6,
-    paddingVertical: 3,
+    paddingVertical: 2,
     borderRadius: 8,
   },
 
@@ -276,12 +285,24 @@ const styles = StyleSheet.create({
   rating: {
     fontSize: 12,
     fontWeight: "700",
-    color: "#F7931E",
+    color: "#fbbf24",
     marginLeft: 4,
+  },
+  priceWrap: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  oldPrice: {
+    fontSize: 12,
+    color: "#1F1F3D",
+    textDecorationLine: "line-through",
+    marginRight: 4,
+    marginTop: 2
   },
 
   price: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: "700",
     color: "#1F1F3D",
   },

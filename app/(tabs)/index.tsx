@@ -552,7 +552,6 @@ const styles = StyleSheet.create({
 
   ratingBadge: {
     flexDirection: 'row',
-    // alignItems: 'center',
     borderWidth: 2.5,
     borderColor: '#4D81E5',
     backgroundColor: '#E8F1FF',
@@ -625,7 +624,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(255,255,255,0.85)',
     paddingVertical: 8,
   }
 });
