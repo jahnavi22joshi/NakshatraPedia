@@ -59,32 +59,32 @@ export default function HomeScreen() {
   if (!fontsLoaded) return null;
 
   return (
-
-    <View style={styles.container}>
+    <View className='flex-1 bg-white'>
       <ScrollView>
         <BackButton
           onPress={() => console.log('Button Pressed------123--')
           }
           color="white"
-          style={styles.backButton}
+          style={{ elevation: 10 }}
+          className="absolute top-[50px] left-5 z-50"
         />
 
         {/* Header + Floating Button + Card */}
-        <View style={styles.headerImage}>
-
+        <View className="relative">
           {/* Header Image */}
-          <View style={styles.headerImage}>
+          <View className="relative">
             <Image
               source={{
                 uri: "https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2FSubhashit-prabodh-NP-Hindi%2009-12-2025.jpg&w=1920&q=100"
               }}
-              style={styles.headerImageSize}
+              className='w-full h-[200px]'
             />
           </View>
 
           {/* Floating Button */}
           <TouchableOpacity
-            style={styles.playButton}
+            className="absolute right-[30px] bottom-[-14px] w-[63px] h-[63px] z-50"
+            style={{ elevation: 10 }}
             onPress={() => console.log('Floating Button Pressed')}
           >
             <Image
@@ -94,7 +94,8 @@ export default function HomeScreen() {
               //     : require("../assets/icons/chevron-down.png")
               // }
               source={require('../assets/icons/play.png')}
-              style={styles.playButtonImage}
+              className="w-[63px] h-[63px]"
+              resizeMode="contain"
             />
           </TouchableOpacity>
 
@@ -120,7 +121,6 @@ export default function HomeScreen() {
 
         {/* Kit Card */}
         <KitCard
-          styles={styles}
           title="Ultimate Sanskrit Learning Kit"
           image="https://nakshatrapedia.com/_next/image?url=https%3A%2F%2Fadmin.nakshatrapedia.com%2Fuploads%2F%2Fcourse%2FSubhashit-prabodh-NP-Hindi%2009-12-2025.jpg&w=1920&q=100"
           price="₹899"
@@ -142,8 +142,9 @@ export default function HomeScreen() {
         />
 
         {/* More Course */}
-        <View style={styles.moreCourseContainer}>
-          <Text style={styles.heading}>More Courses</Text>
+        <View className="bg-white py-2.5 px-5">
+          <Text className="text-2xl"
+            style={{ fontFamily: 'PlayfairSemiBold' }}>More Courses</Text>
 
           <MoreCourseCard
             title="Learn Sanskrit Language"
@@ -158,7 +159,7 @@ export default function HomeScreen() {
       </ScrollView>
 
       {/* Bottom Enroll Button */}
-      <View style={styles.enrollButton}>
+      <View className="absolute bottom-0 left-0 right-0 py-2">
         <EnrollButton
           price={551}
           oldPrice={850}
@@ -166,164 +167,13 @@ export default function HomeScreen() {
         />
       </View>
     </View>
+
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF'
-  },
-  backButton: {
-    position: 'absolute',
-    top: 50,
-    left: 20,
-    zIndex: 999,
-    elevation: 10
-  },
-  headerImage: {
-    position: 'relative'
-  },
-  headerImageSize: {
-    width: '100%',
-    height: 200,
-  },
 
-  playButton: {
-    position: 'absolute',
-    right: 30,
-    bottom: -14,
-    width: 63,
-    height: 63,
-    zIndex: 999,
-    elevation: 10,
-  },
-  playButtonImage: {
-    width: 63,
-    height: 63,
-    resizeMode: "contain",
-  },
-  kitMainCard: {
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    marginHorizontal: 16,
-    marginVertical: 14,
-    alignItems: "center",
 
-    // Shadow for iOS
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8,
-
-    // Shadow for Android
-    elevation: 4,
-  },
-  kitCartImage: {
-    width: 99,
-    height: 56,
-    resizeMode: "cover",
-  },
-  kitTextContainer: {
-    marginLeft: 8,
-  },
-  kitText: {
-    fontFamily: 'HalantMedium',
-    fontSize: 14,
-    marginBottom: 12,
-  },
-  kitPriceContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  kitPrice: {
-    fontFamily: 'PoppinsRegular',
-    fontSize: 14,
-    color: "#0E3A52",
-    marginRight: 8,
-  },
-  kitDiscount: {
-    fontSize: 14,
-    color: "#444",
-    textDecorationLine: "line-through",
-    fontFamily: 'PoppinsRegular',
-  },
-  courseContentText: {
-    fontSize: 24,
-    color: '#111',
-    fontFamily: 'PlayfairSemiBold',
-    marginTop: 10,
-    marginHorizontal: 16
-  },
-  courseContentInfoText: {
-    fontSize: 12,
-    fontFamily: 'InterMedium',
-    color: '#111',
-    marginTop: 4,
-    marginHorizontal: 16
-  },
-
-  sessionRowInfoText: {
-    fontSize: 14,
-    fontFamily: 'JostSemiBold',
-    color: '#111',
-    marginTop: 4,
-  },
-  sessionRowInfoNumberText: {
-    fontSize: 12,
-    fontFamily: 'JostSemiBold',
-    color: '#111',
-    marginTop: 4,
-  },
-  requirementsText: {
-    fontSize: 14,
-    marginHorizontal: 10,
-    fontFamily: 'PoppinsRegular'
-  },
-  descText: {
-    fontSize: 14,
-    color: '#555',
-    lineHeight: 20,
-    fontFamily: 'PoppinsRegular',
-    marginVertical: 6
-  },
-  viewMoreContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    marginTop: 12,
-  },
-  viewMoreText: {
-    color: '#202244',
-    fontSize: 14,
-    fontFamily: 'PoppinsRegular',
-    fontWeight: '600',
-  },
-  downIcon: {
-    marginLeft: 4, marginTop: 2
-  },
-  topRatingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  rateIcon: { flexDirection: 'row', marginVertical: 4 },
-  courseRatingText: {
-    fontSize: 20,
-    color: '#1F2A44',
-    marginVertical: 8,
-    fontFamily: 'PlayfairSemiBold',
-    marginBottom: 14
-  },
-  reviewSpace: {
-    borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
-    marginTop: 16,
-    paddingTop: 16,
-  },
   enrollBtn: {
     backgroundColor: 'rgba(255,255,255,0.2)',
   },
@@ -364,111 +214,24 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     borderRadius: 10,
   },
-
   tabContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
   },
 
-  tab: {
-    paddingVertical: 10,
-    paddingHorizontal: 18,
-    borderRadius: 10,
-    marginRight: 10,
-  },
+
 
   activeTab: {
     backgroundColor: '#EDEDED',
   },
 
-  tabText: {
-    color: '#fff',
-    fontSize: 16,
-    fontFamily: 'JostSemiBold'
-  },
-
-  tabWrapper: {
-    backgroundColor: '#002B3B',
-    paddingVertical: 10,
-  },
 
   activeTabText: {
     color: '#F9851C',
     fontSize: 14,
     fontFamily: 'JostSemiBold'
   },
-
-  content: {
-    paddingHorizontal: 10,
-    paddingTop: 10,
-    backgroundColor: '#FFFFFF',
-    marginVertical: 16,
-    marginHorizontal: 16,
-    borderRadius: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.12,
-    shadowRadius: 6,
-    elevation: 5,
-  },
-
-  sectionTitle: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-
-  lessonRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-
-  circle: {
-    width: 45,
-    height: 45,
-    borderRadius: 25,
-    backgroundColor: '#E5E7EB',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  circleText: {
-    color: '#333',
-    fontFamily: 'Jost_600SemiBold',
-    fontSize: 14
-  },
-
-  lessonInfo: {
-    flex: 1,
-    marginLeft: 12,
-  },
-
-  playIconImage: { width: 18, height: 18, marginRight: 10 },
-
-  divider: {
-    height: 1,
-    backgroundColor: '#E0E0E0',
-    marginVertical: 12,
-  },
-
-  reqIcon:{ width: 18, height: 18 },
-
-  lessonTitle: {
-    fontSize: 18,
-    fontFamily: 'Jost_600SemiBold',
-  },
-
-  duration: {
-    fontSize: 12,
-    color: '#777',
-    marginTop: 2,
-    fontFamily: 'Jost_600SemiBold',
-  },
-
   playBtn: {
     width: 35,
     height: 35,
@@ -477,103 +240,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
-  sectionContainer: {
-    paddingHorizontal: 14,
-    paddingTop: 10,
-    backgroundColor: '#FFFFFF',
-  },
-
-  heading: {
-    fontSize: 24,
-    fontFamily: 'PlayfairSemiBold'
-  },
   viewMore: {
     color: '#0a7c6b',
     marginTop: 10,
     fontWeight: '600',
   },
-
-  ratingContainer: {
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 14,
-    paddingTop: 10,
-  },
-
-  ratingValue: {
-    fontSize: 36,
-    fontFamily: 'PlayfairSemiBold',
-    marginStart: 18,
-  },
-
   pointRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     marginBottom: 10,
   },
-
-  reviewText: {
-    marginTop: 10,
-    marginStart: 50,
-    fontFamily: 'PlayfairBold',
-    fontSize: 18,
-    marginHorizontal: 40
-  },
-
   reviewBox: {
     marginTop: 10,
   },
-
-  userName: {
-    fontSize: 16,
-    fontFamily: 'Jost_600SemiBold',
-    fontWeight: 'bold'
-  },
-
-  reviewMsg: {
-    marginTop: 4,
-    fontFamily: 'Halant_500Medium'
-  },
-
-  reviewRow: {
-    flexDirection: 'row',
-    marginTop: 4,
-  },
-
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#ddd',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 10,
-  },
-
-  ratingBadge: {
-    flexDirection: 'row',
-    borderWidth: 2.5,
-    borderColor: '#4D81E5',
-    backgroundColor: '#E8F1FF',
-    borderRadius: 20,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    height: 30
-  },
-
-  metaRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 26,
-  },
-
-  rateCount: {
-    marginLeft: 4,
-    marginRight: 10,
-    fontSize: 12,
-    fontWeight: 'bold'
-  },
-
   image: {
     width: 80,
     height: 80,
@@ -584,46 +263,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 8,
   },
-
-  moreCourseContainer: {
-    backgroundColor: "#ffffff",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  dropdownBox: {
-    paddingLeft: 58,
-    paddingVertical: 8,
-  },
-
-  subLessonRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f1f1f1',
-  },
-
-  subLessonTitle: {
-    flex: 1,
-    fontSize: 14,
-    color: '#111',
-    fontFamily: 'InterBold'
-  },
-
-  subLessonDuration: {
-    fontSize: 12,
-    color: '#666',
-  },
-  partitanLine: {
-    height: 1,
-    backgroundColor: '#E0E0E0',
-    marginVertical: 12,
-  },
-  enrollButton: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingVertical: 8,
-  }
 });

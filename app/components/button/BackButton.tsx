@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   TouchableOpacity,
-  StyleSheet,
   StyleProp,
   ViewStyle,
 } from 'react-native';
@@ -12,6 +11,7 @@ interface BackButtonProps {
   size?: number;
   color?: string;
   style?: StyleProp<ViewStyle>;
+  className?: string;
   iconName?: React.ComponentProps<typeof Ionicons>['name'];
 }
 
@@ -20,11 +20,13 @@ const BackButton: React.FC<BackButtonProps> = ({
   size = 24,
   color = '#fff',
   style,
+  className = '',
   iconName = 'arrow-back-sharp',
 }) => {
   return (
     <TouchableOpacity
-      style={[styles.button, style]}
+      className={`p-2.5 ${className}`}
+      style={style}
       onPress={onPress}
       activeOpacity={0.7}
     >
@@ -34,9 +36,3 @@ const BackButton: React.FC<BackButtonProps> = ({
 };
 
 export default BackButton;
-
-const styles = StyleSheet.create({
-  button: {
-    padding: 10,
-  },
-});

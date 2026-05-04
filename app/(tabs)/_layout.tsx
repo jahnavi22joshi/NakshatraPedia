@@ -4,6 +4,7 @@ import { HapticTab } from '../components/haptic-tab';
 import { IconSymbol } from '../components/ui/icon-symbol.ios';
 import { Colors } from '../constants/theme';
 import { useColorScheme } from '../hooks/use-color-scheme.web';
+import "../global.css";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -26,14 +27,6 @@ export default function TabLayout() {
         name="listCourses1"
         options={{
           title: 'ListCourses1',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-
-      <Tabs.Screen
-        name="listCourses2"
-        options={{
-          title: 'ListCourses2',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />

@@ -1,6 +1,6 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
 
 interface IncludeItem {
   icon: React.ComponentProps<typeof Ionicons>['name'];
@@ -13,17 +13,19 @@ interface CourseIncludesProps {
 
 const CourseIncludes: React.FC<CourseIncludesProps> = ({ items }) => {
   return (
-    <View style={styles.includes}>
-      <Text style={styles.sectionTitle}>This course includes:</Text>
+    <View className="bg-[#002B3B] px-5 py-3.5 mb-3.5">
+      <Text className="mb-1.5 text-white text-base"
+        style={{ fontFamily: 'PoppinsMedium' }}>This course includes:</Text>
 
       {items.map((item, index) => (
-        <View key={index} style={styles.includeItem}>
+        <View key={index} className="flex-row items-center mb-1">
           <Ionicons
             name={item.icon}
             size={14}
             color="#fff"
           />
-          <Text style={styles.includeText}>{item.text}</Text>
+          <Text className="text-white ml-2 text-xs"
+            style={{ fontFamily: 'PoppinsMedium' }}>{item.text}</Text>
         </View>
       ))}
     </View>
@@ -31,32 +33,3 @@ const CourseIncludes: React.FC<CourseIncludesProps> = ({ items }) => {
 };
 
 export default CourseIncludes;
-
-const styles = StyleSheet.create({
-  includes: {
-    backgroundColor: '#002B3B',
-    paddingHorizontal: 20,
-    paddingVertical: 14,
-    marginBottom: 14,
-  },
-
-  sectionTitle: {
-    marginBottom: 6,
-    color: '#fff',
-    fontFamily: 'PoppinsMedium',
-    fontSize: 16,
-  },
-
-  includeItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-
-  includeText: {
-    color: '#fff',
-    marginLeft: 8,
-    fontFamily: 'PoppinsMedium',
-    fontSize: 12,
-  },
-});

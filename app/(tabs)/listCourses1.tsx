@@ -18,28 +18,28 @@ export default function ListCourses1() {
   if (!fontsLoaded) return null;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView className="flex-1 bg-white pt-8">
       <StatusBar barStyle="light-content" backgroundColor="#002D3B" />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View className="bg-[#002D3B] px-5 pt-3.5 pb-5 flex-row justify-between items-center rounded-b-3xl">
         <View>
-          <Text style={styles.greeting}>Hi, jahN 👋</Text>
-          <Text style={styles.subText}>Let’s start learning</Text>
+          <Text className="text-3xl text-white font-bold">Hi, jahN 👋</Text>
+          <Text className="text-sm text-[#D5E2E7] mt-1">Let’s start learning</Text>
         </View>
 
         <Image
           source={{
             uri: "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
           }}
-          style={styles.avatar}
-        />
+          className="w-[52px] h-[52px] rounded-full" />
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.content}>
-          <Text style={styles.heading}>
-            All <Text style={styles.orange}>Featured Courses</Text>
+        <View className="flex-1 bg-white pt-6 ">
+          <Text className="text-2xl text-[#1F1F3D] mb-4 px-2"
+          >
+            All <Text className="text-[#F7931E]">Featured Courses</Text>
           </Text>
 
           <ListCourseCard
@@ -97,51 +97,13 @@ export default function ListCourses1() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    top: 30,
-  },
-  header: {
-    backgroundColor: "#002D3B",
-    paddingHorizontal: 18,
-    paddingTop: 14,
-    paddingBottom: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderBottomLeftRadius: 22,
-    borderBottomRightRadius: 22,
-  },
-  greeting: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: "#fff",
-  },
-  subText: {
-    fontSize: 14,
-    color: "#D5E2E7",
-    marginTop: 4,
-  },
-  avatar: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-  },
+
   content: {
     padding: 14,
     backgroundColor: 'white',
     marginBottom: 10
   },
-  heading: {
-    fontSize: 24,
-    fontWeight: "700",
-    color: "#1F1F3D",
-    marginBottom: 14,
-  },
-  orange: {
-    color: "#F7931E",
-  },
+
   card: {
     flexDirection: "row",
     backgroundColor: "#fff",

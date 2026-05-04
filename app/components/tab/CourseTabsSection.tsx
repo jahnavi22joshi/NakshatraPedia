@@ -45,7 +45,7 @@ const CourseTabs: React.FC<Props> = ({
     return (
         <>
             {/* Tabs */}
-            <View style={styles.tabWrapper}>
+            <View className="bg-[#002B3B] py-2.5">
                 <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
@@ -60,14 +60,14 @@ const CourseTabs: React.FC<Props> = ({
                                     key={index}
                                     title={tab}
                                     onPress={() => setActiveTab(key)}
+                                    className="py-2.5 px-4.5 rounded-lg mr-2.5"
                                     style={[
-                                        styles.tab,
                                         activeTab === key && styles.activeTab,
                                     ]}
                                     textStyle={[
-                                        styles.tabText,
                                         activeTab === key && styles.activeTabText,
                                     ]}
+                                    textClassName='text-white text-base'
                                 />
                             );
                         }
@@ -79,24 +79,30 @@ const CourseTabs: React.FC<Props> = ({
             {activeTab === 'coursecontent' && (
                 <>
                     <View>
-                        <Text style={styles.courseContentText}>
+                        <Text className="text-2xl text-gray-900 mt-2.5 mx-4"
+                            style={{ fontFamily: 'PlayfairSemiBold' }}>
                             Course Content
                         </Text>
 
-                        <Text style={styles.courseContentInfoText}>
+                        <Text className="text-xs text-gray-900 mt-1 mx-4"
+                            style={{ fontFamily: 'InterMedium' }}>
                             28 sections | 124 lectures | 1 hr 32 min
                         </Text>
                     </View>
 
-                    <View style={styles.content}>
+                    <View
+                        className="bg-white px-2.5 pt-2.5 mx-4 my-4 rounded-xl"
+                        style={shadows.card}>
                         <View
-                            style={styles.sectionTitle}
+                            className="flex-row justify-between items-center"
                         >
-                            <Text style={styles.sessionRowInfoText}>
+                            <Text className="text-sm text-gray-900 mt-1"
+                                style={{ fontFamily: 'JostSemiBold' }}>
                                 Section 01 - Introduction - प्रस्तावना
                             </Text>
 
-                            <Text style={styles.sessionRowInfoNumberText}>
+                            <Text className="text-sm text-gray-900 mt-1"
+                                style={{ fontFamily: 'JostSemiBold' }}>
                                 10 min
                             </Text>
                         </View>
@@ -104,37 +110,40 @@ const CourseTabs: React.FC<Props> = ({
                         {lessons.map((item, index) => (
                             <View key={item.id}>
                                 <TouchableOpacity
-                                    style={styles.lessonRow}
+                                    className="flex-row items-center py-3 border-b border-gray-200"
                                     onPress={() => toggleDropdown(item.id)}
                                 >
-                                    <View style={styles.circle}>
-                                        <Text style={styles.circleText}>
+                                    <View className="w-11 h-11 rounded-full bg-gray-200 items-center justify-center">
+                                        <Text className="text-gray-800 text-sm"
+                                            style={{ fontFamily: 'Jost_600SemiBold' }}>
                                             {(index + 1).toString().padStart(2, '0')}
                                         </Text>
                                     </View>
 
-                                    <View style={styles.lessonInfo}>
-                                        <Text style={styles.lessonTitle}>
+                                    <View className="flex-1 ml-3">
+                                        <Text className="text-lg"
+                                            style={{ fontFamily: 'Jost_600SemiBold' }}>
                                             {item.title}
                                         </Text>
 
-                                        <Text style={styles.duration}>
+                                        <Text className="text-xs text-gray-500 mt-0.5"
+                                            style={{ fontFamily: 'Jost_600SemiBold' }}>
                                             {item.duration}
                                         </Text>
                                     </View>
 
                                     <Image
                                         source={require('../../assets/icons/course-play.png')}
-                                        style={styles.playIconImage}
+                                        className="w-4.5 h-4.5 mr-2.5"
                                     />
                                 </TouchableOpacity>
 
                                 {expandedId === item.id && (
-                                    <View style={styles.dropdownBox}>
+                                    <View className="pl-[58px] py-2">
                                         {item.subLessons.map((sub, i) => (
                                             <TouchableOpacity
                                                 key={i}
-                                                style={styles.subLessonRow}
+                                                className="flex-row items-center py-3.5 border-b border-gray-100"
                                             >
                                                 <Ionicons
                                                     name="desktop-outline"
@@ -143,14 +152,15 @@ const CourseTabs: React.FC<Props> = ({
                                                     style={{ marginRight: 12 }}
                                                 />
 
-                                                <Text style={styles.subLessonTitle}>
+                                                <Text className="flex-1 text-sm text-gray-900"
+                                                    style={{ fontFamily: 'InterBold' }}>
                                                     {typeof sub === 'string'
                                                         ? sub
                                                         : sub.title}
                                                 </Text>
 
                                                 <Text
-                                                    style={styles.subLessonDuration}
+                                                    className="text-xs text-gray-500"
                                                 >
                                                     {typeof sub === 'string'
                                                         ? ''
@@ -164,31 +174,30 @@ const CourseTabs: React.FC<Props> = ({
                         ))}
                     </View>
 
-                    <View
-                        style={styles.divider}
-                    />
+                    <View className="h-px bg-gray-300 my-3" />
                 </>
             )}
 
             {/* Requirements */}
             {activeTab === 'requirements' && (
-                <View style={styles.sectionContainer}>
-                    <Text style={styles.heading}>Requirements</Text>
+                <View className="bg-white px-3.5 pt-2.5">
+                    <Text className="text-2xl"
+                        style={{ fontFamily: 'PlayfairSemiBold' }}>Requirements</Text>
 
-                    <View style={{ marginTop: 10 }}>
-                        <View style={styles.pointRow}>
+                    <View className="mt-2.5">
+                        <View className="flex-row items-start mb-2.5">
                             <Image
                                 source={require('../../assets/icons/req-icon.png')}
-                                style={styles.reqIcon}
-                            />
+                                className="w-[18px] h-[18px]" />
 
-                            <Text style={styles.requirementsText}>
+                            <Text className="text-sm mx-2.5"
+                                style={{ fontFamily: 'PoppinsRegular' }}>
                                 पूर्व ज्ञान की आवश्यकता नहीं है
                             </Text>
                         </View>
 
                         <View
-                            style={styles.divider}
+                            className="h-px bg-gray-300 my-3"
                         />
                     </View>
                 </View>
@@ -196,51 +205,61 @@ const CourseTabs: React.FC<Props> = ({
 
             {/* Description */}
             {activeTab === 'description' && (
-                <View style={styles.sectionContainer}>
-                    <Text style={styles.heading}>Description</Text>
+                <View className="bg-white px-3.5 pt-2.5">
+                    <Text className="text-2xl"
+                        style={{ fontFamily: 'PlayfairSemiBold' }}>Description</Text>
 
-                    <Text style={styles.descText}>
+                    <Text className="text-sm text-gray-600 leading-5 my-1.5"
+                        style={{ fontFamily: 'PoppinsRegular' }}>
                         सुभाषित प्रबोध - यह एक ऐसा संग्रह है जिसमें
                         सुभाषितों (सुविचारों) का ध्यान-पूर्वक चयन किया
                         गया है।
                     </Text>
 
-                    <Text style={styles.descText}>
+                    <Text className="text-sm text-gray-600 leading-5 my-1.5"
+                        style={{ fontFamily: 'PoppinsRegular' }}>
                         प्रत्येक सुभाषित को निम्न प्रकार से प्रस्तुत
                         किया गया है :
                     </Text>
 
-                    <Text style={styles.descText}>
+                    <Text className="text-sm text-gray-600 leading-5 my-1.5"
+                        style={{ fontFamily: 'PoppinsRegular' }}>
                         - स्पष्ट उच्चारण
                     </Text>
 
-                    <Text style={styles.descText}>
+                    <Text className="text-sm text-gray-600 leading-5 my-1.5"
+                        style={{ fontFamily: 'PoppinsRegular' }}>
                         और इसमें व्याकरणिक विश्लेषण भी है जैसे :
                     </Text>
 
-                    <Text style={styles.descText}>
+                    <Text className="text-sm text-gray-600 leading-5 my-1.5"
+                        style={{ fontFamily: 'PoppinsRegular' }}>
                         - सरल पदच्छेद
                     </Text>
 
-                    <Text style={styles.descText}>
+                    <Text className="text-sm text-gray-600 leading-5 my-1.5"
+                        style={{ fontFamily: 'PoppinsRegular' }}>
                         - अनुवाद
                     </Text>
 
-                    <Text style={styles.descText}>
+                    <Text className="text-sm text-gray-600 leading-5 my-1.5"
+                        style={{ fontFamily: 'PoppinsRegular' }}>
                         - अन्वय - अर्थात् सुभाषित का गद्य रूप
                         समझाया गया है।
                     </Text>
 
-                    <Text style={styles.descText}>
+                    <Text className="text-sm text-gray-600 leading-5 my-1.5"
+                        style={{ fontFamily: 'PoppinsRegular' }}>
                         यह संग्रह संस्कृत भाषा सीखने वालों को संस्कृत
                         शब्दावली (vocabulary) बढ़ाने में भी सहायता
                         करेगा।
                     </Text>
 
                     <TouchableOpacity
-                        style={styles.viewMoreContainer}
+                        className="flex-row items-center justify-center self-center mt-3"
                     >
-                        <Text style={styles.viewMoreText}>
+                        <Text className="text-sm text-[#202244] font-semibold"
+                            style={{ fontFamily: 'PoppinsRegular' }}>
                             View More
                         </Text>
 
@@ -248,25 +267,27 @@ const CourseTabs: React.FC<Props> = ({
                             name="chevron-down"
                             size={18}
                             color="#202244"
-                            style={styles.downIcon}
+                            className="ml-1 mt-0.5"
                         />
                     </TouchableOpacity>
 
-                    <View style={styles.partitanLine} />
+                    <View className="h-px bg-gray-300 my-3" />
                 </View>
             )}
 
             {/* Rating */}
             {activeTab === 'rating' && (
-                <View style={styles.ratingContainer}>
-                    <View style={styles.topRatingContainer}>
-                        <Text style={styles.ratingValue}>4.5</Text>
-                        <Text style={styles.reviewText}>
+                <View className="bg-white px-3.5 pt-2.5">
+                    <View className="flex-row items-center">
+                        <Text className="text-4xl ml-5"
+                            style={{ fontFamily: 'PlayfairSemiBold' }}>4.5</Text>
+                        <Text className="text-lg mt-2.5 mx-10"
+                            style={{ fontFamily: 'PlayfairBold' }}>
                             2 Reviews
                         </Text>
                     </View>
 
-                    <View style={styles.rateIcon}>
+                    <View className="flex-row my-1">
                         {[1, 2, 3, 4, 5].map((i) => (
                             <Ionicons
                                 key={i}
@@ -277,67 +298,68 @@ const CourseTabs: React.FC<Props> = ({
                         ))}
                     </View>
 
-                    <Text style={styles.courseRatingText}>
+                    <Text className="text-xl text-[#1F2A44] mt-2 mb-3.5"
+                        style={{ fontFamily: 'PlayfairSemiBold' }}>
                         Course Rating
                     </Text>
                     {/* Review 1 */}
-                    <View style={styles.reviewRow}>
-                        <View style={styles.avatar}>
+                    <View className="flex-row mt-1">
+                        <View className="w-10 h-10 rounded-full bg-gray-300 items-center justify-center mr-2.5">
                             <Text>DJ</Text>
                         </View>
 
-                        <View style={{ flex: 1 }}>
-                            <Text style={styles.userName}>Dhairya Joshi</Text>
-                            <Text style={styles.reviewMsg}>
+                        <View className='flex-1'>
+                            <Text className="text-base font-bold"
+                                style={{ fontFamily: 'Jost_600SemiBold' }}>Dhairya Joshi</Text>
+                            <Text className="mt-1"
+                                style={{ fontFamily: 'Halant_500Medium' }}>
                                 "Really this collection is gems of wisdom..."
                             </Text>
 
-                            <View style={styles.metaRow}>
+                            <View className="flex-row items-center mt-6.5 mt-6">
                                 <Ionicons name="heart" size={16} color="red" />
-                                <Text style={styles.rateCount}>21</Text>
+                                <Text className="ml-1 mr-2.5 text-xs font-bold ">21</Text>
 
-                                <Text style={styles.rateCount}>January 21, 2025</Text>
+                                <Text className="ml-1 mr-2.5 text-xs font-bold">January 21, 2025</Text>
                             </View>
                         </View>
 
-                        <View style={styles.ratingBadge}>
+                        <View className="flex-row border-2 border-[#4D81E5] bg-[#E8F1FF] rounded-full px-2 py-0.5 h-[30px]">
                             <Ionicons name="star" size={14} color="#F9851C" style={{ top: 2 }} />
-                            <Text style={{ marginLeft: 4 }}>5.0</Text>
+                            <Text className='ml-1'>5.0</Text>
                         </View>
                     </View>
 
                     {/* Review 2 */}
-                    <View
-                        style={styles.reviewSpace}
-                    >
-                        <View style={styles.reviewRow}>
-                            <View style={styles.avatar}>
-                                <Text>DT</Text>
+                    <View className="flex-row mt-4">
+                        <View className="w-10 h-10 rounded-full bg-gray-300 items-center justify-center mr-2.5">
+                            <Text>DT</Text>
+                        </View>
+
+                        <View className='flex-1'>
+                            <Text className="text-base font-bold"
+                                style={{ fontFamily: 'Jost_600SemiBold' }}>Divya T</Text>
+                            <Text className="mt-1"
+                                style={{ fontFamily: 'Halant_500Medium' }}>
+                                "Very nicely explained."
+                            </Text>
+
+                            <View className="flex-row items-center mt-6.5 mt-6">
+                                <Ionicons name="heart" size={16} color="red" />
+                                <Text className="ml-1 mr-2.5 text-xs font-bold ">21</Text>
+
+                                <Text className="ml-1 mr-2.5 text-xs font-bold">January 21, 2025</Text>
                             </View>
+                        </View>
 
-                            <View style={{ flex: 1 }}>
-                                <Text style={styles.userName}>Divya T</Text>
-                                <Text style={styles.reviewMsg}>
-                                    "Very nicely explained."
-                                </Text>
-
-                                <View style={styles.metaRow}>
-                                    <Ionicons name="heart" size={16} color="red" />
-                                    <Text style={styles.rateCount}>211</Text>
-
-                                    <Text style={styles.rateCount}>November 10, 2025</Text>
-                                </View>
-                            </View>
-
-                            <View style={styles.ratingBadge}>
-                                <Ionicons name="star" size={14} color="#F9851C" style={{ top: 2 }} />
-                                <Text style={{ marginLeft: 4 }}>5.0</Text>
-                            </View>
+                        <View className="flex-row border-2 border-[#4D81E5] bg-[#E8F1FF] rounded-full px-2 py-0.5 h-[30px]">
+                            <Ionicons name="star" size={14} color="#F9851C" style={{ top: 2 }} />
+                            <Text className='ml-1'>5.0</Text>
                         </View>
                     </View>
 
                     <View
-                        style={styles.reviewSpace}
+                        className="border-t border-gray-200 mt-4 pt-4"
                     ></View>
                 </View>
             )}
@@ -346,3 +368,13 @@ const CourseTabs: React.FC<Props> = ({
 };
 
 export default CourseTabs;
+
+export const shadows = {
+    card: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.12,
+        shadowRadius: 6,
+        elevation: 5,
+    },
+};

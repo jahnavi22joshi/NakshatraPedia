@@ -1,27 +1,12 @@
 import React from "react";
 import {
-  TouchableOpacity,
   Image,
-  View,
   Text,
-  StyleProp,
-  ViewStyle,
-  TextStyle,
-  ImageStyle,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
-type StylesType = {
-  kitMainCard: StyleProp<ViewStyle>;
-  kitCartImage: StyleProp<ImageStyle>;
-  kitTextContainer: StyleProp<ViewStyle>;
-  kitText: StyleProp<TextStyle>;
-  kitPriceContainer: StyleProp<ViewStyle>;
-  kitPrice: StyleProp<TextStyle>;
-  kitDiscount: StyleProp<TextStyle>;
-};
-
 type Props = {
-  styles: StylesType;
   title: string;
   image: string;
   price: string;
@@ -30,7 +15,6 @@ type Props = {
 };
 
 const KitCard: React.FC<Props> = ({
-  styles,
   title,
   image,
   price,
@@ -39,23 +23,41 @@ const KitCard: React.FC<Props> = ({
 }) => {
   return (
     <TouchableOpacity
-      style={styles.kitMainCard}
+      className="flex-row bg-white rounded-lg py-4 px-4 mx-4 my-3.5 items-center"
       activeOpacity={0.9}
       onPress={onPress}
+      style={styles.shadow}
     >
       {/* Left Image */}
       <Image
         source={{ uri: image }}
-        style={styles.kitCartImage}
+        className="w-[99px] h-[56px]"
+        resizeMode="cover"
       />
 
       {/* Right Content */}
-      <View style={styles.kitTextContainer}>
-        <Text style={styles.kitText}>{title}</Text>
+      <View className="ml-2">
+        <Text
+          className="text-sm mb-3"
+          style={{ fontFamily: "HalantMedium" }}
+        >
+          {title}
+        </Text>
 
-        <View style={styles.kitPriceContainer}>
-          <Text style={styles.kitPrice}>{price}</Text>
-          <Text style={styles.kitDiscount}>{discountPrice}</Text>
+        <View className="flex-row items-center">
+          <Text
+            className="text-sm mr-2 text-[#0E3A52]"
+            style={{ fontFamily: "PoppinsRegular" }}
+          >
+            {price}
+          </Text>
+
+          <Text
+            className="text-sm text-gray-700 line-through"
+            style={{ fontFamily: "PoppinsRegular" }}
+          >
+            {discountPrice}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -63,3 +65,13 @@ const KitCard: React.FC<Props> = ({
 };
 
 export default KitCard;
+
+const styles = {
+  shadow: {
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
+    elevation: 4,
+  },
+};

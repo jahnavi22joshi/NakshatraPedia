@@ -42,13 +42,17 @@ const CourseCard: React.FC<CourseCardProps> = ({
   const [couponCode, setCouponCode] = useState<string>('');
 
   return (
-    <View style={styles.card}>
-      <Text style={styles.title}>{title}</Text>
+    <View className="bg-white mx-[15px] mt-[-21px] rounded-lg p-[15px] z-10"
+      style={{ elevation: 5 }}>
+      <Text className="text-[26px] mb-1"
+        style={{ fontFamily: 'InterMedium' }}>{title}</Text>
 
-      <Text style={styles.subTitle}>{subtitle}</Text>
+      <Text className="my-[2px] text-base"
+        style={{ fontFamily: 'InterMedium' }}>{subtitle}</Text>
 
-      <View style={styles.ratingRow}>
-        <Text style={styles.ratingText}>
+      <View className="flex-row items-center my-[2px]">
+        <Text className="text-xs"
+          style={{ fontFamily: 'InterMedium' }}>
           {rating}{' '}
           <Ionicons name="star" size={14} color="#FCCB40" />
           <Ionicons name="star" size={14} color="#FCCB40" />
@@ -63,25 +67,31 @@ const CourseCard: React.FC<CourseCardProps> = ({
           style={{ marginLeft: 6 }}
         />
 
-        <Text style={styles.studentText}>{students}</Text>
+        <Text className="my-[2px] mx-[2px] text-xs"
+          style={{ fontFamily: 'InterMedium' }}>{students}</Text>
       </View>
 
-      <View style={styles.updateTextContainer}>
+      <View className="flex-row items-center my-[2px]">
         <MaterialIcons name="update" size={16} color="black" />
-        <Text style={styles.studentText}>Last updated 12 January 2026</Text>
+        <Text className="my-[2px] mx-[2px] text-xs"
+          style={{ fontFamily: 'InterMedium' }}>Last updated 12 January 2026</Text>
       </View>
 
 
-      <View style={styles.priceRow}>
-        <Text style={styles.price}>₹{price}</Text>
-        <Text style={styles.oldPrice}>₹{oldPrice}</Text>
-        <Text style={styles.discount}>{discount}% off</Text>
+      <View className="flex-row items-center">
+        <Text className="text-2xl my-[5px]"
+          style={{ fontFamily: 'PoppinsMedium' }}>₹{price}</Text>
+        <Text className="top-[3px] ml-1 text-sm text-gray-500 line-through"
+          style={{ fontFamily: 'PoppinsRegular' }}>₹{oldPrice}</Text>
+        <Text className="top-[3px] text-base mx-[5px]"
+          style={{ fontFamily: 'PoppinsMedium' }}>{discount}% off</Text>
       </View>
 
       {/* Coupon Section */}
-      <View style={styles.couponContainer}>
+      <View className="flex-row justify-between items-center bg-gray-100 py-[2px] px-3 rounded-lg">
         <TextInput
-          style={styles.couponText}
+          className="flex-1 text-sm text-gray-800"
+          style={{ fontFamily: 'PoppinsMedium' }}
           placeholder="Enter Coupon"
           placeholderTextColor="#999"
           value={couponCode}
@@ -89,27 +99,28 @@ const CourseCard: React.FC<CourseCardProps> = ({
         />
 
         <TouchableOpacity
+          className="bg-orange-400/20 py-1.5 px-5 rounded-md"
           style={[
-            styles.applyBtn,
             couponCode.trim() !== '' && { backgroundColor: 'orange' },
           ]}
           onPress={onApply}
         >
-          <Text style={styles.applyText}>Apply</Text>
+          <Text className="text-white text-sm"
+            style={{ fontFamily: 'PoppinsMedium' }}>Apply</Text>
         </TouchableOpacity>
       </View>
 
       {/* Top Row */}
-      <View style={styles.topRow}>
+      <View className="flex-row items-center mt-2.5">
         <CustomButton
           title="Add to Cart"
           variant="blue"
           onPress={onAddToCart}
-          style={styles.customButton}
+          className=" flex-[0.9] mr-2"
         />
 
         <TouchableOpacity
-          style={styles.wishlistBtn}
+          className="flex-[0.4] border border-[#ddd] py-2 rounded-lg items-center justify-center bg-white"
           onPress={onWishlist}
         >
           <Ionicons
@@ -125,156 +136,10 @@ const CourseCard: React.FC<CourseCardProps> = ({
         title="Buy Now"
         variant="orange"
         onPress={onBuyNow}
-        style={{ marginTop: 8 }}
+        className='mt-2'
       />
     </View>
   );
 };
 
 export default CourseCard;
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#fff',
-    marginHorizontal: 15,
-    marginTop: -21,
-    borderRadius: 10,
-    padding: 15,
-    elevation: 5,
-    zIndex: 5,
-  },
-
-  title: {
-    fontSize: 26,
-    fontFamily: 'InterMedium',
-    marginBottom: 4
-  },
-
-  subTitle: {
-    marginVertical: 2,
-    fontFamily: 'InterMedium',
-    fontSize: 16,
-
-  },
-
-  ratingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 2,
-  },
-
-  priceRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  ratingText: {
-    fontFamily: 'InterMedium',
-    fontSize: 12,
-  },
-
-  studentText: {
-    marginVertical: 2,
-    marginHorizontal: 2,
-    fontFamily: 'InterMedium',
-    fontSize: 12,
-  },
-  updateTextContainer: {
-    flexDirection: 'row', alignItems: 'center', marginVertical: 2,
-  },
-
-  price: {
-    fontSize: 24,
-    marginVertical: 5,
-    fontFamily: 'PoppinsMedium',
-  },
-
-  oldPrice: {
-    top: 3,
-    marginStart: 4,
-    color: '#888',
-    textDecorationLine: 'line-through',
-    fontFamily: 'PoppinsRegular',
-    fontSize: 14,
-  },
-
-  discount: {
-    top: 3,
-    fontSize: 16,
-    marginHorizontal: 5,
-    fontFamily: 'PoppinsMedium',
-  },
-
-  couponContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#f1f1f1',
-    paddingVertical: 2,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-  },
-
-  couponText: {
-    fontSize: 14,
-    color: '#333',
-    fontFamily: 'PoppinsMedium',
-    flex: 1,
-  },
-
-  applyBtn: {
-    backgroundColor: 'rgba(249, 133, 28, 0.2)',
-    paddingVertical: 6,
-    paddingHorizontal: 20,
-    borderRadius: 6,
-  },
-
-  applyText: {
-    color: '#fff',
-    fontFamily: 'PoppinsMedium',
-    fontSize: 14,
-  },
-
-  topRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-
-  customButton: { flex: 0.8, marginRight: 8 },
-
-  cartBtnLarge: {
-    flex: 0.7,
-    backgroundColor: '#002B3B',
-    paddingVertical: 8,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginRight: 8,
-  },
-
-  wishlistBtn: {
-    flex: 0.4,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    paddingVertical: 8,
-    
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-  },
-
-  buyBtnFull: {
-    marginTop: 8,
-    backgroundColor: '#ff7a00',
-    paddingVertical: 8,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-
-  btnText: {
-    color: '#fff',
-    fontSize: 16,
-    fontFamily: 'PoppinsMedium',
-  },
-});

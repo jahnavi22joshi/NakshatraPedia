@@ -28,38 +28,40 @@ export default function ListCourseCard({
     image,
 }: ListCourseCardProps) {
     return (
-        <View style={styles.card}>
-            <View style={styles.info}>
-                <Image source={{ uri: image }} style={styles.courseImg} />
+        <View className="flex-row bg-white rounded-md mb-3.5 mx-3" style={styles.cardShadow}>
+            <View className="flex-1 justify-between">
+                <Image source={{ uri: image }} className="w-full h-40 rounded-t-md" />
 
-                <Text numberOfLines={1} style={styles.courseTitle}>
+                <Text numberOfLines={1} className="text-xl font-bold px-2.5 mt-2 text-[#1F1F3D]">
                     {title}
                 </Text>
 
-                <Text numberOfLines={2} style={styles.desc}>
+                <Text numberOfLines={2} className="text-sm text-gray-500 leading-4 mt-1 px-2.5">
                     {desc}
                 </Text>
 
-                <Text numberOfLines={1} style={styles.createdBy}>
+                <Text numberOfLines={1} className="text-sm text-gray-500 leading-4 mt-1 px-2.5">
                     {createdBy}
                 </Text>
 
-                <View style={styles.metaRow}>
-                    <View style={styles.metaItem}>
-                        <Text style={styles.metaText}>{duration}</Text>
+                <View className="flex-row mt-2 px-2.5">
+                    <View className="flex-row items-center bg-gray-100 px-2 py-1 rounded-md mr-2">
+                        <Text className="text-xs text-gray-600 font-semibold">{duration}</Text>
                     </View>
 
-                    <View style={styles.metaItem}>
-                        <Text style={styles.metaText}>{lecture}</Text>
+                    <View className="flex-row items-center bg-gray-100 px-2 py-1 rounded-md mr-2">
+                        <Text className="text-xs text-gray-600 font-semibold">{lecture}</Text>
                     </View>
 
-                    <View style={styles.metaItem}>
-                        <Text style={styles.metaText}>{level}</Text>
+                    <View className="flex-row items-center bg-gray-100 px-2 py-1 rounded-md mr-2">
+                        <Text className="text-xs text-gray-600 font-semibold">{level}</Text>
                     </View>
                 </View>
 
-                <View style={styles.bottomRow}>
-                    <View style={styles.ratingWrap}>
+                <View className="flex-row justify-between items-center mt-2 px-2.5 mb-2">
+
+                    {/* Stars */}
+                    <View className="flex-row items-center">
                         <Ionicons name="star" size={14} color="#fbbf24" style={{ marginRight: 3 }} />
                         <Ionicons name="star" size={14} color="#fbbf24" style={{ marginRight: 3 }} />
                         <Ionicons name="star" size={14} color="#fbbf24" style={{ marginRight: 3 }} />
@@ -67,8 +69,19 @@ export default function ListCourseCard({
                         <Ionicons name="star" size={14} color="grey" style={{ marginRight: 6 }} />
                     </View>
 
-                    <Text style={styles.oldPrice}>{oldPrice}</Text>
-                    <Text style={styles.price}>{price}</Text>
+                    {/* Price Group (RIGHT SIDE FIX) */}
+                    <View className="flex-row items-center">
+
+                        <Text className="text-sm text-gray-600 line-through mr-1 mt-0.5">
+                            {oldPrice}
+                        </Text>
+
+                        <Text className="text-lg font-bold text-[#1F1F3D]">
+                            {price}
+                        </Text>
+
+                    </View>
+
                 </View>
             </View>
         </View>
@@ -76,98 +89,11 @@ export default function ListCourseCard({
 }
 
 const styles = StyleSheet.create({
-    card: {
-        flexDirection: "row",
-        backgroundColor: "#fff",
-        borderRadius: 6,
-        marginBottom: 14,
+    cardShadow: {
         elevation: 2,
         shadowRadius: 2,
-    },
-
-    courseImg: {
-        width: "100%",
-        height: 160,
-        borderTopLeftRadius: 6,
-        borderTopRightRadius: 6,
-    },
-
-    info: {
-        flex: 1,
-        justifyContent: "space-between",
-    },
-
-    courseTitle: {
-        fontSize: 20,
-        color: "#1F1F3D",
-        fontWeight: "bold",
-        paddingHorizontal: 10,
-        marginTop: 8,
-    },
-
-    desc: {
-        fontSize: 14,
-        color: "#777",
-        lineHeight: 16,
-        marginTop: 4,
-        paddingHorizontal: 10,
-    },
-
-    createdBy: {
-        fontSize: 14,
-        color: "#777",
-        lineHeight: 16,
-        marginTop: 4,
-        paddingHorizontal: 10,
-    },
-
-    metaRow: {
-        flexDirection: "row",
-        marginTop: 8,
-        paddingHorizontal: 10,
-    },
-
-    metaItem: {
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "#F3F4F8",
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 8,
-        marginRight: 8,
-    },
-
-    metaText: {
-        fontSize: 12,
-        color: "#555",
-        fontWeight: "600",
-    },
-
-    bottomRow: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginTop: 8,
-        paddingHorizontal: 10,
-        marginBottom: 8,
-    },
-
-    ratingWrap: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
-
-    oldPrice: {
-        fontSize: 14,
-        color: "#1F1F3D",
-        marginStart: 130,
-        textDecorationLine: "line-through",
-        marginTop: 4,
-    },
-
-    price: {
-        fontSize: 18,
-        fontWeight: "700",
-        color: "#1F1F3D",
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowOffset: { width: 0, height: 1 },
     },
 });

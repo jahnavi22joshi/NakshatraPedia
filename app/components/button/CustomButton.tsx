@@ -1,5 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
+import {
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+  TextStyle,
+} from 'react-native';
 
 interface CustomButtonProps {
   title: string;
@@ -7,6 +12,8 @@ interface CustomButtonProps {
   onPress: () => void;
   style?: ViewStyle | any;
   textStyle?: TextStyle | any;
+  className?: string;     
+  textClassName?: string;  
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -15,10 +22,13 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   onPress,
   style,
   textStyle,
+  className = '',
+  textClassName = '',
 }) => {
   const isActiveTab = variant === 'activeTab';
   const isInactiveTab = variant === 'inactiveTab';
 
+  // 🎨 Background (still dynamic)
   const backgroundColor =
     variant === 'blue'
       ? '#002B3B'
@@ -28,6 +38,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
       ? '#002B3B'
       : '#F2F4F7';
 
+  // 🎨 Text color
   const textColor =
     isActiveTab || variant === 'blue' || variant === 'orange'
       ? '#fff'
@@ -35,15 +46,15 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 
   return (
     <TouchableOpacity
-      style={[
-        styles.button,
-        { backgroundColor },
-        style,
-      ]}
+      className={`py-2.5 px-[18px] rounded-lg items-center justify-center mr-2.5 ${className}`}
+      style={[{ backgroundColor }, style]}
       onPress={onPress}
       activeOpacity={0.8}
     >
-      <Text style={[styles.text, { color: textColor }, textStyle]}>
+      <Text
+        className={`text-base ${textClassName}`}
+        style={[{ color: textColor, fontFamily: 'PoppinsMedium' }, textStyle]}
+      >
         {title}
       </Text>
     </TouchableOpacity>
@@ -51,19 +62,3 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 };
 
 export default CustomButton;
-
-const styles = StyleSheet.create({
-  button: {
-    paddingVertical: 10,
-    paddingHorizontal: 18,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 10,
-  },
-
-  text: {
-    fontSize: 16,
-    fontFamily: 'PoppinsMedium',
-  },
-});
