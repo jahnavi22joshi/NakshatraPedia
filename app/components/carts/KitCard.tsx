@@ -23,7 +23,7 @@ const KitCard: React.FC<Props> = ({
 }) => {
   return (
     <TouchableOpacity
-      className="flex-row bg-white rounded-lg py-4 px-4 mx-4 my-3.5 items-center"
+      className="flex-row bg-white rounded-lg py-4 px-4 mx-4 mb-3.5 items-center"
       activeOpacity={0.9}
       onPress={onPress}
       style={styles.shadow}

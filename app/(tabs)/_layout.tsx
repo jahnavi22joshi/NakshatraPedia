@@ -5,12 +5,15 @@ import { IconSymbol } from '../components/ui/icon-symbol.ios';
 import { Colors } from '../constants/theme';
 import { useColorScheme } from '../hooks/use-color-scheme.web';
 import "../global.css";
+import { Provider } from 'react-redux';
+import { store } from '../redux/store';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <Tabs
+    <Provider store={store}>
+       <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
@@ -31,5 +34,7 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+    </Provider>
+   
   );
 }

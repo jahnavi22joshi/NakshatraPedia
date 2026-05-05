@@ -11,6 +11,9 @@ interface ListCourseCardProps {
     duration: string;
     lecture: string;
     level: string;
+    studentEnroll: string;
+    avgRating: number;
+    avgRatingCount: number,
     oldPrice: string;
     price: string;
     image: string;
@@ -23,6 +26,9 @@ export default function ListCourseCard({
     duration,
     lecture,
     level,
+    avgRating,
+    avgRatingCount,
+    studentEnroll,
     oldPrice,
     price,
     image,
@@ -56,17 +62,27 @@ export default function ListCourseCard({
                     <View className="flex-row items-center bg-gray-100 px-2 py-1 rounded-md mr-2">
                         <Text className="text-xs text-gray-600 font-semibold">{level}</Text>
                     </View>
+
+                    <View className="flex-row items-center bg-gray-100 px-2 py-1 rounded-md mr-2">
+                        <Text className="text-xs text-gray-600 font-semibold">{studentEnroll}</Text>
+                    </View>
                 </View>
 
                 <View className="flex-row justify-between items-center mt-2 px-2.5 mb-2">
 
                     {/* Stars */}
                     <View className="flex-row items-center">
+                        <Ionicons name="star" size={14} color="#fbbf24" />
+                        {/* <Ionicons name="star" size={14} color="#fbbf24" style={{ marginRight: 3 }} />
                         <Ionicons name="star" size={14} color="#fbbf24" style={{ marginRight: 3 }} />
                         <Ionicons name="star" size={14} color="#fbbf24" style={{ marginRight: 3 }} />
-                        <Ionicons name="star" size={14} color="#fbbf24" style={{ marginRight: 3 }} />
-                        <Ionicons name="star" size={14} color="#fbbf24" style={{ marginRight: 3 }} />
-                        <Ionicons name="star" size={14} color="grey" style={{ marginRight: 6 }} />
+                        <Ionicons name="star" size={14} color="grey" style={{ }} /> */}
+                        <Text numberOfLines={1} className="text-xl font-bold px-1 mt-1 text-[#1F1F3D]">
+                            {avgRating}
+                        </Text>
+                         <Text numberOfLines={1} className="text-xl font-bold mt-1 text-[#1F1F3D]">
+                            ({avgRatingCount})
+                        </Text>
                     </View>
 
                     {/* Price Group (RIGHT SIDE FIX) */}
@@ -79,9 +95,7 @@ export default function ListCourseCard({
                         <Text className="text-lg font-bold text-[#1F1F3D]">
                             {price}
                         </Text>
-
                     </View>
-
                 </View>
             </View>
         </View>

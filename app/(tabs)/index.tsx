@@ -6,6 +6,7 @@ import CourseCard from '../components/carts/CourseCard';
 import CourseIncludes from '../components/carts/CourseIncludes';
 import KitCard from '../components/carts/KitCard';
 import MoreCourseCard from '../components/carts/MoreCourseCard';
+import YouLearn from '../components/carts/YouLearn';
 import CourseTabs from '../components/tab/CourseTabsSection';
 import useAppFonts from "../config/useAppFonts";
 
@@ -17,6 +18,13 @@ export default function HomeScreen() {
     { icon: 'infinite-outline', text: 'Lifetime access' },
     { icon: 'phone-portrait-outline', text: 'Access on mobile and TV' },
     { icon: 'ribbon-outline', text: 'Certificate of completion' },
+  ];
+  const youLearnData = [
+    { text: 'प्रत्येक श्लोक में : मूल श्लोक, पदच्छेद, अनुवाद, अन्वय और व्याख्या सम्मिलित हैं।' },
+    { text: 'प्रत्याहार और माहेश्वर सूत्र' },
+    { text: 'ह्रस्व, दीर्घ और प्लुत स्वरों के बारें में' },
+    { text: 'घोष और अघोष वर्ण, अल्पप्राण, महाप्राण तथा अन्तःस्थ वर्ण वर्ण क्या हैं?' },
+    { text: 'यम वर्ण, स्पर्श वर्ण और दुस्पृष्ट वर्ण क्या हैं?' },
   ];
 
   const lessons = [
@@ -119,6 +127,9 @@ export default function HomeScreen() {
           />
         </View>
 
+         {/* You'll Learn */}
+        <YouLearn items={youLearnData} />
+
         {/* Kit Card */}
         <KitCard
           title="Ultimate Sanskrit Learning Kit"
@@ -126,10 +137,11 @@ export default function HomeScreen() {
           price="₹899"
           discountPrice="₹3650"
           onPress={() => console.log("Clicked")}
-        />
+        />       
 
         {/* Course Includes */}
         <CourseIncludes items={includesData} />
+
 
         {/* Course Content */}
         <CourseTabs
