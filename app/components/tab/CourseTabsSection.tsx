@@ -30,6 +30,9 @@ type Props = {
     activeTab: string;
     setActiveTab: (tab: string) => void;
     lessons: Lesson[];
+    sectionsCount: number;
+    lecturesCount: number;
+    hrCount: number;
     expandedId: number | null;
     toggleDropdown: (id: number) => void;
 };
@@ -39,6 +42,9 @@ const CourseTabs: React.FC<Props> = ({
     activeTab,
     setActiveTab,
     lessons,
+    sectionsCount,
+    lecturesCount,
+    hrCount,
     expandedId,
     toggleDropdown,
 }) => {
@@ -86,13 +92,14 @@ const CourseTabs: React.FC<Props> = ({
 
                         <Text className="text-xs text-gray-900 mt-1 mx-4"
                             style={{ fontFamily: 'InterMedium' }}>
-                            28 sections | 124 lectures | 1 hr 32 min
+                            {sectionsCount} Sections | {lecturesCount} Lectures | {hrCount} H
                         </Text>
                     </View>
 
                     <View
-                        className="bg-white px-2.5 pt-2.5 mx-4 my-4 rounded-xl"
+                        className="bg-white px-2.5 mx-4 my-4 rounded-xl"
                         style={shadows.card}>
+                        {/*  pt-2.5 in the upper view 
                         <View
                             className="flex-row justify-between items-center"
                         >
@@ -105,7 +112,7 @@ const CourseTabs: React.FC<Props> = ({
                                 style={{ fontFamily: 'JostSemiBold' }}>
                                 10 min
                             </Text>
-                        </View>
+                        </View> */}
 
                         {lessons.map((item, index) => (
                             <View key={item.id}>

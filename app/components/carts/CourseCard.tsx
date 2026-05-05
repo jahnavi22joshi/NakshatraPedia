@@ -19,6 +19,7 @@ interface CourseCardProps {
   price: number | string;
   oldPrice: number | string;
   discount: number | string;
+  updatedAt: number | string;
   onApply: () => void;
   onAddToCart: () => void;
   onWishlist: () => void;
@@ -34,6 +35,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
   price,
   oldPrice,
   discount,
+  updatedAt,
   onApply,
   onAddToCart,
   onWishlist,
@@ -44,10 +46,10 @@ const CourseCard: React.FC<CourseCardProps> = ({
   return (
     <View className="bg-white mx-[15px] mt-[-21px] rounded-lg p-[15px] z-10"
       style={{ elevation: 5 }}>
-      <Text className="text-[26px] mb-1"
+      <Text className="text-[26px] mb-1" numberOfLines={2}
         style={{ fontFamily: 'InterMedium' }}>{title}</Text>
 
-      <Text className="my-[2px] text-base"
+      <Text className="my-[2px] text-base" numberOfLines={2}
         style={{ fontFamily: 'InterMedium' }}>{subtitle}</Text>
 
       <View className="flex-row items-center my-[2px]">
@@ -74,7 +76,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
       <View className="flex-row items-center my-[2px]">
         <MaterialIcons name="update" size={16} color="black" />
         <Text className="my-[2px] mx-[2px] text-xs"
-          style={{ fontFamily: 'InterMedium' }}>Last updated 12 January 2026</Text>
+          style={{ fontFamily: 'InterMedium' }}>Last updated {updatedAt}</Text>
       </View>
 
 

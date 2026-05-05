@@ -36,9 +36,11 @@ const KitCard: React.FC<Props> = ({
       />
 
       {/* Right Content */}
-      <View className="ml-2">
+      <View className="ml-2 flex-1">
         <Text
           className="text-sm mb-3"
+          numberOfLines={1}
+          ellipsizeMode="tail"
           style={{ fontFamily: "HalantMedium" }}
         >
           {title}

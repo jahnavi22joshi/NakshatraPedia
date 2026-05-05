@@ -29,7 +29,7 @@ const MoreCourseCard: React.FC<MoreCourseCardProps> = ({
 }) => {
   return (
     <TouchableOpacity
-      className="flex-row items-center bg-white rounded-3xl py-3.5 px-4 my-2.5 mb-20"
+      className="flex-row items-center bg-white rounded-3xl py-3.5 px-4 my-2"
       style={styles.moreCourseShadow}
       onPress={onPress}
       activeOpacity={0.8}
