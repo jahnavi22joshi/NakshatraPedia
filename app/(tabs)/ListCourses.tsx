@@ -1,20 +1,24 @@
+import { FontAwesome } from "@expo/vector-icons";
+import { useFocusEffect } from "@react-navigation/native";
 import Constants from "expo-constants";
 import { useRouter } from "expo-router";
-import React, { useEffect } from "react";
+import React from "react";
 import {
+  ActivityIndicator,
   Image,
   SafeAreaView,
   ScrollView,
   StatusBar,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
+import CustomButton from "../components/button/CustomButton";
 import ListCourseCard from "../components/carts/ListCourseCard";
 import useAppFonts from "../config/useAppFonts";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchCourses } from "../redux/slices/CourseSlice";
 import { removeHtmlTags } from '../utils/helpers';
-import { useFocusEffect } from "@react-navigation/native";
 export default function ListCourses() {
 
   const router = useRouter();
@@ -45,12 +49,27 @@ export default function ListCourses() {
     }, [])
   );
 
+  const [filters, setFilters] = React.useState({
+    rating: null,
+    category: [],
+    level: [],
+    price: null,
+  });
+
   if (!fontsLoaded) return null;
+
+  const [showFilter, setShowFilter] = React.useState(false);
 
   if (loading) {
     return (
-      <SafeAreaView className="flex-1 items-center justify-center">
-        <Text>Loading courses...</Text>
+      <SafeAreaView className="flex-1 items-center justify-center bg-white">
+        <View className="items-center">
+          <ActivityIndicator size="large" color="#F7931E" />
+
+          <Text className="mt-4 text-base text-[#1F1F3D]">
+            Courses Loading...
+          </Text>
+        </View>
       </SafeAreaView>
     );
   }
@@ -86,9 +105,17 @@ export default function ListCourses() {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex-1 bg-white pt-6">
-          <Text className="text-2xl text-[#1F1F3D] mb-4 px-2">
-            All <Text className="text-[#F7931E]">Featured Courses</Text>
-          </Text>
+          <View className="flex-row justify-between items-center mb-4 px-4">
+            {/* Left Text */}
+            <Text className="text-2xl text-[#1F1F3D]">
+              All <Text className="text-[#F7931E]">Featured Courses</Text>
+            </Text>
+
+            {/* Right Icon */}
+            <TouchableOpacity onPress={() => setShowFilter(true)}>
+              <FontAwesome name="filter" size={35} color="black" />
+            </TouchableOpacity>
+          </View>
 
           {data?.data?.data?.map((item, index) => (
 
@@ -122,6 +149,134 @@ export default function ListCourses() {
           ))}
         </View>
       </ScrollView>
+      {showFilter && (
+        <View className="absolute bottom-0 left-0 right-0  bg-[#002D3B] rounded-t-3xl p-5 shadow-lg mx-2.5">
+
+          <Text className="text-xl color-white font-bold mb-4">Filter Courses</Text>
+
+          {/* Rating */}
+          <Text className="mb-2 font-semibold color-white">Rating</Text>
+          <View className="flex-row mb-4">
+            {[1, 2, 3, 4, 5].map((r) => (
+              <Text
+                key={r}
+                onPress={() =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    rating: prev.rating === r ? null : r,
+                  }))
+                }
+                className={`px-3 py-1.5 rounded-full mr-2 ${filters.rating === r ? "bg-[#F9851C]" : "bg-gray-100"
+                  } ${filters.rating === r ? "text-white" : "text-black"}`}
+              >
+                {r}★
+              </Text>
+            ))}
+          </View>
+
+          {/* Level */}
+          <Text className="mb-2 font-semibold text-white">Level</Text>
+
+          <View className="flex-row mb-4 flex-wrap">
+            {["All", "Beginner", "Intermediate", "Expert"].map((lvl) => {
+              const isSelected =
+                lvl === "All"
+                  ? filters.level.length === 0
+                  : filters.level.includes(lvl);
+
+              return (
+                <Text
+                  key={lvl}
+                  onPress={() => {
+                    if (lvl === "All") {
+                      // Reset everything → show all courses
+                      setFilters((prev) => ({
+                        ...prev,
+                        level: [],
+                      }));
+                    } else {
+                      setFilters((prev) => {
+                        const exists = prev.level.includes(lvl);
+
+                        let updatedLevels = exists
+                          ? prev.level.filter((l) => l !== lvl)
+                          : [...prev.level, lvl];
+
+                        return {
+                          ...prev,
+                          level: updatedLevels,
+                        };
+                      });
+                    }
+                  }}
+                  className={`px-3 py-1.5 rounded-full mr-2 mb-2 ${isSelected ? "bg-[#F9851C]" : "bg-gray-100 border border-gray-200"
+                    } ${isSelected ? "text-white font-semibold" : "text-black"}`}
+                >
+                  {lvl}
+                </Text>
+              );
+            })}
+          </View>
+
+          {/* Price */}
+          <Text className="mb-2 font-semibold color-white">Price</Text>
+          <View className="flex-row mb-4">
+            {["Free", "Paid"].map((p) => (
+              <Text
+                key={p}
+                onPress={() =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    price: prev.price === p ? null : p,
+                  }))
+                }
+                className={`px-3 py-1.5 rounded-full mr-2 ${filters.price === p ? "bg-[#F9851C]" : "bg-gray-100"
+                  } ${filters.price === p ? "text-white" : "text-black"}`}
+              >
+                {p}
+              </Text>
+            ))}
+          </View>
+
+          {/* Buttons */}
+          <View className="flex-row justify-between mt-4">
+            <CustomButton
+              title="Cancel"
+              variant="blue"
+              onPress={() => setShowFilter(false)}
+
+              className=" flex-[0.5] mr-2"
+            />
+
+            <CustomButton
+              title="Apply"
+              variant="orange"
+              onPress={() => {
+                const payload = {
+                  filters: {
+                    keyword: "",
+                    Category: filters.category,
+                    SubCategory: [],
+                    Level: filters.level,
+                    isFree:
+                      filters.price === "Free"
+                        ? true
+                        : filters.price === "Paid"
+                          ? false
+                          : null,
+                    ratingCount: filters.rating ? [filters.rating] : [],
+                  },
+                  page: 1,
+                };
+
+                dispatch(fetchCourses(payload));
+                setShowFilter(false);
+              }}
+              className=" flex-[0.5] mr-2"
+            />
+          </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
