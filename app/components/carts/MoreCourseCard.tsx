@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import React from 'react';
+import Constants from "expo-constants";
+import React, { useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -27,6 +28,12 @@ const MoreCourseCard: React.FC<MoreCourseCardProps> = ({
   image,
   onPress,
 }) => {
+  const {
+    IMAGE_BASE_URL,
+    PLACEHOLDER_URL,
+  } = Constants.expoConfig?.extra || {};
+  const [imgSrc, setImgSrc] = useState(image || PLACEHOLDER_URL);
+
   return (
     <TouchableOpacity
       className="flex-row items-center bg-white rounded-3xl py-3.5 px-4 my-2"
@@ -35,8 +42,10 @@ const MoreCourseCard: React.FC<MoreCourseCardProps> = ({
       activeOpacity={0.8}
     >
       <Image
-        source={{ uri: image }}
-        className="w-[92px] h-[62px] rounded-lg"
+        source={{ uri: imgSrc }}
+        style={{ width: 100, height: 60 }}
+        resizeMode="cover"
+        onError={() => setImgSrc(PLACEHOLDER_URL)}
       />
 
       <View className="flex-1 ml-3.5 justify-center">

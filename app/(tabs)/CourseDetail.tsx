@@ -1,3 +1,4 @@
+import Constants from "expo-constants";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -9,168 +10,69 @@ import KitCard from '../components/carts/KitCard';
 import MoreCourseCard from '../components/carts/MoreCourseCard';
 import YouLearn from '../components/carts/YouLearn';
 import CourseTabs from '../components/tab/CourseTabsSection';
-import useAppFonts from "../config/useAppFonts";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { fetchBundles, fetchCourseDetails, fetchMoreCourses } from "../redux/slices/CourseSlice";
+import { calculateDiscount, formatDate, getYouLearnData } from "../utils/helpers";
 
 export default function CourseDeatil() {
     const [activeTab, setActiveTab] = useState('coursecontent');
+    const {
+        IMAGE_BASE_URL,
+        PLACEHOLDER_URL,
+    } = Constants.expoConfig?.extra || {};
+    const [expandedId, setExpandedId] = useState(null);
+    const toggleDropdown = (id) => {
+        setExpandedId(expandedId === id ? null : id);
+    };
+    const params = useLocalSearchParams();
+    const slug = Array.isArray(params.slug)
+        ? params.slug[0]
+        : params.slug;
+    const {
+        courseDetails,
+        lessons,
+        bundles,
+        moreCourses,
+        bundleLoading,
+        moreLoading
+    } = useAppSelector((state: any) => state.courses);
+    const dispatch = useAppDispatch();
+    const [imgError, setImgError] = useState(false);
     const includesData = [
-        { icon: 'videocam-outline', text: '2 hr 32 min video' },
+        {
+            icon: 'videocam-outline', text:
+                `${Math.floor(courseDetails?.customData?.totalVideoDurationInHrs)} H of min video`
+        },
         { icon: 'download-outline', text: 'Downloadable resources' },
         { icon: 'infinite-outline', text: 'Lifetime access' },
         { icon: 'phone-portrait-outline', text: 'Access on mobile and TV' },
         { icon: 'ribbon-outline', text: 'Certificate of completion' },
     ];
 
-    const [lessons, setLessons] = useState([]);
-
-    // const lessons = [
-    //     {
-    //         id: 1,
-    //         title: 'प्रस्तावना',
-    //         duration: '01 Lecture | 01 Mins',
-    //         subLessons: [
-    //             { title: 'Introduction', time: '01:44' },
-    //         ],
-    //     },
-    //     {
-    //         id: 2,
-    //         title: 'सुभाषितम्',
-    //         duration: '05 Lecture | 06 Mins',
-    //         subLessons: [
-    //             { title: 'स्वादुकाव्यरसोन्मिश्रं वाक्यार्थमुपभुञ्जते।...', time: '01:04' },
-    //             { title: 'धर्मो यशो नयो दाक्ष्यं मनोहारि सुभाषितम्।...', time: '01:09' },
-    //             { title: 'सुभाषितमयं द्रव्यं सङ्ग्रही न भवेन्नरः।...', time: '01:04' },
-    //             { title: 'बोद्धारो मत्सरग्रस्ताः प्रभवः स्मय दूषिताः।...', time: '01:27' },
-    //             { title: 'द्राक्षा म्लानमुखी जाता शर्करा चाश्मताङ्गता।...', time: '01:16' },
-    //         ],
-    //     },
-    //     {
-    //         id: 3,
-    //         title: 'श्रीनाथजी दर्शनम्',
-    //         duration: '04 Mins',
-    //         subLessons: ['Morning Darshan', 'Rajbhog', 'Shayan'],
-    //     },
-    // ];
-
-    const [expandedId, setExpandedId] = useState(null);
-
-    const toggleDropdown = (id) => {
-        setExpandedId(expandedId === id ? null : id);
-    };
-
-    const [fontsLoaded] = useAppFonts();
-
-    if (!fontsLoaded) return null;
-
-
-    const params = useLocalSearchParams();
-
-    const slug = Array.isArray(params.slug)
-        ? params.slug[0]
-        : params.slug;
-
-    // console.log("RECEIVED SLUG  ", slug);
-
-    const [courseData, setCourseData] = useState(null);
-
     useEffect(() => {
-        if (!slug) return;
-
-        fetch(`https://testadmin.nakshatrapedia.com/api/course/getAllCourseDetail?slug=${slug}`)
-            .then(res => res.json())
-            .then(res => {
-                console.log("FULL API  ", res);
-                console.log("FULL courseSection Array ", res?.data?.data?.courseSection);
-                setCourseData(res?.data?.data);
-                const sections = res?.data?.data?.courseSection || [];
-
-                console.log("SECTIONS ✅", sections); // you already confirmed this works
-
-                const formattedLessons = sections.map((section: any) => ({
-                    id: section.id,
-                    title: section.name,
-                    duration: `${section.sectionLecture?.length || 0} Lectures`,
-                    subLessons: (section.sectionLecture || []).map((lecture: any) => ({
-                        title: lecture.name,
-                        time: lecture.duration || "00:00",
-                    })),
-                }));
-
-                console.log("LESSONS ✅", formattedLessons);
-
-                setLessons(formattedLessons);
-
-            })
-            .catch(err => console.log("ERROR  ", err));
+        if (slug) {
+            dispatch(fetchCourseDetails(slug));
+        }
     }, [slug]);
 
-    const IMAGE_BASE_URL = "https://testadmin.nakshatrapedia.com/uploads";
-
-    const formatDate = (dateString) => {
-        if (!dateString) return "";
-
-        const date = new Date(dateString);
-
-        return date.toLocaleDateString("en-GB", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-        });
-    };
-
-    const discount = Math.round(
-        ((courseData?.amountInInr - courseData?.offerAmountInInr) /
-            courseData?.amountInInr) *
-        100
-    );
-    const youLearnData =
-        courseData?.courseIntendedLearnerInfo
-            ?.filter((item) => item.type === "learn")
-            .map((item) => ({
-                text: item.name,
-            })) || [];
-
-
-    const [bundles, setBundles] = useState([]);
-    const [bundleLoading, setBundleLoading] = useState(false);
-
     useEffect(() => {
-        if (!courseData?.id) return;
 
-        setBundleLoading(true);
+        if (!courseDetails?.id) return;
 
-        fetch(
-            `https://testadmin.nakshatrapedia.com/api/bundle/getLimitedBundles?courseId=${courseData.id}&limit=3`
-        )
-            .then((res) => res.json())
-            .then((res) => {
-                console.log("BUNDLE API  ", res);
-                console.log("BUNDLE API Data  ", res?.data?.data);
-                setBundles(res?.data?.data || []);
-            })
-            .catch((err) => console.log(err))
-            .finally(() => setBundleLoading(false));
-    }, [courseData?.id]);
+        dispatch(fetchBundles(courseDetails.id));
 
-    const [moreCourses, setMoreCourses] = useState([]);
-    const [moreLoading, setMoreLoading] = useState(false);
+        if (courseDetails?.categoryId) {
+            dispatch(
+                fetchMoreCourses({
+                    courseId: courseDetails.id,
+                    categoryId: courseDetails.categoryId,
+                })
+            );
+        }
+    }, [courseDetails?.id, courseDetails?.categoryId]);
 
-    useEffect(() => {
-        if (!courseData?.id || !courseData?.categoryId) return;
-
-        setMoreLoading(true);
-
-        fetch(
-            `https://testadmin.nakshatrapedia.com/api/course/getLimitedCourses?courseId=${courseData.id}&categoryId=${courseData.categoryId}&limit=2`
-        )
-            .then((res) => res.json())
-            .then((res) => {
-                // console.log("MORE COURSES 👉", JSON.stringify(res, null, 2));
-                setMoreCourses(res?.data?.data || []);
-            })
-            .catch((err) => console.log("ERROR 👉", err))
-            .finally(() => setMoreLoading(false));
-    }, [courseData?.id, courseData?.categoryId]);
+    const finalUrl = `${IMAGE_BASE_URL}${courseDetails?.imageUrl}`;
+    console.log("IMAGE URL 👉", finalUrl);
 
     return (
         <View className='flex-1 bg-white'>
@@ -188,11 +90,12 @@ export default function CourseDeatil() {
                     {/* Header Image */}
                     <View className="relative">
                         <Image
-                            source={{
-                                uri: courseData?.imageUrl
-                                    ? encodeURI(`${IMAGE_BASE_URL}${courseData.imageUrl}`)
-                                    : "https://via.placeholder.com/300", // fallback
-                            }}
+                            source={
+                                !imgError && courseDetails?.imageUrl
+                                    ? { uri: `${IMAGE_BASE_URL}${courseDetails.imageUrl}` }
+                                    : { uri: PLACEHOLDER_URL }
+                            }
+                            onError={() => setImgError(true)}
                             className="w-full h-[200px]"
                         />
                     </View>
@@ -215,15 +118,18 @@ export default function CourseDeatil() {
                 {/* Course Info */}
                 <View>
                     <CourseCard
-                        title={courseData?.title}
-                        subtitle={courseData?.subTitle}
-                        rating={courseData?.avgRating}
+                        title={courseDetails?.title}
+                        subtitle={courseDetails?.subTitle}
+                        rating={courseDetails?.avgRating}
                         reviews={2}
-                        students={courseData?.udemyStudentCount}
-                        updatedAt={formatDate(courseData?.updatedAt)}
-                        price={courseData?.offerAmountInInr}
-                        oldPrice={courseData?.amountInInr}
-                        discount={discount}
+                        students={courseDetails?.udemyStudentCount}
+                        updatedAt={formatDate(courseDetails?.updatedAt)}
+                        price={courseDetails?.offerAmountInInr}
+                        oldPrice={courseDetails?.amountInInr}
+                        discount={calculateDiscount(
+                            courseDetails?.amountInInr,
+                            courseDetails?.offerAmountInInr
+                        )}
                         onApply={() => console.log('Apply Coupon')}
                         onAddToCart={() => console.log('Add to Cart')}
                         onWishlist={() => console.log('Wishlist')}
@@ -232,23 +138,22 @@ export default function CourseDeatil() {
                 </View>
 
                 {/* You'll Learn */}
-                <YouLearn items={youLearnData} />
+                <YouLearn items={getYouLearnData(courseDetails)} />
 
                 {/* Kit Card */}
                 {bundles.map((item, index) => {
-                    const imageUrl = `https://testadmin.nakshatrapedia.com/uploads${item.imageUrl}`;
-
-                    // console.log("IMAGE URL ", imageUrl);
-                    // console.log("RAW imageUrl  ", item.imageUrl);
+                    const hasImage = item?.imageUrl && item.imageUrl.trim() !== "";
 
                     return (
                         <KitCard
                             key={index}
                             title={item.title}
-                            image={encodeURI(imageUrl)}
+                            image={item?.imageUrl?.trim()
+                                ? `${IMAGE_BASE_URL}${item.imageUrl}`
+                                : PLACEHOLDER_URL}
                             price={`₹${item.offerAmountInInr}`}
                             discountPrice={`₹${item.amountInInr}`}
-                            onPress={() => console.log("Bundle clicked  ", item)}
+                            onPress={() => console.log("Bundle clicked", item)}
                         />
                     );
                 })}
@@ -256,15 +161,14 @@ export default function CourseDeatil() {
                 {/* Course Includes */}
                 <CourseIncludes items={includesData} />
 
-
                 {/* Course Content */}
                 <CourseTabs
                     styles={styles}
                     activeTab={activeTab}
                     setActiveTab={setActiveTab}
-                    sectionsCount={courseData?.customData?.totalSectionCount}
-                    lecturesCount={courseData?.customData?.totalLectureCount}
-                    hrCount={Math.floor(courseData?.customData?.totalVideoDurationInHrs)}
+                    sectionsCount={courseDetails?.customData?.totalSectionCount}
+                    lecturesCount={courseDetails?.customData?.totalLectureCount}
+                    hrCount={Math.floor(courseDetails?.customData?.totalVideoDurationInHrs)}
                     lessons={lessons}
                     expandedId={expandedId}
                     toggleDropdown={toggleDropdown}
@@ -276,11 +180,6 @@ export default function CourseDeatil() {
                         style={{ fontFamily: 'PlayfairSemiBold' }}>More Courses</Text>
 
                     {moreCourses.map((item, index) => {
-                        const imageUrl = item.imageUrl
-                            ? encodeURI(
-                                `https://testadmin.nakshatrapedia.com/uploads${item.imageUrl}`
-                            )
-                            : "https://via.placeholder.com/300";
 
                         return (
                             <MoreCourseCard
@@ -292,8 +191,10 @@ export default function CourseDeatil() {
                                 )} Hours`}
                                 price={item.offerAmountInInr}
                                 oldPrice={item.amountInInr}
-                                image={imageUrl}
-                                onPress={() => console.log("Course Clicked 👉", item)}
+                                image={item?.imageUrl?.trim()
+                                    ? `${IMAGE_BASE_URL}${item.imageUrl}`
+                                    : PLACEHOLDER_URL}
+                                onPress={() => console.log("Course Clicked", item)}
                             />
                         );
                     })}
@@ -303,8 +204,8 @@ export default function CourseDeatil() {
             {/* Bottom Enroll Button */}
             <View className="absolute bottom-0 left-0 right-0 py-2">
                 <EnrollButton
-                    price={551}
-                    oldPrice={850}
+                    price={courseDetails?.offerAmountInInr}
+                    oldPrice={courseDetails?.amountInInr}
                     onPress={() => console.log('Enroll Clicked')}
                 />
             </View>

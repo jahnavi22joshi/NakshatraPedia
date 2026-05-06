@@ -1,4 +1,5 @@
-import React from "react";
+import Constants from "expo-constants";
+import React, { useState } from "react";
 import {
   Image,
   Text,
@@ -21,6 +22,11 @@ const KitCard: React.FC<Props> = ({
   discountPrice,
   onPress,
 }) => {
+  const {
+    PLACEHOLDER_URL,
+  } = Constants.expoConfig?.extra || {};
+  const [imgSrc, setImgSrc] = useState(image || PLACEHOLDER_URL);
+
   return (
     <TouchableOpacity
       className="flex-row bg-white rounded-lg py-4 px-4 mx-4 mb-3.5 items-center"
@@ -30,9 +36,11 @@ const KitCard: React.FC<Props> = ({
     >
       {/* Left Image */}
       <Image
-        source={{ uri: image }}
-        className="w-[99px] h-[56px]"
+        source={{ uri: imgSrc }}
+        // className="w-[99px] h-[56px]"
+        style={{ width: 99, height: 56 }}
         resizeMode="cover"
+        onError={() => setImgSrc(PLACEHOLDER_URL)}
       />
 
       {/* Right Content */}

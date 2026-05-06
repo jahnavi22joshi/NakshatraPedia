@@ -1,8 +1,9 @@
 // components/CourseCard.tsx
 
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Constants from "expo-constants";
 
 interface ListCourseCardProps {
     title: string;
@@ -35,12 +36,28 @@ export default function ListCourseCard({
     image,
     onPress
 }: ListCourseCardProps) {
+      const {
+      PLACEHOLDER_URL,
+    } = Constants.expoConfig?.extra || {};
+    const [imgError, setImgError] = useState(false);
     return (
         <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
             <View className="flex-row bg-white rounded-md mb-3.5 mx-3" style={styles.cardShadow}>
                 <View className="flex-1 justify-between">
-                    <Image source={{ uri: image }} className="w-full h-40 rounded-t-md" />
-
+                    <Image
+                        source={{
+                            uri:
+                                !imgError &&
+                                    image &&
+                                    image !== "null" &&
+                                    image !== "undefined" &&
+                                    image.trim() !== ""
+                                    ? image
+                                    : PLACEHOLDER_URL,
+                        }}
+                        onError={() => setImgError(true)}
+                        className="w-full h-40 rounded-t-md"
+                    />
                     <Text numberOfLines={1} className="text-xl font-bold px-2.5 mt-2 text-[#1F1F3D]">
                         {title}
                     </Text>
