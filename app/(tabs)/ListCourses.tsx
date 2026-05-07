@@ -116,36 +116,55 @@ export default function ListCourses() {
             </TouchableOpacity>
           </View>
 
-          {data?.data?.data?.map((item, index) => (
+          {data?.data?.data?.length > 0 ? (
+            data?.data?.data?.map((item, index) => (
 
-            <ListCourseCard
-              key={index}
-              title={item.title}
-              desc={removeHtmlTags(item.description)}
-              // createdBy={item.createdBy || "Nakshatrapedia"}
-              createdBy={'Nakshatrapedia'}
-              duration={`${Math.floor(item.customData.totalVideoDurationInHrs)} H`}
-              lecture={`${item.customData.totalLectureCount} Lectures`}
-              level={item.courseLevel.title}
-              avgRating={item.avgRating}
-              avgRatingCount={item.customData.totalRatingCount}
-              oldPrice={`₹${item.offerAmountInInr || 0}`}
-              price={`₹${item.amountInInr || 0}`}
-              image={
-                item?.imageUrl && item.imageUrl.trim() !== ""
-                  ? `${IMAGE_BASE_URL}${item.imageUrl}`
-                  : PLACEHOLDER_URL
-              }
-              studentEnroll={`${item.customData.studentPurchaseCount} Enroll`}
-              onPress={() => {
-                router.push({
-                  pathname: "/(tabs)/CourseDetail",
-                  params: { slug: item.slug },
-                });
-              }}
-            />
+              <ListCourseCard
+                key={index}
+                title={item.title}
+                desc={removeHtmlTags(item.description)}
+                createdBy={'Nakshatrapedia'}
+                duration={`${Math.floor(item.customData.totalVideoDurationInHrs)} H`}
+                lecture={`${item.customData.totalLectureCount} Lectures`}
+                level={item.courseLevel.title}
+                avgRating={item.avgRating}
+                avgRatingCount={item.customData.totalRatingCount}
+                oldPrice={`₹${item.offerAmountInInr || 0}`}
+                price={`₹${item.amountInInr || 0}`}
+                image={
+                  item?.imageUrl && item.imageUrl.trim() !== ""
+                    ? `${IMAGE_BASE_URL}${item.imageUrl}`
+                    : PLACEHOLDER_URL
+                }
+                studentEnroll={`${item.customData.studentPurchaseCount} Enroll`}
+                onPress={() => {
+                  router.push({
+                    pathname: "/(tabs)/CourseDetail",
+                    params: { slug: item.slug },
+                  });
+                }}
+              />
 
-          ))}
+            ))
+          ) : (
+            <View className="flex-1 items-center justify-center mt-20 px-5">
+
+              <FontAwesome
+                name="search"
+                size={60}
+                color="#9CA3AF"
+              />
+
+              <Text className="text-xl font-bold text-[#1F1F3D] mt-4">
+                No Courses Found
+              </Text>
+
+              <Text className="text-gray-500 text-center mt-2">
+                Try changing your filters or search criteria.
+              </Text>
+
+            </View>
+          )}
         </View>
       </ScrollView>
       {showFilter && (
