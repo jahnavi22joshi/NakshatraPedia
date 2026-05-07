@@ -56,21 +56,20 @@ export default function ListCourses() {
     price: null,
   });
 
-  if (!fontsLoaded) return null;
-
   const [showFilter, setShowFilter] = React.useState(false);
+
+  if (!fontsLoaded) return null;
 
   if (loading) {
     return (
-      <SafeAreaView className="flex-1 items-center justify-center bg-white">
-        <View className="items-center">
-          <ActivityIndicator size="large" color="#F7931E" />
+      <View className="flex-1 items-center justify-center bg-white">
 
-          <Text className="mt-4 text-base text-[#1F1F3D]">
-            Courses Loading...
-          </Text>
-        </View>
-      </SafeAreaView>
+        <ActivityIndicator size="large" color="#F7931E" />
+        <Text className="mt-4 text-base text-[#1F1F3D]">
+          Courses Loading...
+        </Text>
+
+      </View>
     );
   }
 
