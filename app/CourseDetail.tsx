@@ -1,18 +1,18 @@
 import Constants from "expo-constants";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import BackButton from '../components/button/BackButton';
-import EnrollButton from '../components/button/EnrollButton';
-import CourseCard from '../components/carts/CourseCard';
-import CourseIncludes from '../components/carts/CourseIncludes';
-import KitCard from '../components/carts/KitCard';
-import MoreCourseCard from '../components/carts/MoreCourseCard';
-import YouLearn from '../components/carts/YouLearn';
-import CourseTabs from '../components/tab/CourseTabsSection';
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { fetchBundles, fetchCourseDetails, fetchMoreCourses } from "../redux/slices/CourseSlice";
-import { calculateDiscount, formatDate, getYouLearnData } from "../utils/helpers";
+import BackButton from './components/button/BackButton';
+import EnrollButton from './components/button/EnrollButton';
+import CourseCard from './components/carts/CourseCard';
+import CourseIncludes from './components/carts/CourseIncludes';
+import KitCard from './components/carts/KitCard';
+import MoreCourseCard from './components/carts/MoreCourseCard';
+import YouLearn from './components/carts/YouLearn';
+import CourseTabs from './components/tab/CourseTabsSection';
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { fetchBundles, fetchCourseDetails, fetchMoreCourses } from "./redux/slices/CourseSlice";
+import { calculateDiscount, formatDate, getYouLearnData } from "./utils/helpers";
 
 export default function CourseDeatil() {
     const [activeTab, setActiveTab] = useState('coursecontent');
@@ -78,7 +78,7 @@ export default function CourseDeatil() {
         <View className='flex-1 bg-white'>
             <ScrollView>
                 <BackButton
-                    onPress={() => console.log('Button Pressed------123--')
+                    onPress={() => router.back()
                     }
                     color="white"
                     style={{ elevation: 10 }}
@@ -107,7 +107,7 @@ export default function CourseDeatil() {
                         onPress={() => console.log('Floating Button Pressed')}
                     >
                         <Image
-                            source={require('../assets/icons/play.png')}
+                            source={require('./assets/icons/play.png')}
                             className="w-[63px] h-[63px]"
                             resizeMode="contain"
                         />

@@ -2,7 +2,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import Constants from "expo-constants";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -10,9 +10,11 @@ import {
   ScrollView,
   StatusBar,
   Text,
+  TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
+import Animated, { FadeIn, FadeOut, SlideInLeft, SlideOutLeft } from "react-native-reanimated";
 import CustomButton from "../components/button/CustomButton";
 import ListCourseCard from "../components/carts/ListCourseCard";
 import useAppFonts from "../config/useAppFonts";
@@ -23,6 +25,7 @@ export default function ListCourses() {
 
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [sortBy, setSortBy] = useState("");
   const {
     PLACEHOLDER_URL,
     IMAGE_BASE_URL,
@@ -31,6 +34,7 @@ export default function ListCourses() {
 
   const { data, loading, error } = useAppSelector((state) => state.courses);
   const [fontsLoaded] = useAppFonts();
+  const [selectedCategory, setSelectedCategory] = React.useState<any>(null);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -49,14 +53,165 @@ export default function ListCourses() {
     }, [])
   );
 
+  // Add this state
+  const [showSortDropdown, setShowSortDropdown] = useState(false);
+
+  const sortOptions = [
+    "Newest First",
+    "Oldest First",
+    "Price: Low to High",
+    "Price: High to Low",
+  ];
+
   const [filters, setFilters] = React.useState({
-    rating: null,
+    rating: [],
     category: [],
+    subCategory: [],
     level: [],
-    price: null,
+    price: [],
   });
 
   const [showFilter, setShowFilter] = React.useState(false);
+
+  const [visibleCount, setVisibleCount] = useState(3);
+
+  const courses = data?.data?.data || [];
+  const [searchText, setSearchText] = useState("");
+
+
+  // Search Filter
+  const filteredCourses = courses.filter((item) =>
+    item.title?.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  const sortedCourses = [...filteredCourses].sort((a, b) => {
+
+    // Newest First
+    if (sortBy === "Newest First") {
+      return (
+        new Date(b.createdAt).getTime() -
+        new Date(a.createdAt).getTime()
+      );
+    }
+
+    // Oldest First
+    if (sortBy === "Oldest First") {
+      return (
+        new Date(a.createdAt).getTime() -
+        new Date(b.createdAt).getTime()
+      );
+    }
+
+    // Price Low to High
+    if (sortBy === "Price: Low to High") {
+      return (
+        (a.amountInInr || 0) -
+        (b.amountInInr || 0)
+      );
+    }
+
+    // Price High to Low
+    if (sortBy === "Price: High to Low") {
+      return (
+        (b.amountInInr || 0) -
+        (a.amountInInr || 0)
+      );
+    }
+
+    return 0;
+  });
+
+  const handleSortSelect = (option: string) => {
+    setSortBy(option);
+    setShowSortDropdown(false);
+  };
+
+  const handleRatingSelect = (r: number) => {
+    setFilters((prev) => {
+      const exists = prev.rating.includes(r);
+
+      const updatedRatings = exists
+        ? prev.rating.filter((item) => item !== r)
+        : [...prev.rating, r];
+
+      return {
+        ...prev,
+        rating: updatedRatings,
+      };
+    });
+  };
+  const handleLevelSelect = (lvl: string) => {
+    setFilters((prev) => {
+      const exists = prev.level.includes(lvl);
+
+      const updatedLevels = exists
+        ? prev.level.filter((l) => l !== lvl)
+        : [...prev.level, lvl];
+
+      return {
+        ...prev,
+        level: updatedLevels,
+      };
+    });
+  };
+
+  const handlePriceSelect = (p: string) => {
+    setFilters((prev) => {
+      const exists = prev.price.includes(p);
+
+      const updatedPrices = exists
+        ? prev.price.filter((item) => item !== p)
+        : [...prev.price, p];
+
+      return {
+        ...prev,
+        price: updatedPrices,
+      };
+    });
+  };
+
+  const handleApplyFilters = () => {
+    const payload = {
+      filters: {
+        keyword: "",
+        Category: filters.category,
+        SubCategory: filters.subCategory,
+
+        Level:
+          filters.level.includes("All") ||
+            filters.level.includes("Expert")
+            ? []
+            : filters.level,
+
+        isFree:
+          filters.price.length === 1
+            ? filters.price.includes("Free")
+              ? true
+              : false
+            : null,
+
+        ratingCount: filters.rating,
+      },
+      page: 1,
+    };
+
+    dispatch(fetchCourses(payload));
+    setShowFilter(false);
+  };
+
+  const loadMore = ({ nativeEvent }) => {
+    const paddingToBottom = 20;
+
+    const isNearBottom =
+      nativeEvent.layoutMeasurement.height + nativeEvent.contentOffset.y >=
+      nativeEvent.contentSize.height - paddingToBottom;
+
+
+    if (isNearBottom && visibleCount < filteredCourses.length) {
+      setVisibleCount((prev) => prev + 3);
+    }
+  };
+
 
   if (!fontsLoaded) return null;
 
@@ -102,29 +257,129 @@ export default function ListCourses() {
         />
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="flex-1 bg-white pt-6">
+      <View className="flex-row items-center">
+
+        {/* Sort Dropdown */}
+        <View
+          className="relative mr-3"
+          style={{
+            zIndex: 1000,
+            elevation: 999,
+          }}
+        >
+
+
+
+          {/* Dropdown */}
+          {showSortDropdown && (
+            <View
+              className="absolute top-[55px] left-0 w-[220px] bg-white rounded-[18px] border border-[#E5E7EB] z-10 shadow-md"
+              style={{ elevation: 20 }}
+            >
+              {sortOptions.map((option, index) => {
+                const isSelected = sortBy === option;
+
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    activeOpacity={0.8}
+                    onPress={() => handleSortSelect(option)}
+                    style={{
+                      paddingVertical: 14,
+                      paddingHorizontal: 16,
+                      backgroundColor: isSelected
+                        ? "#F7931E"
+                        : "#FFFFFF",
+
+                      borderBottomWidth:
+                        index !== sortOptions.length - 1 ? 1 : 0,
+
+                      borderBottomColor: "#F3F4F6",
+                    }}
+                  >
+                    <Text
+                      className={`text-base ${isSelected
+                        ? "text-white"
+                        : "text-black"
+                        }`}
+                      style={{
+                        fontFamily: "PoppinsMedium",
+                      }}
+                    >
+                      {option}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              })}
+            </View>
+          )}
+        </View>
+      </View>
+
+      {/* Search Bar */}
+      <View className="px-4 mt-3">
+        <View className="flex-row items-center bg-gray-100 rounded-2xl px-4 py-2 border border-gray-200">
+
+          <FontAwesome
+            name="search"
+            size={16}
+            color="#6B7280"
+          />
+
+          <TextInput
+            placeholder="Search courses..."
+            placeholderTextColor="#9CA3AF"
+            value={searchText}
+            onChangeText={setSearchText}
+            className="flex-1 ml-3 text-black py-0"
+          />
+
+        </View>
+      </View>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        onScroll={loadMore}
+        scrollEventThrottle={200}
+      >
+        <View className="flex-1 bg-white pt-3">
+
           <View className="flex-row justify-between items-center mb-4 px-4">
-            {/* Left Text */}
+
             <Text className="text-2xl text-[#1F1F3D]">
               All <Text className="text-[#F7931E]">Featured Courses</Text>
             </Text>
 
-            {/* Right Icon */}
-            <TouchableOpacity onPress={() => setShowFilter(true)}>
-              <FontAwesome name="filter" size={35} color="black" />
-            </TouchableOpacity>
+            <View className="flex-row items-center">
+
+              {/* Sort */}
+              <TouchableOpacity
+                onPress={() => setShowSortDropdown(!showSortDropdown)}
+                className="mr-4"
+              >
+                <FontAwesome name="sort" size={28} color="black" />
+              </TouchableOpacity>
+
+              {/* Filter */}
+              <TouchableOpacity onPress={() => setShowFilter(true)}>
+                <FontAwesome name="filter" size={28} color="black" />
+              </TouchableOpacity>
+
+            </View>
+
           </View>
 
-          {data?.data?.data?.length > 0 ? (
-            data?.data?.data?.map((item, index) => (
+          {filteredCourses.length > 0 ? (
+            sortedCourses.slice(0, visibleCount).map((item, index) => (
 
               <ListCourseCard
                 key={index}
                 title={item.title}
                 desc={removeHtmlTags(item.description)}
-                createdBy={'Nakshatrapedia'}
-                duration={`${Math.floor(item.customData.totalVideoDurationInHrs)} H`}
+                createdBy={"Nakshatrapedia"}
+                duration={`${Math.floor(
+                  item.customData.totalVideoDurationInHrs
+                )} H`}
                 lecture={`${item.customData.totalLectureCount} Lectures`}
                 level={item.courseLevel.title}
                 avgRating={item.avgRating}
@@ -139,7 +394,7 @@ export default function ListCourses() {
                 studentEnroll={`${item.customData.studentPurchaseCount} Enroll`}
                 onPress={() => {
                   router.push({
-                    pathname: "/(tabs)/CourseDetail",
+                    pathname: "/CourseDetail",
                     params: { slug: item.slug },
                   });
                 }}
@@ -165,135 +420,135 @@ export default function ListCourses() {
 
             </View>
           )}
+
+          {visibleCount < sortedCourses.length && (
+            <View className="flex-1 items-center justify-center bg-white">
+
+              <ActivityIndicator size="large" color="#F7931E" />
+              <Text className="mt-2 text-base text-[#1F1F3D]">
+                More Course Loading...
+              </Text>
+
+            </View>
+          )}
+
         </View>
       </ScrollView>
       {showFilter && (
-        <View className="absolute bottom-0 left-0 right-0  bg-[#002D3B] rounded-t-3xl p-5 shadow-lg mx-2.5">
+        <>
+          {/* Overlay */}
+          <Animated.View
+            entering={FadeIn.duration(180)}
+            exiting={FadeOut.duration(180)}
+            className="absolute inset-0 bg-black/30"
+          />
 
-          <Text className="text-xl color-white font-bold mb-4">Filter Courses</Text>
+          {/* Filter Drawer */}
+          <Animated.View
+            entering={SlideInLeft.duration(250)}
+            exiting={SlideOutLeft.duration(220)}
+            className="absolute top-0 bottom-0 left-0 w-[80%] bg-[#002D3B] px-5 pt-16 pb-8"
+            style={{
+              elevation: 10,
+              shadowColor: "#000",
+              shadowOpacity: 0.1,
+              shadowRadius: 6,
+            }}
+          >
+            <Text className="text-2xl font-bold text-white mb-5">
+              Filter Courses
+            </Text>
 
-          {/* Rating */}
-          <Text className="mb-2 font-semibold color-white">Rating</Text>
-          <View className="flex-row mb-4">
-            {[1, 2, 3, 4, 5].map((r) => (
-              <Text
-                key={r}
-                onPress={() =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    rating: prev.rating === r ? null : r,
-                  }))
-                }
-                className={`px-3 py-1.5 rounded-full mr-2 ${filters.rating === r ? "bg-[#F9851C]" : "bg-gray-100"
-                  } ${filters.rating === r ? "text-white" : "text-black"}`}
-              >
-                {r}★
-              </Text>
-            ))}
-          </View>
+            {/* Rating */}
+            <Text className="mb-3 font-semibold text-white text-base">
+              Rating
+            </Text>
 
-          {/* Level */}
-          <Text className="mb-2 font-semibold text-white">Level</Text>
+            <View className="flex-row flex-wrap mb-5">
+              {[1, 2, 3, 4, 5].map((r) => {
+                const isSelected = filters.rating.includes(r);
 
-          <View className="flex-row mb-4 flex-wrap">
-            {["All", "Beginner", "Intermediate", "Expert"].map((lvl) => {
-              const isSelected =
-                lvl === "All"
-                  ? filters.level.length === 0
-                  : filters.level.includes(lvl);
+                return (
+                  <Text
+                    key={r}
+                    onPress={() => handleRatingSelect(r)}
+                    className={`px-4 py-2 rounded-full mr-2 mb-2 ${isSelected
+                      ? "bg-[#F9851C] text-white"
+                      : "bg-white text-black"
+                      }`}
+                  >
+                    {r}★
+                  </Text>
+                );
+              })}
+            </View>
 
-              return (
-                <Text
-                  key={lvl}
-                  onPress={() => {
-                    if (lvl === "All") {
-                      // Reset everything → show all courses
-                      setFilters((prev) => ({
-                        ...prev,
-                        level: [],
-                      }));
-                    } else {
-                      setFilters((prev) => {
-                        const exists = prev.level.includes(lvl);
+            {/* Level */}
+            <Text className="mb-3 font-semibold text-white text-base">
+              Level
+            </Text>
 
-                        let updatedLevels = exists
-                          ? prev.level.filter((l) => l !== lvl)
-                          : [...prev.level, lvl];
+            <View className="flex-row flex-wrap mb-5">
+              {["All", "Beginner", "Intermediate", "Expert"].map((lvl) => {
+                const isSelected = filters.level.includes(lvl);
 
-                        return {
-                          ...prev,
-                          level: updatedLevels,
-                        };
-                      });
-                    }
-                  }}
-                  className={`px-3 py-1.5 rounded-full mr-2 mb-2 ${isSelected ? "bg-[#F9851C]" : "bg-gray-100 border border-gray-200"
-                    } ${isSelected ? "text-white font-semibold" : "text-black"}`}
-                >
-                  {lvl}
-                </Text>
-              );
-            })}
-          </View>
+                return (
+                  <Text
+                    key={lvl}
+                    onPress={() => handleLevelSelect(lvl)}
+                    className={`px-4 py-2 rounded-full mr-2 mb-2 ${isSelected
+                      ? "bg-[#F9851C] text-white"
+                      : "bg-white text-black"
+                      }`}
+                  >
+                    {lvl}
+                  </Text>
+                );
+              })}
+            </View>
 
-          {/* Price */}
-          <Text className="mb-2 font-semibold color-white">Price</Text>
-          <View className="flex-row mb-4">
-            {["Free", "Paid"].map((p) => (
-              <Text
-                key={p}
-                onPress={() =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    price: prev.price === p ? null : p,
-                  }))
-                }
-                className={`px-3 py-1.5 rounded-full mr-2 ${filters.price === p ? "bg-[#F9851C]" : "bg-gray-100"
-                  } ${filters.price === p ? "text-white" : "text-black"}`}
-              >
-                {p}
-              </Text>
-            ))}
-          </View>
+            {/* Price */}
+            <Text className="mb-3 font-semibold text-white text-base">
+              Price
+            </Text>
 
-          {/* Buttons */}
-          <View className="flex-row justify-between mt-4">
-            <CustomButton
-              title="Cancel"
-              variant="blue"
-              onPress={() => setShowFilter(false)}
+            <View className="flex-row flex-wrap mb-5">
+              {["Free", "Paid"].map((p) => {
+                const isSelected = filters.price.includes(p);
 
-              className=" flex-[0.5] mr-2"
-            />
+                return (
+                  <Text
+                    key={p}
+                    onPress={() => handlePriceSelect(p)}
+                    className={`px-4 py-2 rounded-full mr-2 mb-2 ${isSelected
+                      ? "bg-[#F9851C] text-white"
+                      : "bg-white text-black"
+                      }`}
+                  >
+                    {p}
+                  </Text>
+                );
+              })}
+            </View>
 
-            <CustomButton
-              title="Apply"
-              variant="orange"
-              onPress={() => {
-                const payload = {
-                  filters: {
-                    keyword: "",
-                    Category: filters.category,
-                    SubCategory: [],
-                    Level: filters.level,
-                    isFree:
-                      filters.price === "Free"
-                        ? true
-                        : filters.price === "Paid"
-                          ? false
-                          : null,
-                    ratingCount: filters.rating ? [filters.rating] : [],
-                  },
-                  page: 1,
-                };
+            {/* Buttons */}
+            <View className="flex-row mt-6">
+              <CustomButton
+                title="Cancel"
+                variant="blue"
+                onPress={() => setShowFilter(false)}
+                className="flex-1 mr-2"
+              />
 
-                dispatch(fetchCourses(payload));
-                setShowFilter(false);
-              }}
-              className=" flex-[0.5] mr-2"
-            />
-          </View>
-        </View>
+              <CustomButton
+                title="Apply"
+                variant="orange"
+                onPress={handleApplyFilters}
+                className="flex-1 ml-2"
+              />
+            </View>
+          </Animated.View>
+        </>
       )}
     </SafeAreaView>
   );
