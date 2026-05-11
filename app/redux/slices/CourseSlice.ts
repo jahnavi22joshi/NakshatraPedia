@@ -3,19 +3,37 @@ import Constants from "expo-constants";
 
 const { API_BASE_URL } = Constants.expoConfig?.extra || {};
 
+type FetchCoursesPayload = {
+  filters: {
+    keyword: string;
+    Category: any[];
+    SubCategory: any[];
+    Level: string[];
+    isFree: boolean | null;
+    ratingCount: number[];
+  };
+  sortBy: string;
+  page: number;
+};
+
 // ==========================
 // 📌 COURSE LIST API
 // ==========================
-export const fetchCourses = createAsyncThunk(
-  'courses/fetchCourses',
+
+export const fetchCourses = createAsyncThunk<
+  any, // response type (you can improve later)
+  FetchCoursesPayload, // 👈 payload type
+  { rejectValue: string } // 👈 error type
+>(
+  "courses/fetchCourses",
   async (payload, thunkAPI) => {
     try {
       const response = await fetch(
         `${API_BASE_URL}course/getFilteredCourseList`,
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),
         }

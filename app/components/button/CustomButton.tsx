@@ -8,12 +8,18 @@ import {
 
 interface CustomButtonProps {
   title: string;
-  variant?: 'blue' | 'orange' | 'activeTab' | 'inactiveTab';
+  variant?: 
+    | 'blue'
+    | 'orange'
+    | 'red'
+    | 'activeTab'
+    | 'inactiveTab';
+
   onPress: () => void;
   style?: ViewStyle | any;
   textStyle?: TextStyle | any;
-  className?: string;     
-  textClassName?: string;  
+  className?: string;
+  textClassName?: string;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -28,19 +34,23 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   const isActiveTab = variant === 'activeTab';
   const isInactiveTab = variant === 'inactiveTab';
 
-  // 🎨 Background (still dynamic)
+  // 🎨 Background Colors
   const backgroundColor =
     variant === 'blue'
       ? '#002B3B'
       : variant === 'orange'
       ? '#ff7a00'
+      : variant === 'red'
+      ? '#FEE2E2' // light red
       : isActiveTab
       ? '#002B3B'
       : '#F2F4F7';
 
-  // 🎨 Text color
+  // 🎨 Text Colors
   const textColor =
-    isActiveTab || variant === 'blue' || variant === 'orange'
+    variant === 'red'
+      ? '#DC2626'
+      : isActiveTab || variant === 'blue' || variant === 'orange'
       ? '#fff'
       : '#555';
 
@@ -53,7 +63,10 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     >
       <Text
         className={`text-base ${textClassName}`}
-        style={[{ color: textColor, fontFamily: 'PoppinsMedium' }, textStyle]}
+        style={[
+          { color: textColor, fontFamily: 'PoppinsMedium' },
+          textStyle,
+        ]}
       >
         {title}
       </Text>

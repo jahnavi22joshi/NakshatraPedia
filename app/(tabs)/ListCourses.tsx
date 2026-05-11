@@ -1,8 +1,7 @@
-import { FontAwesome } from "@expo/vector-icons";
-import { useFocusEffect } from "@react-navigation/native";
+import { Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
 import Constants from "expo-constants";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -14,7 +13,7 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import Animated, { FadeIn, FadeOut, SlideInLeft, SlideOutLeft } from "react-native-reanimated";
+import Animated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from "react-native-reanimated";
 import CustomButton from "../components/button/CustomButton";
 import ListCourseCard from "../components/carts/ListCourseCard";
 import useAppFonts from "../config/useAppFonts";
@@ -31,30 +30,32 @@ export default function ListCourses() {
     IMAGE_BASE_URL,
     DEFAULT_AVATAR,
   } = Constants.expoConfig?.extra || {};
-
   const { data, loading, error } = useAppSelector((state) => state.courses);
   const [fontsLoaded] = useAppFonts();
-  const [selectedCategory, setSelectedCategory] = React.useState<any>(null);
+  const [searchText, setSearchText] = useState("");
+  const initialFilters = {
+    rating: [],
+    category: [],
+    subCategory: [],
+    level: [],
+    price: [],
+  };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      const payload = {
-        filters: {
-          keyword: "",
-          Category: [],
-          SubCategory: [],
-          Level: [],
-          isFree: null,
-          ratingCount: [],
-        },
-        page: 1,
-      };
-      dispatch(fetchCourses(payload));
-    }, [])
-  );
-
-  // Add this state
+  const [filters, setFilters] = React.useState(initialFilters);
+  const [tempFilters, setTempFilters] = React.useState(initialFilters);
+  const [showFilter, setShowFilter] = React.useState(false);
   const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [page, setPage] = useState(1);
+  const [allCourses, setAllCourses] = useState<any[]>([]);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  useEffect(() => {
+
+    setPage(1);
+    setAllCourses([]);
+
+  }, [searchText, filters, sortBy]);
 
   const sortOptions = [
     "Newest First",
@@ -62,29 +63,7 @@ export default function ListCourses() {
     "Price: Low to High",
     "Price: High to Low",
   ];
-
-  const [filters, setFilters] = React.useState({
-    rating: [],
-    category: [],
-    subCategory: [],
-    level: [],
-    price: [],
-  });
-
-  const [showFilter, setShowFilter] = React.useState(false);
-
-  const [visibleCount, setVisibleCount] = useState(3);
-
-  const courses = data?.data?.data || [];
-  const [searchText, setSearchText] = useState("");
-
-
-  // Search Filter
-  const filteredCourses = courses.filter((item) =>
-    item.title?.toLowerCase().includes(searchText.toLowerCase())
-  );
-
-  const sortedCourses = [...filteredCourses].sort((a, b) => {
+  const sortedCourses = [...allCourses].sort((a, b) => {
 
     // Newest First
     if (sortBy === "Newest First") {
@@ -121,13 +100,79 @@ export default function ListCourses() {
     return 0;
   });
 
+  useEffect(() => {
+
+    console.log("🚀 API HIT PAGE =>", page);
+
+
+    const delayDebounce = setTimeout(() => {
+
+      const payload = {
+        filters: {
+          keyword: searchText.trim(),
+          Category: filters.category,
+          SubCategory: filters.subCategory,
+          Level: filters.level.includes("All") ? [] : filters.level,
+          isFree:
+            filters.price.length === 1
+              ? filters.price.includes("Free")
+              : null,
+          ratingCount: filters.rating,
+        },
+
+        sortBy: sortBy,
+
+        page: page,
+        limit: 3,
+      };
+
+      dispatch(fetchCourses(payload));
+
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+
+  }, [searchText, filters, sortBy, page]);
+
+  useEffect(() => {
+
+    const newCourses = data?.data?.data || [];
+
+    console.log(
+      `✅ PAGE ${page} RECEIVED =>`,
+      newCourses.length,
+      "courses"
+    );
+
+    if (page === 1) {
+      setAllCourses(newCourses);
+    } else {
+      setAllCourses((prev) => [...prev, ...newCourses]);
+    }
+    if (newCourses.length < 3) {
+      console.log("🛑 PAGINATION ENDED");
+      setHasMore(false);
+    } else {
+      setHasMore(true);
+    }
+
+    setLoadingMore(false);
+
+  }, [data]);
+
+  const handleApplyFilters = () => {
+
+    setFilters(tempFilters);
+
+    setShowFilter(false);
+  };
+
   const handleSortSelect = (option: string) => {
     setSortBy(option);
     setShowSortDropdown(false);
   };
-
   const handleRatingSelect = (r: number) => {
-    setFilters((prev) => {
+    setTempFilters((prev) => {
       const exists = prev.rating.includes(r);
 
       const updatedRatings = exists
@@ -141,12 +186,25 @@ export default function ListCourses() {
     });
   };
   const handleLevelSelect = (lvl: string) => {
-    setFilters((prev) => {
-      const exists = prev.level.includes(lvl);
+    setTempFilters((prev) => {
+      if (lvl === "All") {
+        return {
+          ...prev,
+          level: ["All"],
+        };
+      }
 
-      const updatedLevels = exists
-        ? prev.level.filter((l) => l !== lvl)
-        : [...prev.level, lvl];
+      let updatedLevels = prev.level.filter((item) => item !== "All");
+
+      if (updatedLevels.includes(lvl)) {
+        updatedLevels = updatedLevels.filter((item) => item !== lvl);
+      } else {
+        updatedLevels.push(lvl);
+      }
+
+      if (updatedLevels.length === 0) {
+        updatedLevels = ["All"];
+      }
 
       return {
         ...prev,
@@ -154,9 +212,8 @@ export default function ListCourses() {
       };
     });
   };
-
   const handlePriceSelect = (p: string) => {
-    setFilters((prev) => {
+    setTempFilters((prev) => {
       const exists = prev.price.includes(p);
 
       const updatedPrices = exists
@@ -169,53 +226,37 @@ export default function ListCourses() {
       };
     });
   };
-
-  const handleApplyFilters = () => {
-    const payload = {
-      filters: {
-        keyword: "",
-        Category: filters.category,
-        SubCategory: filters.subCategory,
-
-        Level:
-          filters.level.includes("All") ||
-            filters.level.includes("Expert")
-            ? []
-            : filters.level,
-
-        isFree:
-          filters.price.length === 1
-            ? filters.price.includes("Free")
-              ? true
-              : false
-            : null,
-
-        ratingCount: filters.rating,
-      },
-      page: 1,
-    };
-
-    dispatch(fetchCourses(payload));
-    setShowFilter(false);
-  };
-
   const loadMore = ({ nativeEvent }) => {
+
     const paddingToBottom = 20;
 
     const isNearBottom =
       nativeEvent.layoutMeasurement.height + nativeEvent.contentOffset.y >=
       nativeEvent.contentSize.height - paddingToBottom;
 
+    if (
+      isNearBottom &&
+      !loading &&
+      !loadingMore &&
+      hasMore
+    ) {
 
-    if (isNearBottom && visibleCount < filteredCourses.length) {
-      setVisibleCount((prev) => prev + 3);
+      setLoadingMore(true);
+
+      setPage((prev) => {
+
+        const nextPage = prev + 1;
+
+        console.log("📄 NEXT PAGE =>", nextPage);
+
+        return nextPage;
+      });
     }
   };
 
-
   if (!fontsLoaded) return null;
 
-  if (loading) {
+  if (loading && page === 1 && allCourses.length === 0) {
     return (
       <View className="flex-1 items-center justify-center bg-white">
 
@@ -223,7 +264,6 @@ export default function ListCourses() {
         <Text className="mt-4 text-base text-[#1F1F3D]">
           Courses Loading...
         </Text>
-
       </View>
     );
   }
@@ -257,65 +297,6 @@ export default function ListCourses() {
         />
       </View>
 
-      <View className="flex-row items-center">
-
-        {/* Sort Dropdown */}
-        <View
-          className="relative mr-3"
-          style={{
-            zIndex: 1000,
-            elevation: 999,
-          }}
-        >
-
-
-
-          {/* Dropdown */}
-          {showSortDropdown && (
-            <View
-              className="absolute top-[55px] left-0 w-[220px] bg-white rounded-[18px] border border-[#E5E7EB] z-10 shadow-md"
-              style={{ elevation: 20 }}
-            >
-              {sortOptions.map((option, index) => {
-                const isSelected = sortBy === option;
-
-                return (
-                  <TouchableOpacity
-                    key={index}
-                    activeOpacity={0.8}
-                    onPress={() => handleSortSelect(option)}
-                    style={{
-                      paddingVertical: 14,
-                      paddingHorizontal: 16,
-                      backgroundColor: isSelected
-                        ? "#F7931E"
-                        : "#FFFFFF",
-
-                      borderBottomWidth:
-                        index !== sortOptions.length - 1 ? 1 : 0,
-
-                      borderBottomColor: "#F3F4F6",
-                    }}
-                  >
-                    <Text
-                      className={`text-base ${isSelected
-                        ? "text-white"
-                        : "text-black"
-                        }`}
-                      style={{
-                        fontFamily: "PoppinsMedium",
-                      }}
-                    >
-                      {option}
-                    </Text>
-                  </TouchableOpacity>
-                )
-              })}
-            </View>
-          )}
-        </View>
-      </View>
-
       {/* Search Bar */}
       <View className="px-4 mt-3">
         <View className="flex-row items-center bg-gray-100 rounded-2xl px-4 py-2 border border-gray-200">
@@ -333,7 +314,6 @@ export default function ListCourses() {
             onChangeText={setSearchText}
             className="flex-1 ml-3 text-black py-0"
           />
-
         </View>
       </View>
 
@@ -344,33 +324,121 @@ export default function ListCourses() {
       >
         <View className="flex-1 bg-white pt-3">
 
-          <View className="flex-row justify-between items-center mb-4 px-4">
+          <View className="flex-row gap-3 mb-2 px-4">
 
+            {/* Sort */}
+            {/* Sort */}
+            <View
+              style={{
+                position: "relative",
+                zIndex: 9999,
+              }}
+            >
+              <TouchableOpacity
+                className="flex-row items-center justify-center gap-1 h-10 px-4 bg-white border border-gray-300 rounded-full"
+                onPress={() =>
+                  setShowSortDropdown(!showSortDropdown)
+                }
+              >
+                <Text className="text-sm font-semibold text-[#1F1F3D]">
+                  Sort
+                </Text>
+
+                <Ionicons
+                  name="chevron-down"
+                  size={14}
+                  color="#1F1F3D"
+                />
+              </TouchableOpacity>
+
+              {showSortDropdown && (
+                <>
+                  {/* Outside Click */}
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() =>
+                      setShowSortDropdown(false)
+                    }
+                    style={{
+                      position: "absolute",
+                      top: -1000,
+                      bottom: -1000,
+                      left: -1000,
+                      right: -1000,
+                    }}
+                  />
+
+                  {/* Your Existing Dropdown */}
+                  <View
+                    className="absolute top-[55px] left-0 w-[220px] bg-white rounded-[18px] border border-[#E5E7EB] z-10 shadow-md"
+                    style={{ elevation: 20 }}
+                  >
+                    {sortOptions.map((option, index) => {
+                      const isSelected = sortBy === option;
+
+                      return (
+                        <TouchableOpacity
+                          key={index}
+                          activeOpacity={0.8}
+                          onPress={() => handleSortSelect(option)}
+                          style={{
+                            paddingVertical: 14,
+                            paddingHorizontal: 16,
+                            backgroundColor: isSelected
+                              ? "#F7931E"
+                              : "#FFFFFF",
+
+                            borderBottomWidth:
+                              index !== sortOptions.length - 1
+                                ? 1
+                                : 0,
+
+                            borderBottomColor: "#F3F4F6",
+                          }}
+                        >
+                          <Text
+                            className={`text-base ${isSelected
+                              ? "text-white"
+                              : "text-black"
+                              }`}
+                            style={{
+                              fontFamily: "PoppinsMedium",
+                            }}
+                          >
+                            {option}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    })}
+                  </View>
+                </>
+              )}
+            </View>
+
+            {/* Filter */}
+            <TouchableOpacity className="flex-row items-center justify-center gap-1 h-10 px-4 bg-white border border-gray-300 rounded-full"
+              onPress={() => {
+                setTempFilters(filters);
+                setShowFilter(true);
+              }}            >
+              <Text className="text-sm font-semibold text-[#1F1F3D]">
+                Filter
+              </Text>
+
+              <Feather name="sliders" size={14} color="#1F1F3D" />
+            </TouchableOpacity>
+
+          </View>
+
+          <View className="flex-row justify-between items-center mb-4 px-4">
             <Text className="text-2xl text-[#1F1F3D]">
               All <Text className="text-[#F7931E]">Featured Courses</Text>
             </Text>
 
-            <View className="flex-row items-center">
-
-              {/* Sort */}
-              <TouchableOpacity
-                onPress={() => setShowSortDropdown(!showSortDropdown)}
-                className="mr-4"
-              >
-                <FontAwesome name="sort" size={28} color="black" />
-              </TouchableOpacity>
-
-              {/* Filter */}
-              <TouchableOpacity onPress={() => setShowFilter(true)}>
-                <FontAwesome name="filter" size={28} color="black" />
-              </TouchableOpacity>
-
-            </View>
-
           </View>
 
-          {filteredCourses.length > 0 ? (
-            sortedCourses.slice(0, visibleCount).map((item, index) => (
+          {allCourses.length > 0 ? (
+            sortedCourses.map((item, index) => (
 
               <ListCourseCard
                 key={index}
@@ -421,7 +489,7 @@ export default function ListCourses() {
             </View>
           )}
 
-          {visibleCount < sortedCourses.length && (
+          {loadingMore && (
             <View className="flex-1 items-center justify-center bg-white">
 
               <ActivityIndicator size="large" color="#F7931E" />
@@ -436,25 +504,37 @@ export default function ListCourses() {
       </ScrollView>
       {showFilter && (
         <>
-          {/* Overlay */}
-          <Animated.View
-            entering={FadeIn.duration(180)}
-            exiting={FadeOut.duration(180)}
-            className="absolute inset-0 bg-black/30"
-          />
+          {/* Grey Background */}
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => setShowFilter(false)}
+            className="absolute inset-0"
+          >
 
-          {/* Filter Drawer */}
+            <Animated.View
+              entering={FadeIn.duration(250)}
+              exiting={FadeOut.duration(200)}
+              className="absolute inset-0 bg-gray-900/50"
+            />
+          </TouchableOpacity>
+
+
+          {/* Bottom Sheet */}
           <Animated.View
-            entering={SlideInLeft.duration(250)}
-            exiting={SlideOutLeft.duration(220)}
-            className="absolute top-0 bottom-0 left-0 w-[80%] bg-[#002D3B] px-5 pt-16 pb-8"
+            entering={SlideInDown.duration(450)}
+            exiting={SlideOutDown.duration(350)}
+            className="absolute bottom-0 left-0 right-0 bg-[#002D3B] px-5 pt-6 pb-8 rounded-t-[30px]"
             style={{
-              elevation: 10,
+              elevation: 12,
               shadowColor: "#000",
-              shadowOpacity: 0.1,
-              shadowRadius: 6,
+              shadowOpacity: 0.2,
+              shadowRadius: 10,
             }}
           >
+            <View className="items-center mb-5">
+              <View className="w-14 h-1.5 rounded-full bg-gray-400" />
+            </View>
+
             <Text className="text-2xl font-bold text-white mb-5">
               Filter Courses
             </Text>
@@ -466,7 +546,7 @@ export default function ListCourses() {
 
             <View className="flex-row flex-wrap mb-5">
               {[1, 2, 3, 4, 5].map((r) => {
-                const isSelected = filters.rating.includes(r);
+                const isSelected = tempFilters.rating.includes(r);
 
                 return (
                   <Text
@@ -490,7 +570,7 @@ export default function ListCourses() {
 
             <View className="flex-row flex-wrap mb-5">
               {["All", "Beginner", "Intermediate", "Expert"].map((lvl) => {
-                const isSelected = filters.level.includes(lvl);
+                const isSelected = tempFilters.level.includes(lvl);
 
                 return (
                   <Text
@@ -514,7 +594,7 @@ export default function ListCourses() {
 
             <View className="flex-row flex-wrap mb-5">
               {["Free", "Paid"].map((p) => {
-                const isSelected = filters.price.includes(p);
+                const isSelected = tempFilters.price.includes(p);
 
                 return (
                   <Text
@@ -535,7 +615,7 @@ export default function ListCourses() {
             <View className="flex-row mt-6">
               <CustomButton
                 title="Cancel"
-                variant="blue"
+                variant="red"
                 onPress={() => setShowFilter(false)}
                 className="flex-1 mr-2"
               />
